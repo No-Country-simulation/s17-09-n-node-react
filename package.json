@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "front:lint": "ts-standard --project ./client/tsconfig.json",
-    "back:lint": "ts-standard --project ./server/tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "front:dev": "cd client && npm run dev",
     "back:dev": "cd server && npm run dev",
+    "front:lint": "cd client && npm run lint",
+    "back:lint": "cd server && npm run lint",
     "prepare": "husky"
   },
   "keywords": [],
