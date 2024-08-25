@@ -1,0 +1,23 @@
+{
+  "name": "s17-09-n-node-react",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "husky": "^9.1.5",
+    "ts-standard": "^12.0.2"
+  },
+  "eslintConfig": {
+    "extends": ["./node_modules/ts-standard/eslintrc"],
+    "parserOptions": {
+      "project": "./tsconfig"
+    }
+  }
+}
