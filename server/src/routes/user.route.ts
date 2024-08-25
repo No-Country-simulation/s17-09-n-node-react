@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
+import UserService from '../services/user.service'
 
 const router = express.Router()
 
-router.get('/', (_req, res) => {
-  res.send('This is a list of users')
+router.get('/', async (_req, res) => {
+  const usersList = await UserService.getUsers()
+  res.send(usersList)
 })
 
 export default router
