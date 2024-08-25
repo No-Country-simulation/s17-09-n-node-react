@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "ts-standard",
+    "front:dev": "cd client && npm run dev",
+    "back:dev": "cd server && npm run dev",
+    "front:lint": "cd client && npm run lint",
+    "back:lint": "cd server && npm run lint",
     "prepare": "husky"
   },
   "keywords": [],
@@ -12,13 +15,6 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "husky": "^9.1.5",
-    "ts-standard": "^12.0.2"
-  },
-  "eslintConfig": {
-    "extends": ["./node_modules/ts-standard/eslintrc"],
-    "parserOptions": {
-      "project": "./tsconfig"
-    }
+    "husky": "^9.1.5"
   }
 }

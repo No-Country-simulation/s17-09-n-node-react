@@ -1,0 +1,32 @@
+name: main
+
+on:
+  pull_request:
+    branches: ["*"]
+  push:
+    branches:
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Node Setup
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 18
+
+      - name: Install dependencies
+        run: SKIP_HUSKY=true npm install --no-audit --no-found
+
+      - name: Backend Lint
+        run: npm run back:lint
+      
+      - name: Frontend Lint
+        run: npm run back:lint
+
+      - name: Backend Testing
+        run: run back:test
