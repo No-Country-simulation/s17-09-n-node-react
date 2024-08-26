@@ -3,7 +3,7 @@ import { Express } from 'express'
 import TestAgent from 'supertest/lib/agent'
 import Test from 'supertest/lib/test'
 import request from 'supertest'
-import createApp from '../src/app'
+import createApp from '../src/server'
 
 describe('Testing the user route', () => {
   let app: Express

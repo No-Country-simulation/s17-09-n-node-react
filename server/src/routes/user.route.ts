@@ -1,12 +1,15 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import express from 'express'
+import { Router } from 'express'
 import UserService from '../services/user.service'
 
-const router = express.Router()
+export default class UserRoutes {
+  static get routes(): Router {
+    const router = Router()
 
-router.get('/', async (_req, res) => {
-  const usersList = await UserService.getUsers()
-  res.send(usersList)
-})
-
-export default router
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    router.get('/', async (_req, res) => {
+      const usersList = await UserService.getUsers()
+      res.send(usersList)
+    })
+    return router
+  }
+}

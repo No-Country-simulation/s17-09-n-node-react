@@ -5,8 +5,8 @@
   "scripts": {
     "front:install": "cd client && npm install",
     "back:install": "cd server && npm install",
-    "front:uninstall": "cd client && npm install",
-    "back:uninstall": "cd server && npm install",
+    "front:uninstall": "cd client && npm uninstall",
+    "back:uninstall": "cd server && npm uninstall",
     "front:start": "cd client && npm run start",
     "back:start": "cd server && npm run start",
     "front:dev": "cd client && npm run dev",

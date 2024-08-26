@@ -1,8 +1,12 @@
-import express from 'express'
-import userRoute from './user.route'
+import { Router } from 'express'
+import UserRoutes from './user.route'
 
-export default function routes (app: express.Express): void {
-  const router = express.Router()
-  router.use('/user', userRoute)
-  app.use('/api/v1', router)
+export class AppRoutes {
+  static get routes (): Router {
+    const router = Router()
+
+    router.use('/user', UserRoutes.routes)
+
+    return router
+  }
 }
