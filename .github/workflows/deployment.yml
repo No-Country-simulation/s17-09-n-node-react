@@ -1,0 +1,13 @@
+name: deployment
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  deployment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04

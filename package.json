@@ -4,10 +4,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "front:start": "cd client && npm run start",
+    "back:start": "cd server && npm run start",
     "front:dev": "cd client && npm run dev",
     "back:dev": "cd server && npm run dev",
     "front:lint": "cd client && npm run lint",
     "back:lint": "cd server && npm run lint",
+    "test:e2e": "cd client && npm run e2e",
     "prepare": "husky"
   },
   "keywords": [],
