@@ -1,2 +1,3 @@
 npm run back:lint
+npm run back:test
 npm run front:lint
