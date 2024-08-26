@@ -3,7 +3,7 @@ import { Express } from 'express'
 import TestAgent from 'supertest/lib/agent'
 import Test from 'supertest/lib/test'
 import request from 'supertest'
-import createApp from '../src/server'
+import App from '../src/app'
 
 describe('Testing the user route', () => {
   let app: Express
@@ -11,7 +11,7 @@ describe('Testing the user route', () => {
   let api: TestAgent<Test>
 
   beforeAll(async () => {
-    app = createApp()
+    app = new App().start()
     server = app.listen(9000)
     api = request(app)
   })
