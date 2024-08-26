@@ -14,7 +14,8 @@
     "front:lint": "cd client && npm run lint",
     "back:lint": "cd server && npm run lint",
     "back:test": "cd server && npm run test",
-    "test:e2e": "cd client && npm run e2e"
+    "test:e2e": "cd client && npm run e2e",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
