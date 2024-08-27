@@ -3,23 +3,14 @@ name: main
 on:
   pull_request:
     branches: ["*"]
-    paths:
-      - 'server/**'
-      - 'client/**'
   push:
     branches:
       - dev
-    paths:
-      - 'server/**'
-      - 'client/**'
   pull_request_target:
     branches:
       - dev
     types:
       - closed
-    paths:
-      - 'server/**'
-      - 'client/**'
 
 jobs:
   detect-changes:
