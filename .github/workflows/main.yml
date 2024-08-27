@@ -30,6 +30,7 @@ jobs:
         id: filter
         uses: dorny/paths-filter@v3
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           filters: |
             backend:
               - 'server/**'
