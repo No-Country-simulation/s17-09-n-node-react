@@ -48,9 +48,9 @@ jobs:
 
   frontend:
     if: |
-      contains(join(github.event.commits.modified, ' '), 'client/') ||
-      contains(join(github.event.commits.added, ' '), 'client/') ||
-      contains(join(github.event.commits.removed, ' '), 'client/')
+      contains(join(github.event.head_commit.modified, ' '), 'client/') ||
+      contains(join(github.event.head_commit.added, ' '), 'client/') ||
+      contains(join(github.event.head_commit.removed, ' '), 'client/')
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
