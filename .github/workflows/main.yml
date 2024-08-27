@@ -40,7 +40,7 @@ jobs:
   frontend:
     runs-on: ubuntu-22.04
     needs: backend
-    if: sucess()
+    if: success()
     steps:
       - name: Checkout
         uses: actions/checkout@v4
