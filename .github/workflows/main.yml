@@ -49,7 +49,7 @@ jobs:
       - name: Testing
         run: npm run back:test
 
- frontend:
+  frontend:
     if: |
       github.event_name == 'push' ||
       github.event_name == 'pull_request' ||
@@ -73,7 +73,7 @@ jobs:
       - name: Lint
         run: npm run front:lint
 
- full:
+  full:
     if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     steps:
