@@ -46,10 +46,7 @@ jobs:
             client/**
 
   backend:
-    if: |
-      github.event_name != 'pull_request_target' || 
-      github.event.pull_request.merged != true ||
-      needs.detect-changes.outputs.backend_changed == 'true'
+    if: needs.detect-changes.outputs.backend_changed == 'true'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -73,10 +70,7 @@ jobs:
         run: npm run back:test
 
   frontend:
-    if: |
-      github.event_name != 'pull_request_target' || 
-      github.event.pull_request.merged != true ||
-      needs.detect-changes.outputs.frontend_changed == 'true'
+    if: needs.detect-changes.outputs.frontend_changed == 'true'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
