@@ -24,9 +24,8 @@ on:
 jobs:
   backend:
     if: |
-      github.event_name == 'push' ||
-      github.event_name == 'pull_request' ||
-      github.event_name == 'pull_request_target'
+      github.event_name != 'pull_request_target' || 
+      github.event.pull_request.merged != true
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -51,9 +50,8 @@ jobs:
 
   frontend:
     if: |
-      github.event_name == 'push' ||
-      github.event_name == 'pull_request' ||
-      github.event_name == 'pull_request_target'
+      github.event_name != 'pull_request_target' || 
+      github.event.pull_request.merged != true
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
