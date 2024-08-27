@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --clear ./src/main.ts",
-    "lint": "ts-standard",
+    "lint": "eslint . --ext .ts && prettier --check src/*.ts",
     "test": "cross-env NODE_ENV=tests jest --detectOpenHandles --forceExit"
   },
   "keywords": [],
