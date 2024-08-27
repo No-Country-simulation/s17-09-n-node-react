@@ -16,28 +16,24 @@ jobs:
   detect-changes:
     runs-on: ubuntu-22.04
     outputs:
-      backend_changed: ${{ steps.check_backend.outputs.changed }}
-      frontend_changed: ${{ steps.check_frontend.outputs.changed }}
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check for backend changes
-        id: check_backend
-        uses: actions/changed-files@v2
+      - name: Filter changes
+        id: filter
+        uses: dorny/paths-filter@v3
         with:
-          files: |
-            server/**
-      
-      - name: Check for frontend changes
-        id: check_frontend
-        uses: actions/changed-files@v2
-        with:
-          files: |
-            client/**
+          filters: |
+            backend:
+              - 'server/**'
+            frontend:
+              - 'client/**'
 
   backend:
-    if: needs.detect-changes.outputs.backend_changed == 'true'
+    if: needs.filter.outputs.backend_changed == 'true'
     needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
@@ -62,7 +58,7 @@ jobs:
         run: npm run back:test
 
   frontend:
-    if: needs.detect-changes.outputs.frontend_changed == 'true'
+    if: needs.filter.outputs.frontend_changed == 'true'
     needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
