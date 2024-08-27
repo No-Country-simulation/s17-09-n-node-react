@@ -22,10 +22,31 @@ on:
       - 'client/**'
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-22.04
+    outputs:
+      backend_changed: ${{ steps.check_backend.outputs.changed }}
+      frontend_changed: ${{ steps.check_frontend.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for backend changes
+        id: check_backend
+        uses: actions/changed-files@v2
+        with:
+          files: |
+            server/**
+      
+      - name: Check for frontend changes
+        id: check_frontend
+        uses: actions/changed-files@v2
+        with:
+          files: |
+            client/**
+
   backend:
-    if: |
-      github.event_name != 'pull_request_target' || 
-      github.event.pull_request.merged != true
+    if: needs.detect-changes.outputs.backend_changed == 'true'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -49,9 +70,7 @@ jobs:
         run: npm run back:test
 
   frontend:
-    if: |
-      github.event_name != 'pull_request_target' || 
-      github.event.pull_request.merged != true
+    if: needs.detect-changes.outputs.frontend_changed == 'true'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
