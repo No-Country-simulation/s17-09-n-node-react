@@ -38,7 +38,7 @@ jobs:
               - 'client/**'
 
   backend:
-    if: needs.filter.outputs.backend_changed == 'true'
+    if: needs.detect-changes.outputs.backend_changed == 'true'
     needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
@@ -63,7 +63,7 @@ jobs:
         run: npm run back:test
 
   frontend:
-    if: needs.filter.outputs.frontend_changed == 'true'
+    if: needs.detect-changes.outputs.frontend_changed == 'true'
     needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
