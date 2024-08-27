@@ -15,9 +15,9 @@ on:
 jobs:
   backend:
     if: |
-      contains(github.event.commits.*.modified, 'server/') ||
-      contains(github.event.commits.*.added, 'server/') ||
-      contains(github.event.commits.*.removed, 'server/')
+      contains(join(github.event.head_commit.modified, ' '), 'server/') ||
+      contains(join(github.event.head_commit.added, ' '), 'server/') ||
+      contains(join(github.event.head_commit.removed, ' '), 'server/')
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -48,9 +48,9 @@ jobs:
 
   frontend:
     if: |
-      contains(github.event.commits.*.modified, 'client/') ||
-      contains(github.event.commits.*.added, 'client/') ||
-      contains(github.event.commits.*.removed, 'client/')
+      contains(join(github.event.commits.modified, ' '), 'client/') ||
+      contains(join(github.event.commits.added, ' '), 'client/') ||
+      contains(join(github.event.commits.removed, ' '), 'client/')
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
