@@ -3,21 +3,30 @@ name: main
 on:
   pull_request:
     branches: ["*"]
+    paths:
+      - 'server/**'
+      - 'client/**'
   push:
     branches:
       - dev
+    paths:
+      - 'server/**'
+      - 'client/**'
   pull_request_target:
     branches:
       - dev
     types:
-      -closed
+      - closed
+    paths:
+      - 'server/**'
+      - 'client/**'
 
 jobs:
   backend:
     if: |
-      contains(join(github.event.head_commit.modified, ' '), 'server/') ||
-      contains(join(github.event.head_commit.added, ' '), 'server/') ||
-      contains(join(github.event.head_commit.removed, ' '), 'server/')
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'pull_request_target'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -38,19 +47,13 @@ jobs:
         run: npm run back:lint
 
       - name: Testing
-        run: run back:test
+        run: npm run back:test
 
-      - name: Start Server
-        run: npm run start
-
-      - name: Wait for the server
-        run: sleep 10
-
-  frontend:
+ frontend:
     if: |
-      contains(join(github.event.head_commit.modified, ' '), 'client/') ||
-      contains(join(github.event.head_commit.added, ' '), 'client/') ||
-      contains(join(github.event.head_commit.removed, ' '), 'client/')
+      github.event_name == 'push' ||
+      github.event_name == 'pull_request' ||
+      github.event_name == 'pull_request_target'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -70,8 +73,8 @@ jobs:
       - name: Lint
         run: npm run front:lint
 
-  full:
-    if: github.event.pull_request.merged == true
+ full:
+    if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -84,11 +87,10 @@ jobs:
         with: 
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install dependencies for server
         run: npm ci
         working-directory: ./server
 
-      - name: Install dependencies
+      - name: Install dependencies for client
         run: npm ci
         working-directory: ./client
-        
