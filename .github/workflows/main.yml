@@ -47,6 +47,7 @@ jobs:
 
   backend:
     if: needs.detect-changes.outputs.backend_changed == 'true'
+    needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -71,6 +72,7 @@ jobs:
 
   frontend:
     if: needs.detect-changes.outputs.frontend_changed == 'true'
+    needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
