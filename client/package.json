@@ -1,37 +1,27 @@
 {
-  "name": "client",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "s17-09-n-node-react",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "front:install": "cd client && npm install",
+    "back:install": "cd server && npm install",
+    "front:uninstall": "cd client && npm uninstall",
+    "back:uninstall": "cd server && npm uninstall",
+    "front:start": "cd client && npm run start",
+    "back:start": "cd server && npm run start",
+    "front:dev": "cd client && npm run dev",
+    "back:dev": "cd server && npm run dev",
+    "front:lint": "cd client && npm run lint",
+    "back:lint": "cd server && npm run lint",
+    "back:test": "cd server && npm run test",
+    "test:e2e": "cd client && npm run e2e",
+    "prepare": "husky"
   },
-  "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/material": "^5.16.7",
-    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "@types/react-router-dom": "^5.3.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1",
-    "styled-components": "^6.1.12"
-  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/styled-components": "^5.1.34",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.9.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
-    "globals": "^15.9.0",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "husky": "^9.1.5"
   }
 }
