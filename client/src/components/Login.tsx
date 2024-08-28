@@ -10,16 +10,15 @@ const Login = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Aquí puedes agregar la lógica para autenticar al usuario
+    
     console.log('Email:', email);
     console.log('Password:', password);
 
-    // Simulación de validación
+    // Validación minima
     if (email === '' || password === '') {
       setError('Por favor, completa todos los campos.');
     } else {
       setError('');
-      // Redirigir o mostrar un mensaje de éxito
     }
   };
 
