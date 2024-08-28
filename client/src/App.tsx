@@ -1,7 +1,9 @@
 // src/App.tsx
 import React from 'react';
 import useThemeSwitcher from './hooks/useThemeSwitcher';
-import styled from 'styled-components';
+import styled  from 'styled-components';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.background};
@@ -11,6 +13,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease-in-out;
+  width: 100%;
 `;
 
 const Button = styled.button`
@@ -29,15 +32,21 @@ const Button = styled.button`
 `;
 
 const App: React.FC = () => {
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher();
+  const { themeMode, toggleTheme, ThemeProvider: CustomThemeProvider } = useThemeSwitcher();
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <Container>
-        <h1>LAW APP</h1>
-        <Button onClick={toggleTheme}>Toggle Theme</Button>
-      </Container>
-    </ThemeProvider>
+    <CustomThemeProvider theme={themeMode}>
+      <Router>
+        <Container>
+          <Routes>
+            <Route path="/" element={<h1>Home</h1>} />
+            <Route path="/login" element={<Login />} />
+            {/* otras rutas  */}
+          </Routes>
+          <Button onClick={toggleTheme}>Toggle Theme</Button>
+        </Container>
+      </Router>
+    </CustomThemeProvider>
   );
 };
 
