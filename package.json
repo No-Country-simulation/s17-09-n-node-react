@@ -23,10 +23,5 @@
   "description": "",
   "devDependencies": {
     "husky": "^9.1.5"
-  },
-  "dependencies": {
-    "create": "^0.0.2",
-    "npm": "^10.8.2",
-    "vite": "^5.4.2"
   }
 }
