@@ -9,13 +9,21 @@ export default class AuthRoutes {
     router.post('/register', (req, res) => {
       const data = req.body as IRegister
       const newUser = AuthService.register(data)
-      res.status(201).json(newUser)
+      newUser
+        .then((data) => {
+          res.status(201).json(data)
+        })
+        .catch((error) => {
+          res.status(401).json(error)
+        })
     })
 
     router.post('/login', (req, res) => {
       const data = req.body as ILogin
       const token = AuthService.login(data)
-      res.status(200).json(token)
+      token.then((data) => {
+        res.status(201).json(data)
+      })
     })
 
     return router

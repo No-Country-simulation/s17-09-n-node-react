@@ -8,15 +8,17 @@ export default class AuthService {
       data.password = await bcrypt.hash(data.password, 10)
       return data
     } catch (error) {
-      throw new Error('Error')
+      throw new Error('error')
     }
   }
 
   static async login(data: ILogin): Promise<string | null> {
-    const verify = await bcrypt.compare(data.password, 'password')
-    const secret =
-      process.env.NODE_ENV === 'prod' ? process.env.JWT_ACCESS_SECRET : 'secret'
-    if (!verify) {
+    const email = 'correo@correo.com'
+    const password =
+      '$2b$10$8A96ciKsLK8JcV0ZQuUrNO.opLGV2F.izWmeyIOdH/eMYA5eU9jJO'
+    const verify = await bcrypt.compare(data.password, password)
+    if (!verify && data.email === email) {
+      const secret = process.env.JWT_ACCESS_SECRET
       const payload: IJwtPayload = {
         id: 1,
         role: 'normal',

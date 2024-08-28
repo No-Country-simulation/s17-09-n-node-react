@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc -p",
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --clear ./src/main.ts",
     "lint": "eslint . --ext .ts && prettier --check src/*.ts",
     "test": "cross-env NODE_ENV=tests jest --detectOpenHandles --forceExit"
