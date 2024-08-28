@@ -15,6 +15,7 @@ export default class UserRoutes {
       res.send(usersList)
     })
 
+    router.post('/login', controller.loginUser)
     router.post('/', controller.registerUser)
     return router
   }
