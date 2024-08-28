@@ -43,7 +43,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             {/* otras rutas  */}
           </Routes>
-          <Button onClick={toggleTheme}>Toggle Theme</Button>
+          <Button onClick={toggleTheme}>LawApp</Button>
         </Container>
       </Router>
     </CustomThemeProvider>
