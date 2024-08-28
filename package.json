@@ -1,0 +1,27 @@
+{
+  "name": "s17-09-n-node-react",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "front:install": "cd client && npm install",
+    "back:install": "cd server && npm install",
+    "front:uninstall": "cd client && npm uninstall",
+    "back:uninstall": "cd server && npm uninstall",
+    "front:start": "cd client && npm run start",
+    "back:start": "cd server && npm run start",
+    "front:dev": "cd client && npm run dev",
+    "back:dev": "cd server && npm run dev",
+    "front:lint": "cd client && npm run lint",
+    "back:lint": "cd server && npm run lint",
+    "back:test": "cd server && npm run test",
+    "test:e2e": "cd client && npm run e2e",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "husky": "^9.1.5"
+  }
+}
