@@ -16,7 +16,7 @@ export default class UserRoutes {
     })
 
     router.post('/login', controller.loginUser)
-    router.post('/', controller.registerUser)
+    router.post('/register', controller.registerUser)
     return router
   }
 }
