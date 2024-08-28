@@ -1,2 +1,8 @@
+if git diff --cached --name-only | grep "^server/"; then echo "Changes detected on server"
 npm run back:lint
-npm run front:lint
+npm run back:test
+fi
+
+if git diff --cached --name-only | grep "^server/"; then echo "Changes detected on server"
+npm run back:lint
+fi

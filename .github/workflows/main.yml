@@ -6,9 +6,40 @@ on:
   push:
     branches:
       - dev
+  pull_request_target:
+    branches:
+      - dev
+    types:
+      - closed
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-22.04
+    outputs:
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Filter changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: |
+            backend:
+              - 'server/**'
+            frontend:
+              - 'client/**'
+
   backend:
+    if: needs.detect-changes.outputs.backend_changed == 'true'
+    needs: detect-changes
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -29,18 +60,12 @@ jobs:
         run: npm run back:lint
 
       - name: Testing
-        run: run back:test
-
-      - name: Start Server
-        run: npm run start
-
-      - name: Wait for the server
-        run: sleep 10
+        run: npm run back:test
 
   frontend:
+    if: needs.detect-changes.outputs.frontend_changed == 'true'
+    needs: detect-changes
     runs-on: ubuntu-22.04
-    needs: backend
-    if: sucess()
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,9 +84,24 @@ jobs:
       - name: Lint
         run: npm run front:lint
 
-      - name: Testing
-        uses: cypress-io/github-action@v6
+  full:
+    if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          start: npm run front:start
-          command: npm run test:e2e
-          wait-on: http://localhost:9000
+          fetch-depth: 0
+      
+      - name: Node Setup
+        uses: actions/setup-node@v4
+        with: 
+          node-version: 18
+
+      - name: Install dependencies for server
+        run: npm ci
+        working-directory: ./server
+
+      - name: Install dependencies for client
+        run: npm ci
+        working-directory: ./client
