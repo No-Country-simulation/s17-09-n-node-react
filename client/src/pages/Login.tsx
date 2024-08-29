@@ -10,7 +10,7 @@ interface LandingPageProps {
 
 const LandingPageContainer = styled.div`
 position: relative; 
-  background-image: url('../../public/fondologin.svg');
+  background-image: url('/fondologin.svg');
   background-size: cover;
   background-position: center;
   color: ${(props) => props.theme.text};

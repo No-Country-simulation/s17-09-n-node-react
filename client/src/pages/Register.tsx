@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Register from '../modules/auth/Sign-up'; // Asegúrate de que el componente Register esté en esta ruta
-import registrationImage from '../../public/fondoregistro.svg'; // Ruta de la imagen
+import registrationImage from '/fondoregistro.svg'; // Ruta de la imagen
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 interface RegistrationPageProps {
