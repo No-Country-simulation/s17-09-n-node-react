@@ -69,7 +69,7 @@ const Login = () => {
         </form>
         <Typography variant="body2" align="center" style={{ marginTop: '1rem' }}>
           ¿Aun no tienes una cuenta?{' '}
-          <Link to="/registro" style={{ color: '#1976d2', textDecoration: 'none' }}>
+          <Link to="/register" style={{ color: '#1976d2', textDecoration: 'none' }}>
             Registrate
           </Link>{' '}
           para poder disfrutar de nuestros servicios

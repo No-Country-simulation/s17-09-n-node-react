@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import Register from '../modules/auth/Sign-up'; // Asegúrate de que el componente Register esté en esta ruta
-import registrationImage from '../../public/fondoregistro.svg'; // Ruta de la imagen
+import Register from '../components/Sign-up'; // Asegúrate de que el componente Register esté en esta ruta
+import registrationImage from '../../../../public/fondoregistro.svg'; // Ruta de la imagen
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { useThemeSwitcher } from '../../../hooks';
 
-interface RegistrationPageProps {
-  toggleTheme: () => void;
-}
+// interface RegistrationPageProps {
+//   toggleTheme: () => void;
+// }
 
 const RegistrationPageContainer = styled.div`
   position: relative;
@@ -82,7 +83,9 @@ const ImageContainer = styled.div`
   text-align: center;
 `;
 
-const RegistrationPage: React.FC<RegistrationPageProps> = ({ toggleTheme }) => {
+const RegistrationPage: React.FC = () => {
+  const { toggleTheme } = useThemeSwitcher();
+  
   return (
     <RegistrationPageContainer>
       <Navbar>

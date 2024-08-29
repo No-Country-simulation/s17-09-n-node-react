@@ -1,11 +1,12 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import Login from '../modules/auth/Sign-in';
+import Login from '../components/Sign-in';
+import { useThemeSwitcher } from '../../../hooks';
 
-interface LandingPageProps {
-    toggleTheme: () => void;
-  }
+// interface LandingPageProps {
+//   toggleTheme: () => void;
+// }
   
 
 const LandingPageContainer = styled.div`
@@ -72,8 +73,8 @@ const LoginContainer = styled.div`
 
 `;
 
-const LandingPage: React.FC<LandingPageProps> = ({ toggleTheme }) => {
-  
+const LandingPage: React.FC = () => {
+  const { toggleTheme } = useThemeSwitcher();
 
   return (
     <LandingPageContainer>
