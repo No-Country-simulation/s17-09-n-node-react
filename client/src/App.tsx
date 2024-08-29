@@ -1,12 +1,13 @@
-// src/App.tsx
 import React from 'react';
 import useThemeSwitcher from './hooks/useThemeSwitcher';
 import styled from 'styled-components';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './modules/auth/Sign-in';
+import LandingPage from './pages/LandingLogin'; // Asegúrate de que este componente esté correctamente importado
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,15 +30,19 @@ const Button = styled.button`
 `;
 
 const App: React.FC = () => {
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher();
+  const { themeMode, toggleTheme, ThemeProvider: CustomThemeProvider } = useThemeSwitcher();
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <Container>
-        <h1>LAW APP</h1>
-        <Button onClick={toggleTheme}>Toggle Theme</Button>
-      </Container>
-    </ThemeProvider>
+    <CustomThemeProvider theme={themeMode}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage toggleTheme={toggleTheme} />} /> 
+          <Route path="/login" element={<Login />} />
+          {/* otras rutas */}
+        </Routes>
+      
+      </Router>
+    </CustomThemeProvider>
   );
 };
 
