@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Register from '../modules/auth/Sign-up'; 
-import registrationImage from '../../public/fondoregistro.svg'; 
+import Register from '../modules/auth/Sign-up'; // Asegúrate de que el componente Register esté en esta ruta
+import registrationImage from '../../public/fondoregistro.svg'; // Ruta de la imagen
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 interface RegistrationPageProps {
   toggleTheme: () => void;
 }
@@ -58,22 +60,25 @@ const MainContent = styled.div`
 const RegisterContainer = styled.div`
   display: flex;
   width: 100%;
-  max-width: 1200px;
-  background-color: ${(props) => props.theme.backgroundLight};
-  padding: 20px;
+  max-width: 90%;
+  background-color: ${(props) => props.theme.secondary};
+  padding: 5px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
-  justify-content: space-between;
-`;
+ `;
 
 const RegisterFormContainer = styled.div`
   width: 50%;
-  padding: 20px;
+  padding: 2%;
+  margin: 5%; 
+  background-color: ${(props) => props.theme.background};
+
 `;
 
 const ImageContainer = styled.div`
   width: 50%;
+  padding: 15%;
   text-align: center;
 `;
 
@@ -85,14 +90,16 @@ const RegistrationPage: React.FC<RegistrationPageProps> = ({ toggleTheme }) => {
         <ThemeButton onClick={toggleTheme}>Cambiar Tema</ThemeButton>
       </Navbar>
       <MainContent>
-        <RegisterContainer>
-          <RegisterFormContainer>
-            <Register />
-          </RegisterFormContainer>
-          <ImageContainer>
-            <img src={registrationImage} alt="Registro" style={{ maxWidth: '100%', height: 'auto' }} />
-          </ImageContainer>
-        </RegisterContainer>
+        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+          <RegisterContainer>
+            <RegisterFormContainer>
+              <Register />
+            </RegisterFormContainer>
+            <ImageContainer>
+              <img src={registrationImage} alt="Registro" style={{ maxWidth: '100%', height: 'auto' }} />
+            </ImageContainer>
+          </RegisterContainer>
+        </GoogleOAuthProvider>
       </MainContent>
     </RegistrationPageContainer>
   );
