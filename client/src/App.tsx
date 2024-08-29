@@ -2,21 +2,20 @@ import React from 'react';
 import useThemeSwitcher from './hooks/useThemeSwitcher';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import Login from './modules/auth/Sign-in';
-import LandingLogin from './pages/Login';
-import Register from './pages/Register';
+import LoginPage from './pages/Login';
+import  RegistrationPage from './pages/Register';
 
 const App: React.FC = () => {
-  const { themeMode, toggleTheme, ThemeProvider: CustomThemeProvider } = useThemeSwitcher();
+  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher();
 
   return (
     <CustomThemeProvider theme={themeMode}>
       <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
         <Router>
           <Routes>
-            <Route path="/" element={<LandingLogin toggleTheme={toggleTheme} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register toggleTheme={toggleTheme} />} />
+            <Route path="/" element={<LoginPage />} />
+    
+            <Route path="/register" element={<RegistrationPage />} />
             {/* otras rutas */}
           </Routes>
         </Router>
