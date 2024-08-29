@@ -1,27 +1,35 @@
-import React from 'react';
-import useThemeSwitcher from './hooks/useThemeSwitcher';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import LoginPage from './pages/Login';
-import  RegistrationPage from './pages/Register';
+import React from 'react'
+
+import { useThemeSwitcher } from './hooks'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
+import { LoginPage, RegisterPage } from './modules/auth'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <p>Aquí debería ir la landing page</p>,
+    errorElement: <p>Not found</p>,
+    children: [],
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+  },
+])
 
 const App: React.FC = () => {
-  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher();
+  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
 
   return (
     <CustomThemeProvider theme={themeMode}>
-      <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-        <Router>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-    
-            <Route path="/register" element={<RegistrationPage />} />
-            {/* otras rutas */}
-          </Routes>
-        </Router>
-      </GoogleOAuthProvider>
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
     </CustomThemeProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
