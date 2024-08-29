@@ -2,24 +2,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useLocation, Link } from 'react-router-dom';
-import useThemeSwitcher from '../hooks/useThemeSwitcher'; // Ajusta la ruta si es necesario
+import useThemeSwitcher from '../hooks/useThemeSwitcher';
 import { lightTheme } from '../themes';
+
 const Navbar = styled.nav`
   position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;  /* Aumenta el padding para hacer la Navbar más alta */
+  padding: 20px 30px; 
   background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1;
+  font-family: 'Inter', sans-serif;
+
 `;
 
 const Logo = styled.div`
   color: ${(props) => props.theme.accent};
   font-size: 20px;
-  font-weight: 600;
+ 
 `;
 
 const ThemeButton = styled.button`
