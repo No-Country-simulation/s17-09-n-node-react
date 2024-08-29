@@ -5,8 +5,8 @@ import { RegisterUserDTO } from '../dtos/user/register-dto.user'
 import { LoginUserDTO } from '../dtos/user/login-dto.user'
 import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
-import { IJwtPayload } from '../types/types'
 import { envs } from '../config'
+import { IPayload } from '../config/user'
 
 const prisma = new PrismaClient()
 
@@ -29,14 +29,18 @@ export class UserService {
         `The passwords don't match`,
       )
 
-    const payload: IJwtPayload = {
+    const payload: IPayload = {
       id: user.id,
       role: user.role,
     }
 
     const secret =
       envs.nodeEnv === 'prod' ? (envs.jwtAccessSecret as string) : 'secret'
-    const accessToken = jwt.sign(payload, secret, { expiresIn: '60s' })
+
+    const expiration =
+      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+
+    const accessToken = jwt.sign(payload, secret, { expiresIn: expiration })
 
     // TODO: implement auth
     return { accessToken: accessToken }

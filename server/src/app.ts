@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import AppRoutes from './routes'
+import { envs } from './config'
 
 export default class App {
   public readonly app = express()
@@ -10,9 +11,11 @@ export default class App {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))
 
+    const clientUrl = envs.nodeEnv === 'prod' ? (envs.clientUrl as string) : '*'
+
     this.app.use(
       cors({
-        origin: ['*'],
+        origin: [clientUrl],
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
