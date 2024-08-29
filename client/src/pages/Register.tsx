@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Register from '../modules/auth/Sign-up'; 
 import registrationImage from '/fondoregistro.svg'; // Asegúrate de usar el camino correcto
 import Layout from '../components/Layout';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 const RegistrationPageContainer = styled.div`
   position: relative;
