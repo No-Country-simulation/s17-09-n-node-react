@@ -65,7 +65,6 @@ const LoginContainer = styled.div`
   width: 100%;
   max-width: 450px;
   background-color: ${(props) => props.theme.background};
-  padding: px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 5%;

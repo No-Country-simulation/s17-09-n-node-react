@@ -1,0 +1,14 @@
+/* En tu archivo global de estilos (ejemplo: styles/globals.css) */
+*,
+*::before,
+*::after {
+  box-sizing: content-bo;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
