@@ -1,17 +1,12 @@
 import { Validators } from '../../config/validators'
-
-// TODO: update
-enum ROLE {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
+import { ROLE } from '../../enums/enum'
 
 interface IRegisterUserDTO {
   email: string
   name: string
   lastName: string
   password: string
-  role?: ROLE
+  role: ROLE
 }
 
 export class RegisterUserDTO {
@@ -20,7 +15,7 @@ export class RegisterUserDTO {
     public name: string,
     public lastName: string,
     public password: string,
-    public role?: ROLE,
+    public role: ROLE,
   ) {}
 
   static create(object: IRegisterUserDTO): [string?, RegisterUserDTO?] {

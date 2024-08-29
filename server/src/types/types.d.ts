@@ -7,8 +7,6 @@ export interface CaseData {
   type: string
 }
 
-type Role = 'admin' | 'normal'
-
 export interface ILogin {
   email: string
   password: string
@@ -19,6 +17,6 @@ export interface IRegister extends ILogin {
 }
 
 export interface IJwtPayload {
-  id: number
-  role: Role
+  id: string
+  role: string
 }

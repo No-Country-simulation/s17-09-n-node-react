@@ -10,6 +10,7 @@
     "@typescript-eslint/no-extraneous-class": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-inferrable-types": "off",
     "no-new": "off",
     "no-console": "warn",
     "prettier/prettier": [
