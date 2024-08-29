@@ -19,6 +19,7 @@ const Register: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [serverError, setServerError] = useState<string>('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -39,11 +40,33 @@ const Register: React.FC = () => {
     return newErrors.length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Aquí se podría manejar el envío del formulario, como hacer una llamada a la API
-      console.log('Form data submitted:', formData);
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+
+        if (!response.ok) {
+          const { message } = await response.json();
+          setServerError(message || 'Error en el servidor.');
+        } else {
+          // Redirigir o mostrar mensaje de éxito
+          console.log('Registro exitoso');
+        }
+      } catch (error) {
+        setServerError('Error en el servidor.');
+        console.log(error);
+      }
     }
   };
 
@@ -67,12 +90,12 @@ const Register: React.FC = () => {
               placeholder="Ingresa aquí tu nombre"
               error={errors.includes('Nombre es requerido.')}
               helperText={errors.includes('Nombre es requerido.') ? 'Nombre es requerido.' : ''}
+              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
-          
               fullWidth
               label="Ingresa aquí tu email"
               name="email"
@@ -82,6 +105,7 @@ const Register: React.FC = () => {
               type="email"
               error={errors.includes('Email es requerido.')}
               helperText={errors.includes('Email es requerido.') ? 'Email es requerido.' : ''}
+              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
             />
           </Grid>
 
@@ -96,6 +120,7 @@ const Register: React.FC = () => {
               type="password"
               error={errors.includes('Contraseña es requerida.')}
               helperText={errors.includes('Contraseña es requerida.') ? 'Contraseña es requerida.' : ''}
+              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
             />
           </Grid>
 
@@ -110,6 +135,7 @@ const Register: React.FC = () => {
               type="password"
               error={errors.includes('Las contraseñas no coinciden.')}
               helperText={errors.includes('Las contraseñas no coinciden.') ? 'Las contraseñas no coinciden.' : ''}
+              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
             />
           </Grid>
 
@@ -131,9 +157,15 @@ const Register: React.FC = () => {
             )}
           </Grid>
 
-          <Grid item xs={12}>
+          {serverError && (
+            <Grid item xs={12}>
+              <FormHelperText error>{serverError}</FormHelperText>
+            </Grid>
+          )}
+
+          <Grid item xs={5}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Registrar
+              Registrarse
             </Button>
           </Grid>
         </Grid>

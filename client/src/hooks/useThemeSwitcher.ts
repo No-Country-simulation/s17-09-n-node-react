@@ -1,40 +1,27 @@
-// import { useState } from 'react';
-// import { ThemeProvider } from 'styled-components';
-// import { lightTheme, darkTheme } from '../themes';
-
-// const useThemeSwitcher = () => {
-//   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-//   const toggleTheme = () => {
-//     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-//   };
-
-//   const themeMode = theme === 'light' ? lightTheme : darkTheme;
-
-//   return { themeMode, toggleTheme, ThemeProvider };
-// };
-
-// export default useThemeSwitcher;
-
-import { toggleTheme as toggleThemeStore } from '../store/theme/themeSlice'
-import { useAppDispatch, useAppSelector } from './reduxTypedHooks'
+// useThemeSwitcher.ts
+import { useState, useEffect } from 'react';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from '../themes';
 
 const useThemeSwitcher = () => {
-  const dispatch = useAppDispatch()
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Configura el tema oscuro por defecto
 
-  const { themeMode } = useAppSelector((state) => state.theme)
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+      setTheme(storedTheme);
+    }
+  }, []);
 
   const toggleTheme = () => {
-    dispatch(toggleThemeStore())
-  }
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
-  return {
-    // * Properties
-    themeMode,
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
-    // * Functions
-    toggleTheme,
-  }
-}
+  return { themeMode, toggleTheme, ThemeProvider: StyledThemeProvider };
+};
 
-export default useThemeSwitcher
+export default useThemeSwitcher;
