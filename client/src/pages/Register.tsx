@@ -7,62 +7,47 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const RegistrationPageContainer = styled.div`
   position: relative;
-  background-color: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
-  height: 100vh;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif;
-`;
-
-const MainContent = styled.div`
+  background-color: ${(props) => props.theme.background}; /* Asegúrate de usar un color de fondo adecuado */
+  height: 100vh; /* Ocupa toda la pantalla */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
-position: static;
-margin-top: 2%;
+  font-family: 'Inter', sans-serif;
 `;
 
 const RegisterContainer = styled.div`
   display: flex;
-  width: 100%;
-  max-width: 90%;
+  flex: 1; /* Ocupa la mitad de la pantalla */
   background-color: ${(props) => props.theme.secondary};
-  padding: 5px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
+  justify-content: center;
+  padding: 2%;
 `;
 
 const RegisterFormContainer = styled.div`
   width: 80%;
   padding: 2%;
-  margin: 5%;
   background-color: ${(props) => props.theme.background};
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const ImageContainer = styled.div`
-  width: 50%;
-  padding: 15%;
-  text-align: center;
+  flex: 1; /* Ocupa la mitad de la pantalla */
+  background-image: url(${registrationImage});
+  background-size: cover;
+  background-position: center;
 `;
 
-const RegistrationPage: React.FC= () => {
+const RegistrationPage: React.FC = () => {
   return (
-    <Layout >
+    <Layout>
       <RegistrationPageContainer>
-        <MainContent>
-          <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-            <RegisterContainer>
-              <RegisterFormContainer>
-                <Register />
-              </RegisterFormContainer>
-              <ImageContainer>
-                <img src={registrationImage} alt="Registro" style={{ maxWidth: '100%', height: 'auto' }} />
-              </ImageContainer>
-            </RegisterContainer>
-          </GoogleOAuthProvider>
-        </MainContent>
+        <RegisterContainer>
+          <RegisterFormContainer>
+            <Register />
+          </RegisterFormContainer>
+        </RegisterContainer>
+        <ImageContainer />
       </RegistrationPageContainer>
     </Layout>
   );
