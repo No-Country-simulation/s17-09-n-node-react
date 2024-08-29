@@ -15,6 +15,7 @@ const Navbar = styled.nav`
   opacity: 0.9;
   z-index: 1;
   font-family: 'Inter', sans-serif;
+  
 `;
 
 const Logo = styled.div`
