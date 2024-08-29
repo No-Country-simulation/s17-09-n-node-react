@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 
 const LandingPageContainer = styled.div`
   position: relative;
+  position: relative;
   background-image: url('/fondologin.svg');
   background-size: cover;
   background-position: relative;
@@ -17,6 +18,7 @@ const LandingPageContainer = styled.div`
 
 const MainContent = styled.div`
   display: flex;
+  justify-content: flex-end;
   justify-content: flex-end;
   align-items: center;
   padding: 20px;

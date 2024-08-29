@@ -38,13 +38,14 @@ const RegisterFormContainer = styled.div`
   width: 100%;
   padding: 2%;
   margin: 5%;
+  margin: 5%;
   background-color: ${(props) => props.theme.background};
 `;
 
 const ImageContainer = styled.div`
   width: 100%;
   text-align: center;
-`;
+`
 
 const RegistrationPage: React.FC= () => {
   return (
@@ -67,4 +68,4 @@ const RegistrationPage: React.FC= () => {
   );
 };
 
-export default RegistrationPage;
+export default RegistrationPage

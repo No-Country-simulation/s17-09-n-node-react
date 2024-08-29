@@ -1,12 +1,21 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { TextField, Checkbox, FormControlLabel, Button, Typography, Container, Grid, FormHelperText } from '@mui/material';
+import React, { useState, ChangeEvent, FormEvent } from 'react'
+import {
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Button,
+  Typography,
+  Container,
+  Grid,
+  FormHelperText,
+} from '@mui/material'
 
 interface RegisterFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  termsAccepted: boolean;
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+  termsAccepted: boolean
 }
 
 const Register: React.FC = () => {
@@ -16,32 +25,34 @@ const Register: React.FC = () => {
     password: '',
     confirmPassword: '',
     termsAccepted: false,
-  });
+  })
 
-  const [errors, setErrors] = useState<string[]>([]);
-  const [serverError, setServerError] = useState<string>('');
+  const [errors, setErrors] = useState<string[]>([])
+  const [serverError, setServerError] = useState<string>('')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target
+    setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+    }))
+  }
 
   const validateForm = () => {
-    const newErrors: string[] = [];
-    if (!formData.name) newErrors.push('Nombre es requerido.');
-    if (!formData.email) newErrors.push('Email es requerido.');
-    if (!formData.password) newErrors.push('Contraseña es requerida.');
-    if (formData.password !== formData.confirmPassword) newErrors.push('Las contraseñas no coinciden.');
-    if (!formData.termsAccepted) newErrors.push('Debe aceptar los términos y condiciones.');
-    setErrors(newErrors);
-    return newErrors.length === 0;
-  };
+    const newErrors: string[] = []
+    if (!formData.name) newErrors.push('Nombre es requerido.')
+    if (!formData.email) newErrors.push('Email es requerido.')
+    if (!formData.password) newErrors.push('Contraseña es requerida.')
+    if (formData.password !== formData.confirmPassword)
+      newErrors.push('Las contraseñas no coinciden.')
+    if (!formData.termsAccepted)
+      newErrors.push('Debe aceptar los términos y condiciones.')
+    setErrors(newErrors)
+    return newErrors.length === 0
+  }
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (validateForm()) {
       try {
         const response = await fetch('/api/register', {
@@ -54,88 +65,105 @@ const Register: React.FC = () => {
             email: formData.email,
             password: formData.password,
           }),
-        });
+        })
 
         if (!response.ok) {
-          const { message } = await response.json();
-          setServerError(message || 'Error en el servidor.');
+          const { message } = await response.json()
+          setServerError(message || 'Error en el servidor.')
         } else {
           // Redirigir o mostrar mensaje de éxito
-          console.log('Registro exitoso');
+          console.log('Registro exitoso')
         }
       } catch (error) {
-        setServerError('Error en el servidor.');
-        console.log(error);
+        setServerError('Error en el servidor.')
+        console.log(error)
       }
     }
-  };
+  }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Typography variant="h5" gutterBottom>
+    <Container component='main' maxWidth='xs'>
+      <Typography variant='h5' gutterBottom>
         Regístrate
       </Typography>
-      <Typography variant="body1" paragraph>
-        Crea tu cuenta y únete a miles de profesionales que ya utilizan nuestros servicios.
+      <Typography variant='body1' paragraph>
+        Crea tu cuenta y únete a miles de profesionales que ya utilizan nuestros
+        servicios.
       </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Ingresa aquí tu nombre"
-              name="name"
+              label='Ingresa aquí tu nombre'
+              name='name'
               value={formData.name}
               onChange={handleChange}
-              placeholder="Ingresa aquí tu nombre"
+              placeholder='Ingresa aquí tu nombre'
               error={errors.includes('Nombre es requerido.')}
-              helperText={errors.includes('Nombre es requerido.') ? 'Nombre es requerido.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
+              helperText={
+                errors.includes('Nombre es requerido.')
+                  ? 'Nombre es requerido.'
+                  : ''
+              }
+              InputProps={{ style: { backgroundColor: 'white' } }} // Fondo blanco
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Ingresa aquí tu email"
-              name="email"
+              label='Ingresa aquí tu email'
+              name='email'
               value={formData.email}
               onChange={handleChange}
-              placeholder="Ingresa aquí tu email"
-              type="email"
+              placeholder='Ingresa aquí tu email'
+              type='email'
               error={errors.includes('Email es requerido.')}
-              helperText={errors.includes('Email es requerido.') ? 'Email es requerido.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
+              helperText={
+                errors.includes('Email es requerido.')
+                  ? 'Email es requerido.'
+                  : ''
+              }
+              InputProps={{ style: { backgroundColor: 'white' } }} // Fondo blanco
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Crea tu contraseña"
-              name="password"
+              label='Crea tu contraseña'
+              name='password'
               value={formData.password}
               onChange={handleChange}
-              placeholder="Crea tu contraseña"
-              type="password"
+              placeholder='Crea tu contraseña'
+              type='password'
               error={errors.includes('Contraseña es requerida.')}
-              helperText={errors.includes('Contraseña es requerida.') ? 'Contraseña es requerida.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
+              helperText={
+                errors.includes('Contraseña es requerida.')
+                  ? 'Contraseña es requerida.'
+                  : ''
+              }
+              InputProps={{ style: { backgroundColor: 'white' } }} // Fondo blanco
             />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               fullWidth
-              label="Confirma tu contraseña"
-              name="confirmPassword"
+              label='Confirma tu contraseña'
+              name='confirmPassword'
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Confirma tu contraseña"
-              type="password"
+              placeholder='Confirma tu contraseña'
+              type='password'
               error={errors.includes('Las contraseñas no coinciden.')}
-              helperText={errors.includes('Las contraseñas no coinciden.') ? 'Las contraseñas no coinciden.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
+              helperText={
+                errors.includes('Las contraseñas no coinciden.')
+                  ? 'Las contraseñas no coinciden.'
+                  : ''
+              }
+              InputProps={{ style: { backgroundColor: 'white' } }} // Fondo blanco
             />
           </Grid>
 
@@ -143,12 +171,12 @@ const Register: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  name="termsAccepted"
+                  name='termsAccepted'
                   checked={formData.termsAccepted}
                   onChange={handleChange}
                 />
               }
-              label="Estoy de acuerdo con los Términos y Condiciones de uso."
+              label='Estoy de acuerdo con los Términos y Condiciones de uso.'
             />
             {errors.includes('Debe aceptar los términos y condiciones.') && (
               <FormHelperText error>
@@ -171,7 +199,7 @@ const Register: React.FC = () => {
         </Grid>
       </form>
     </Container>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
