@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import AppRoutes from './routes'
+import { errorHandler } from './middleware/error-handler'
 
 export default class App {
   public readonly app = express()
@@ -29,6 +30,9 @@ export default class App {
 
     // ROUTES
     this.app.use('/api/v1', AppRoutes.routes)
+
+    // ERROR HANDLER
+    this.app.use(errorHandler)
 
     return this.app
   }

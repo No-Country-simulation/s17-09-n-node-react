@@ -23,5 +23,8 @@
   "description": "",
   "devDependencies": {
     "husky": "^9.1.5"
+  },
+  "dependencies": {
+    "s17-09-n-node-react": "file:"
   }
 }
