@@ -6,7 +6,7 @@ import { LoginUserDTO } from '../dtos/user/login-dto.user'
 import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
 import { IJwtPayload } from '../types/types'
-import { config } from '../config'
+import { envs } from '../config'
 
 const prisma = new PrismaClient()
 
@@ -33,7 +33,9 @@ export class UserService {
       id: user.id,
       role: user.role,
     }
-    const secret = config.nodeEnv === 'prod' ? config.jwtAccessSecret : 'secret'
+
+    const secret =
+      envs.nodeEnv === 'prod' ? (envs.jwtAccessSecret as string) : 'secret'
     const accessToken = jwt.sign(payload, secret, { expiresIn: '60s' })
 
     // TODO: implement auth
