@@ -1,4 +1,4 @@
-// src/pages/LandingPage.tsx
+
 import React from 'react';
 import styled from 'styled-components';
 import Login from '../modules/auth/Sign-in';
@@ -26,7 +26,7 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background-color: ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1; 
 `;
@@ -48,7 +48,7 @@ const ThemeButton = styled.button`
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    background-color: ${(props) => props.theme.primary};
+    background-color: ${(props) => props.theme.background};
   }
 `;
 
@@ -64,7 +64,7 @@ margin-top: 5%;
 const LoginContainer = styled.div`
   width: 100%;
   max-width: 450px;
-  background-color: ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.background};
   padding: px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
