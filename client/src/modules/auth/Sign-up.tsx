@@ -163,9 +163,9 @@ const Register: React.FC = () => {
             </Grid>
           )}
 
-          <Grid item xs={12}>
+          <Grid item xs={5}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Registrar
+              Registrarse
             </Button>
           </Grid>
         </Grid>

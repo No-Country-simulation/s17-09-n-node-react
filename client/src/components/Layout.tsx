@@ -14,6 +14,7 @@ const Navbar = styled.nav`
   background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1;
+  font-family: 'Inter', sans-serif;
 `;
 
 const Logo = styled.div`
