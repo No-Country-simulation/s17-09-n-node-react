@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useLocation, Link } from 'react-router-dom';
 import useThemeSwitcher from '../hooks/useThemeSwitcher';
 import { lightTheme } from '../themes';
+
 const Navbar = styled.nav`
   position: sticky;
   top: 0;
@@ -21,7 +22,7 @@ const Navbar = styled.nav`
 const Logo = styled.div`
   color: ${(props) => props.theme.accent};
   font-size: 20px;
-  font-weight: 600;
+ 
 `;
 
 const ThemeButton = styled.button`
