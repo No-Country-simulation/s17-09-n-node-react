@@ -19,7 +19,6 @@ const MainContent = styled.div`
   align-items: center;
   height: 100%;
   position: static;
-  margin-top: 0%;
 `;
 
 const RegisterContainer = styled.div`
