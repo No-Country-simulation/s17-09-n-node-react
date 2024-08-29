@@ -1,27 +1,19 @@
-// useThemeSwitcher.ts
-import { useState, useEffect } from 'react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from '../themes';
 
 const useThemeSwitcher = () => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Configura el tema oscuro por defecto
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme === 'light' || storedTheme === 'dark') {
-      setTheme(storedTheme);
-    }
-  }, []);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
   const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
-  return { themeMode, toggleTheme, ThemeProvider: StyledThemeProvider };
+  return { themeMode, toggleTheme, ThemeProvider };
 };
 
 export default useThemeSwitcher;
+
+
