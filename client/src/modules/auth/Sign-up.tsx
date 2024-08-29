@@ -192,7 +192,7 @@ const Register: React.FC = () => {
           )}
 
           <Grid item xs={5}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button type='submit' variant='contained' color='primary' fullWidth>
               Registrarse
             </Button>
           </Grid>

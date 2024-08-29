@@ -1,9 +1,9 @@
 // Layout.tsx
-import React from 'react';
-import styled from 'styled-components';
-import { useLocation, Link } from 'react-router-dom';
-import useThemeSwitcher from '../hooks/useThemeSwitcher';
-import { lightTheme } from '../themes';
+import React from 'react'
+import styled from 'styled-components'
+import { useLocation, Link } from 'react-router-dom'
+import useThemeSwitcher from '../hooks/useThemeSwitcher'
+import { lightTheme } from '../themes'
 
 const Navbar = styled.nav`
   position: sticky;
@@ -11,19 +11,17 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px; 
+  padding: 20px 30px;
   background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1;
   font-family: 'Inter', sans-serif;
-
-`;
+`
 
 const Logo = styled.div`
   color: ${(props) => props.theme.accent};
   font-size: 20px;
- 
-`;
+`
 
 const ThemeButton = styled.button`
   background-color: ${(props) => props.theme.accent};
@@ -38,7 +36,7 @@ const ThemeButton = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.background};
   }
-`;
+`
 
 const NavButton = styled(Link)`
   background-color: ${(props) => props.theme.accent};
@@ -56,22 +54,22 @@ const NavButton = styled(Link)`
   &:hover {
     background-color: ${(props) => props.theme.background};
   }
-`;
+`
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-`;
+`
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-`;
+`
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation();
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher();
+  const location = useLocation()
+  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher()
 
   return (
     <ThemeProvider theme={themeMode}>
@@ -81,14 +79,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <ButtonContainer>
             {location.pathname === '/' && (
               <>
-                <NavButton to="/help">Ayuda</NavButton>
-                <NavButton to="/register">Registro</NavButton>
+                <NavButton to='/help'>Ayuda</NavButton>
+                <NavButton to='/register'>Registro</NavButton>
               </>
             )}
             {location.pathname === '/register' && (
               <>
-                <NavButton to="/help">Ayuda</NavButton>
-                <NavButton to="/">Login</NavButton>
+                <NavButton to='/help'>Ayuda</NavButton>
+                <NavButton to='/'>Login</NavButton>
               </>
             )}
             <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}>
@@ -99,7 +97,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <main>{children}</main>
       </LayoutContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout
