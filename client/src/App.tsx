@@ -2,8 +2,8 @@ import React from 'react';
 import useThemeSwitcher from './hooks/useThemeSwitcher';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './modules/auth/Sign-in';
-import LandingPage from './pages/LandingLogin'; // Asegúrate de que este componente esté correctamente importado
-
+import LandingLogin from './pages/LandingLogin'; // Asegúrate de que este componente esté correctamente importado
+import RegistrationPage from  './pages/LandingRegister'
 
 
 const App: React.FC = () => {
@@ -13,8 +13,9 @@ const App: React.FC = () => {
     <CustomThemeProvider theme={themeMode}>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage toggleTheme={toggleTheme} />} /> 
+          <Route path="/" element={<LandingLogin toggleTheme={toggleTheme} />} /> 
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegistrationPage toggleTheme={toggleTheme} />} />
           {/* otras rutas */}
         </Routes>
       

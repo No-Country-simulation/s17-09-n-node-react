@@ -1,4 +1,4 @@
-// src/pages/LandingPage.tsx
+
 import React from 'react';
 import styled from 'styled-components';
 import Login from '../modules/auth/Sign-in';
