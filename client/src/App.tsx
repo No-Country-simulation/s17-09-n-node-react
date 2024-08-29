@@ -1,44 +1,35 @@
-// src/App.tsx
-import React from 'react';
-import useThemeSwitcher from './hooks/useThemeSwitcher';
-import styled from 'styled-components';
+import React from 'react'
 
-const Container = styled.div`
-  background-color: ${(props) => props.theme.background};
-  color: ${(props) => props.theme.text};
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease-in-out;
-`;
+import { useThemeSwitcher } from './hooks'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-const Button = styled.button`
-  background-color: ${(props) => props.theme.primary};
-  color: ${(props) => props.theme.text};
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
+import { LoginPage, RegisterPage } from './modules/auth'
 
-  &:hover {
-    background-color: ${(props) => props.theme.accent};
-  }
-`;
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <p>Aquí debería ir la landing page</p>,
+    errorElement: <p>Not found</p>,
+    children: [],
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+  },
+])
 
 const App: React.FC = () => {
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher();
+  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <Container>
-        <h1>LAW APP</h1>
-        <Button onClick={toggleTheme}>Toggle Theme</Button>
-      </Container>
-    </ThemeProvider>
-  );
-};
+    <CustomThemeProvider theme={themeMode}>
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </CustomThemeProvider>
+  )
+}
 
-export default App;
+export default App
