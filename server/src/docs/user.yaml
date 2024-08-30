@@ -16,4 +16,79 @@ paths:
                 items:
                   type: string
         '401': 
-          description: Unauthorized
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500': 
+          description: Unexpected error
+
+  /api/v1/user/register:
+    post:
+      summary: Register a new user
+      tags: 
+        - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Register'
+      responses:
+        '200':
+          description: Successfully registered
+        '400':
+          description: Some fields are not filled out
+        '409':
+          description: Already existing email
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/login:
+    post:
+      summary: User login
+      tags: 
+        - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Login'
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '400':
+          description: Some fields are not filled out
+        '401': 
+          description: Invalid password
+        '404':
+          description: User not found
+        '500':
+          desrciption: Unexpected error
+
+
+components: 
+  schemas:
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
