@@ -8,7 +8,7 @@ import { LoginPage, RegisterPage } from './modules/auth'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <p>Aquí debería ir la landing page</p>,
+    element: <p>HOME</p>,
     errorElement: <p>Not found</p>,
     children: [],
   },
