@@ -79,7 +79,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Navbar>
           <Logo>LawApp</Logo>
           <ButtonContainer>
-            {location.pathname === '/login' && (
+            {location.pathname === '/' && (
               <>
                 <NavButton to="/help">Ayuda</NavButton>
                 <NavButton to="/register">Registro</NavButton>
