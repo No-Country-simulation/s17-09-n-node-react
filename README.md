@@ -1,20 +1,60 @@
-# Nombre de App ⚖️ - Aplicación de Gestión para Abogados
+# Cases Law ⚖️ - Aplicación de Gestión para Abogados
 
-**Objetivo de la App**
+[![main](https://github.com/No-Country-simulation/s17-09-n-node-react/actions/workflows/main.yml/badge.svg?branch=back-dev)](https://github.com/No-Country-simulation/s17-09-n-node-react/actions/workflows/main.yml)
+[![deployment](https://github.com/No-Country-simulation/s17-09-n-node-react/actions/workflows/deployment.yml/badge.svg)](https://github.com/No-Country-simulation/s17-09-n-node-react/actions/workflows/deployment.yml)
+
+
+**Objetivo de la App:**
 La plataforma de Gestión para abogados es una herramienta diseñada para apoyar a los profesionales en Derecho en la gestión de Casos y Gestión de Plazos, que permite una transparencia del estado de causas generando una óptima administración del bufete mediante información actualizada y un control adecuado del seguimiento de plazos por causa.
 
 ## Tabla de Contenidos
 
-1. [Frontend](#-frontend)
+1. [Comandos](#-comandos)
+2. [Frontend](#-frontend)
    - [Construido con](#-construido-con-%EF%B8%8F)
    - [Desarrolladores](#-desarrolladores)
-2. [Backend](#-backend)
+3. [Backend](#-backend)
    - [Construido con](#-construido-con-%EF%B8%8F-1)
    - [Desarrolladores](#-desarrolladores-1)
-3. [QA Testing](#-qa-testing)
+4. [QA Testing](#-qa-testing)
    - [Testeado con](#-testeado-con-%EF%B8%8F)
    - [Testers](#-testers)
-4. [Comunicación](#communication)
+5. [Comunicación](#communication)
+
+## ✔ Comandos
+
+### ⚙ Instalación
+```
+npm run front:install
+```
+```
+npm run back:install
+```
+Nota: Se puede usar estos comandos para la instalación de paquetes específicos. Para instalar dependencias de desarrollo se debe utilizar el flag --save-dev o -D
+
+### ⚙ Desinstalación
+```
+npm run front:uninstall <package-name>
+```
+```
+npm run back:uninstall <package-name>
+```
+
+### ⚙ Desarrollo
+```
+npm run front:dev
+```
+```
+npm run back:dev
+```
+
+### ⚙ Producción
+```
+npm run front:start
+```
+```
+npm run back:start
+```
 
 ## ✔ Frontend
 
@@ -73,7 +113,8 @@ La plataforma de Gestión para abogados es una herramienta diseñada para apoyar
 
 ![Jira](https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white)
 ![Google Sheets](https://img.shields.io/badge/-Google%20Sheets-green?style=for-the-badge&logo=google&logoColor=white)
-Xmind
+![Xmind](https://img.shields.io/badge/XMind-FF4500?style=for-the-badge&logoColor=white&logoSize=20&link=https%3A%2F%2Fxmind.app%2F)
+
 
 
 ### 👉🏻 Testers
@@ -88,3 +129,5 @@ Xmind
 ## Communication
 
 [![](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=fff)](https://discord.gg/dyxDxw8w) [![](https://img.shields.io/badge/Slack-%23ED8B00?style=for-the-badge&logo=Slack&logoColor=fff)](https://slack.com/intl/es-pe/)
+
+
