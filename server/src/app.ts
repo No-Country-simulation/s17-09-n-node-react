@@ -2,6 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import AppRoutes from './routes'
 import { errorHandler } from './middleware/error-handler'
+import swaggerJSDoc from 'swagger-jsdoc'
+import { options } from './config/swagger'
+import swaggerUiExpress from 'swagger-ui-express'
 
 export default class App {
   public readonly app = express()
@@ -27,7 +30,10 @@ export default class App {
         ],
       }),
     )
-
+    
+    const specs = swaggerJSDoc(options)
+    this.app.use('/doc', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+    
     // ROUTES
     this.app.use('/api/v1', AppRoutes.routes)
 
