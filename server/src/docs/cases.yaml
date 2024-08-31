@@ -1,0 +1,228 @@
+openapi: 3.0.0
+info:
+  title: s17-09-n-node-react
+  version: 1.0.0
+  description: API Documentation
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CreateCaseDTO:
+      type: object
+      required:
+        - caseName
+        - jury
+        - caseNumber
+        - applicant
+        - respondent
+        - type
+        - userId
+      properties:
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+        userId:
+          type: string
+    UpdateCaseDTO:
+      type: object
+      properties:
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+    Case:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+        userId:
+          type: string
+paths:
+  /cases:
+    post:
+      summary: Create a new case
+      tags:
+        - Cases
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaseDTO'
+      responses:
+        201:
+          description: The created case.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+    get:
+      summary: Get all cases
+      tags:
+        - Cases
+      responses:
+        200:
+          description: A list of cases.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Case'
+  /cases/{id}:
+    get:
+      summary: Get a case by ID
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The case data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        404:
+          description: Case not found.
+    put:
+      summary: Update a case by ID
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseDTO'
+      responses:
+        200:
+          description: The updated case.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        400:
+          description: Failed to update case.
+    delete:
+      summary: Delete a case by ID
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Case deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Case deleted successfully
+        400:
+          description: Failed to delete case.
