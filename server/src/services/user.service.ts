@@ -17,7 +17,7 @@ export class UserService {
       where: { email: loginUserDTO.email },
     })
     // TODO: update error
-    if (!user) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'User not found1')
+    if (!user) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'User not found!')
 
     const verify = await bcrypt.compare(loginUserDTO.password, user.password)
 

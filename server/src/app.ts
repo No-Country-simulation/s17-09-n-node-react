@@ -18,7 +18,7 @@ export default class App {
 
     this.app.use(
       cors({
-        origin: [clientUrl],
+        origin: clientUrl,
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
