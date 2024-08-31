@@ -4,6 +4,9 @@ import { useThemeSwitcher } from './hooks'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { LoginPage, RegisterPage } from './modules/auth'
+
+import ProfilePage from './modules/auth/pages/ProfilePage'
+
 import './App.css';
 
 
@@ -21,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
 ])
 
