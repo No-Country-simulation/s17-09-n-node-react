@@ -14,4 +14,3 @@ export const lightTheme = {
     accent: '#424769',
     text: '#FFFFFF',
   };
-  

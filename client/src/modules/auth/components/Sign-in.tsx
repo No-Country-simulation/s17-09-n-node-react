@@ -82,14 +82,14 @@ const Login = () => {
         justifyContent="center"
         minHeight="100vh"
       >
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography  variant="h4" component="h1" gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant="body1" align="center" paragraph>
           Puedes ingresar usando el email con el que te encuentras registrado, seguido de tu
           contraseña.
         </Typography>
-        <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: '1rem', color: 'white' }}>
+        <form  onSubmit={handleSubmit} style={{ width: '100%', marginTop: '1rem', color: 'white' }}>
           <TextField
             label="Ingresa aquí tu email"
             variant="outlined"
@@ -105,11 +105,11 @@ const Login = () => {
             required
             InputProps={{
               sx: {
-                backgroundColor: 'white', // Fondo blanco para el input
-                color: 'black', // Color del texto
-              },
+                backgroundColor: 'white',
+                color: 'black',               },
             }}
           />
+       
           <TextField
             label="Ingresa aquí tu contraseña"
             type="password"
