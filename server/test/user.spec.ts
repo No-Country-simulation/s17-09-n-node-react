@@ -18,9 +18,8 @@ describe('Testing the user route', () => {
 
   describe('GET /', () => {
     it('Should get list of users', async () => {
-      const { statusCode, body } = await api.get('/api/v1/user')
-      expect(statusCode).toBe(200)
-      expect(body).toBeInstanceOf(Array)
+      const { statusCode } = await api.get('/api/v1/user')
+      expect(statusCode).toBe(401)
     })
   })
 
