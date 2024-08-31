@@ -13,14 +13,7 @@ export default class UserRoutes {
     const userService = new UserService()
     const controller = new UserController(userService)
 
-    router.get(
-      '/',
-      authHandler,
-      rolesHandler(ROLE.ADMIN),
-      controller.getUsers,
-      errorHandler,
-    )
-
+    router.get('/', authHandler, rolesHandler(ROLE.ADMIN), controller.getUsers, errorHandler)
     router.post('/login', controller.loginUser, errorHandler)
     router.post('/register', controller.registerUser, errorHandler)
 

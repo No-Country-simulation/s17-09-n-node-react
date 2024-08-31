@@ -8,11 +8,10 @@ export class RegisterUserDTO {
     public password: string,
   ) {}
 
-  static create(object: {
-    [key: string]: string
-  }): [string[]?, RegisterUserDTO?] {
+  static create(object: { [key: string]: string }): [string[]?, RegisterUserDTO?] {
     const { email, name, lastName, password } = object
-    const keys = ['email', 'name', 'lastName', 'password']
+    const instance = new RegisterUserDTO(email, name, lastName, password)
+    const keys = Object.keys(instance)
 
     if (
       Object.values(object).length > RegisterUserDTO.length ||
@@ -20,7 +19,6 @@ export class RegisterUserDTO {
       !Validators.email.test(email) ||
       password.length < 6
     ) {
-      // eslint-disable-next-line prefer-const
       let errors = []
       if (!keys.every((key) => Object.keys(object).includes(key))) {
         if (!email) errors.push(`Missing 'email'`)
@@ -28,24 +26,12 @@ export class RegisterUserDTO {
         if (!lastName) errors.push(`Missing 'lastName'`)
         if (!password) errors.push(`Missing 'password'`)
         Object.keys(object)
-          .filter(
-            (key) =>
-              key !== 'email' &&
-              key !== 'name' &&
-              key !== 'lastName' &&
-              key !== 'password',
-          )
+          .filter((key) => !keys.includes(key))
           .forEach((key) => errors.push(`'${key}' should not exist`))
       } else {
         if (Object.values(object).length > RegisterUserDTO.length)
           Object.keys(object)
-            .filter(
-              (key) =>
-                key !== 'email' &&
-                key !== 'name' &&
-                key !== 'lastName' &&
-                key !== 'password',
-            )
+            .filter((key) => !keys.includes(key))
             .forEach((key) => errors.push(`'${key}' should not exist`))
         if (!Validators.email.test(email)) errors.push('Email is not valid')
         if (password.length < 6) errors.push('Password too short')
@@ -53,6 +39,6 @@ export class RegisterUserDTO {
       return [errors]
     }
 
-    return [undefined, new RegisterUserDTO(email, name, lastName, password)]
+    return [undefined, instance]
   }
 }

@@ -8,32 +8,31 @@ export class LoginUserDTO {
 
   static create(object: { [key: string]: string }): [string[]?, LoginUserDTO?] {
     const { email, password } = object
-    const keys = ['email', 'password']
+    const instance = new LoginUserDTO(email, password)
+    const keys = Object.keys(instance)
 
     if (
       Object.values(object).length > LoginUserDTO.length ||
       !keys.every((key) => Object.keys(object).includes(key)) ||
       !Validators.email.test(email)
     ) {
-      // eslint-disable-next-line prefer-const
       let errors = []
       if (!keys.every((key) => Object.keys(object).includes(key))) {
         if (!email) errors.push(`Missing 'email'`)
         if (!password) errors.push(`Missing 'password'`)
         Object.keys(object)
-          .filter((key) => key !== 'email' && key !== 'password')
+          .filter((key) => !keys.includes(key))
           .forEach((key) => errors.push(`'${key}' should not exist`))
       } else {
         if (Object.values(object).length > LoginUserDTO.length)
           Object.keys(object)
-            .filter((key) => key !== 'email' && key !== 'password')
+            .filter((key) => !keys.includes(key))
             .forEach((key) => errors.push(`'${key}' should not exist`))
-        if (!Validators.email.test(email))
-          errors.push(`'email' provided is not valid`)
+        if (!Validators.email.test(email)) errors.push(`'email' provided is not valid`)
       }
       return [errors]
     }
 
-    return [undefined, new LoginUserDTO(email, password)]
+    return [undefined, instance]
   }
 }
