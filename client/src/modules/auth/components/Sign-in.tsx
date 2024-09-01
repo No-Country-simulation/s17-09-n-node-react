@@ -32,7 +32,6 @@ const Login = () => {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
     const { email, password } = data
     // Verificación de credenciales fake
     if (

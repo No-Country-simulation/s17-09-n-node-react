@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   TextField,
@@ -8,74 +8,33 @@ import {
   Box,
   Alert,
 } from '@mui/material'
+import { useForm, SubmitHandler } from 'react-hook-form'
+
+type Inputs = {
+  name: string
+  lastName: string
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 const Register = () => {
-  const [name, setName] = useState<string>('')
-  const [lastName, setLastName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [error, setError] = useState<string>('')
-  const [nameError, setNameError] = useState<string>('')
-  const [lastNameError, setLastNameError] = useState<string>('')
-  const [emailError, setEmailError] = useState<string>('')
-  const [passwordError, setPasswordError] = useState<string>('')
-  const [confirmPasswordError, setConfirmPasswordError] = useState<string>('')
+  const [error, setError] = useState<null | string>(null)
   const navigate = useNavigate()
 
-  // Validaciones
-  const validateName = (name: string) => {
-    if (name.trim().length === 0) {
-      setNameError('El nombre es obligatorio.')
-    } else {
-      setNameError('')
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
 
-  const validateLastName = (lastName: string) => {
-    if (lastName.trim().length === 0) {
-      setLastNameError('El apellido es obligatorio.')
-    } else {
-      setLastNameError('')
-    }
-  }
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data)
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setEmailError('Por favor, ingresa un email válido.')
-    } else {
-      setEmailError('')
-    }
-  }
-
-  const validatePassword = (password: string) => {
-    if (password.length < 8) {
-      setPasswordError('La contraseña debe tener al menos 8 caracteres.')
-    } else {
-      setPasswordError('')
-    }
-  }
-
-  const validateConfirmPassword = (confirmPassword: string) => {
-    if (confirmPassword !== password) {
-      setConfirmPasswordError('Las contraseñas no coinciden.')
-    } else {
-      setConfirmPasswordError('')
-    }
-  }
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
+    const { name, lastName, email, password } = data
     // Verificar si hay errores
-    if (
-      nameError ||
-      lastNameError ||
-      emailError ||
-      passwordError ||
-      confirmPasswordError
-    ) {
+    if (Object.keys(errors).length !== 0) {
       setError('Por favor, corrige los errores antes de continuar.')
     } else {
       setError('')
@@ -126,7 +85,7 @@ const Register = () => {
           servicios.
         </Typography>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           style={{ width: '100%', marginTop: '1rem', color: 'white' }}
         >
           <TextField
@@ -134,13 +93,14 @@ const Register = () => {
             variant='outlined'
             fullWidth
             margin='normal'
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value)
-              validateName(e.target.value)
-            }}
-            error={!!nameError}
-            helperText={nameError}
+            {...register('name', {
+              required: {
+                value: true,
+                message: 'El nombre es obligatorio.',
+              },
+            })}
+            error={!!errors?.name}
+            helperText={errors?.name?.message}
             required
             InputProps={{
               sx: {
@@ -154,13 +114,14 @@ const Register = () => {
             variant='outlined'
             fullWidth
             margin='normal'
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value)
-              validateLastName(e.target.value)
-            }}
-            error={!!lastNameError}
-            helperText={lastNameError}
+            {...register('lastName', {
+              required: {
+                value: true,
+                message: 'El apellido es obligatorio.',
+              },
+            })}
+            error={!!errors?.lastName}
+            helperText={errors?.lastName?.message}
             required
             InputProps={{
               sx: {
@@ -174,13 +135,18 @@ const Register = () => {
             variant='outlined'
             fullWidth
             margin='normal'
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value)
-              validateEmail(e.target.value)
-            }}
-            error={!!emailError}
-            helperText={emailError}
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Por favor, ingresa un email válido.',
+              },
+            })}
+            error={!!errors?.email}
+            helperText={errors?.email?.message}
             required
             InputProps={{
               sx: {
@@ -195,13 +161,18 @@ const Register = () => {
             variant='outlined'
             fullWidth
             margin='normal'
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value)
-              validatePassword(e.target.value)
-            }}
-            error={!!passwordError}
-            helperText={passwordError}
+            {...register('password', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              minLength: {
+                value: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres.',
+              },
+            })}
+            error={!!errors?.password}
+            helperText={errors?.password?.message}
             required
             InputProps={{
               sx: {
@@ -216,13 +187,13 @@ const Register = () => {
             variant='outlined'
             fullWidth
             margin='normal'
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value)
-              validateConfirmPassword(e.target.value)
-            }}
-            error={!!confirmPasswordError}
-            helperText={confirmPasswordError}
+            {...register('confirmPassword', {
+              required: 'Por favor repite la contraseña',
+              validate: (value) =>
+                value === watch('password') || 'Las contraseñas no coinciden',
+            })}
+            error={!!errors?.confirmPassword}
+            helperText={errors?.confirmPassword?.message}
             required
             InputProps={{
               sx: {
