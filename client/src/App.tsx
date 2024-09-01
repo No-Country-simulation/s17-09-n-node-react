@@ -7,8 +7,7 @@ import { LoginPage, RegisterPage } from './modules/auth'
 
 import ProfilePage from './modules/auth/pages/ProfilePage'
 
-import './App.css';
-
+import './App.css'
 
 const router = createBrowserRouter([
   {
@@ -35,7 +34,7 @@ const App: React.FC = () => {
   const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
 
   return (
-    <CustomThemeProvider  theme={themeMode}>
+    <CustomThemeProvider theme={themeMode}>
       <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
     </CustomThemeProvider>
   )
