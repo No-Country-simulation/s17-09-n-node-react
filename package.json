@@ -23,5 +23,8 @@
   "description": "",
   "devDependencies": {
     "husky": "^9.1.5"
+  },
+  "dependencies": {
+    "react-hook-form": "^7.53.0"
   }
 }

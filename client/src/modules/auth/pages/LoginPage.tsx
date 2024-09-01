@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import Login from '../components/Sign-in';
-import Layout from '../layout/AuthLayout';
+import React from 'react'
+import styled from 'styled-components'
+import Login from '../components/Sign-in'
+import Layout from '../layout/AuthLayout'
 
 const LandingPageContainer = styled.div`
   position: relative;
@@ -12,8 +12,7 @@ const LandingPageContainer = styled.div`
   height: 120vh;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
-  
-`;
+`
 
 const MainContent = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ const MainContent = styled.div`
   padding: 20px;
   height: calc(100vh - 60px);
   margin-top: 5%;
-`;
+`
 
 const LoginContainer = styled.div`
   width: 80%;
@@ -32,9 +31,9 @@ const LoginContainer = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 5%;
   opacity: 0.9;
-`;
+`
 
-const LoginPage: React.FC= () => {
+const LoginPage: React.FC = () => {
   return (
     <Layout>
       <LandingPageContainer>
@@ -45,7 +44,7 @@ const LoginPage: React.FC= () => {
         </MainContent>
       </LandingPageContainer>
     </Layout>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
