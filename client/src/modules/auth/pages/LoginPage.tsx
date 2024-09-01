@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Login from '../modules/auth/Sign-in';
-import Layout from '../components/Layout';
+import Login from '../components/Sign-in';
+import Layout from '../layout/AuthLayout';
 
 
 const LandingPageContainer = styled.div`

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Register from '../modules/auth/Sign-up'; 
+import Register from '../components/Sign-up';
 import registrationImage from '/fondoregistro.svg'; 
-import Layout from '../components/Layout';
+import Layout from '../layout/AuthLayout';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const RegistrationPageContainer = styled.div`

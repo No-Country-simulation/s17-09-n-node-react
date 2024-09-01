@@ -1,9 +1,8 @@
-// Layout.tsx
 import React from 'react';
 import styled from 'styled-components';
 import { useLocation, Link } from 'react-router-dom';
-import useThemeSwitcher from '../hooks/useThemeSwitcher';
-import { lightTheme } from '../themes';
+import { useThemeSwitcher } from '../../../hooks';
+import { lightTheme } from '../../../themes';
 
 const Navbar = styled.nav`
   position: sticky;
@@ -69,7 +68,7 @@ const LayoutContainer = styled.div`
   flex-direction: column;
 `;
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher();
 
@@ -79,7 +78,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <Navbar>
           <Logo>LawApp</Logo>
           <ButtonContainer>
-            {location.pathname === '/' && (
+            {location.pathname === '/login' && (
               <>
                 <NavButton to="/help">Ayuda</NavButton>
                 <NavButton to="/register">Registro</NavButton>
@@ -88,7 +87,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {location.pathname === '/register' && (
               <>
                 <NavButton to="/help">Ayuda</NavButton>
-                <NavButton to="/">Login</NavButton>
+                <NavButton to="/login">Login</NavButton>
               </>
             )}
             <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}>
@@ -102,4 +101,4 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export default Layout;
+export default AuthLayout;
