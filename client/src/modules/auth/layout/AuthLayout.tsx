@@ -18,8 +18,11 @@ const Navbar = styled.nav`
 `
 
 const Logo = styled.div`
-  color: ${(props) => props.theme.accent};
-  font-size: 20px;
+  background-image: url('/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 250px;  
+  height: 90px;
 `
 
 const ThemeButton = styled.button`
