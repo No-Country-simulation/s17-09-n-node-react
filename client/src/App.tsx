@@ -1,11 +1,16 @@
 import React from 'react'
 
-import { useThemeSwitcher } from './hooks'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { LoginPage, RegisterPage } from './modules/auth'
-import './App.css';
+import 'dayjs/locale/es'
+import { esES } from '@mui/x-date-pickers/locales'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+import { useThemeSwitcher } from './hooks'
+import { LoginPage, RegisterPage } from './modules/auth'
+
+import './App.css'
 
 const router = createBrowserRouter([
   {
@@ -27,9 +32,18 @@ const router = createBrowserRouter([
 const App: React.FC = () => {
   const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
 
+  const calendarLocaleText =
+    esES.components.MuiLocalizationProvider.defaultProps.localeText
+
   return (
-    <CustomThemeProvider  theme={themeMode}>
-      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    <CustomThemeProvider theme={themeMode}>
+      <LocalizationProvider
+        dateAdapter={AdapterDayjs}
+        localeText={calendarLocaleText}
+        adapterLocale="es"
+      >
+        <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+      </LocalizationProvider>
     </CustomThemeProvider>
   )
 }
