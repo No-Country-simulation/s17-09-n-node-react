@@ -9,6 +9,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import { useThemeSwitcher } from './hooks'
 import { LoginPage, RegisterPage } from './modules/auth'
+import ProfilePage from './modules/auth/pages/ProfilePage'
 
 import './App.css'
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+  {
+    path: '/profile',
+    element: <ProfilePage />,
   },
 ])
 
