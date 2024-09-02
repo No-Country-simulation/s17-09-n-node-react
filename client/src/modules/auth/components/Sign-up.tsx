@@ -8,7 +8,8 @@ import {
   Box,
   Alert,
 } from '@mui/material'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form';
+import icono from './icononombre.svg'
 
 type Inputs = {
   name: string
@@ -88,6 +89,8 @@ const Register = () => {
           onSubmit={handleSubmit(onSubmit)}
           style={{ width: '100%', marginTop: '1rem', color: 'white' }}
         >
+          
+          <img src={icono} alt="icono" />
           <TextField
             label='Nombre'
             variant='outlined'

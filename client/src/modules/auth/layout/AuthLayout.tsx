@@ -10,7 +10,7 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
+  padding: 10px 20px;
   background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1;
@@ -77,7 +77,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <ThemeProvider theme={themeMode}>
       <LayoutContainer>
         <Navbar>
-          <Logo>LawApp</Logo>
+          <Logo/>
           <ButtonContainer>
             {location.pathname === '/login' && (
               <>
