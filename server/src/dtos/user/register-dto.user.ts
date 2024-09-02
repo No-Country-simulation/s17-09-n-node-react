@@ -17,6 +17,10 @@ export class RegisterUserDTO {
       Object.values(object).length > RegisterUserDTO.length ||
       !keys.every((key) => Object.keys(object).includes(key)) ||
       !Validators.email.test(email) ||
+      !Validators.names.test(name) ||
+      typeof name === 'boolean' ||
+      !Validators.names.test(lastName) ||
+      typeof lastName === 'boolean' ||
       password.length < 6
     ) {
       let errors = []
@@ -25,6 +29,10 @@ export class RegisterUserDTO {
         if (!name) errors.push(`Missing 'name'`)
         if (!lastName) errors.push(`Missing 'lastName'`)
         if (!password) errors.push(`Missing 'password'`)
+        if (!Validators.email.test(email)) errors.push('Email is not valid')
+        if (password.length < 6) errors.push('Password too short')
+        if (!Validators.names.test(name)) errors.push('name should be a string')
+        if (!Validators.names.test(lastName)) errors.push('lastName should be a string')
         Object.keys(object)
           .filter((key) => !keys.includes(key))
           .forEach((key) => errors.push(`'${key}' should not exist`))
@@ -35,6 +43,10 @@ export class RegisterUserDTO {
             .forEach((key) => errors.push(`'${key}' should not exist`))
         if (!Validators.email.test(email)) errors.push('Email is not valid')
         if (password.length < 6) errors.push('Password too short')
+        if (!Validators.names.test(name) || typeof name === 'boolean')
+          errors.push('name should be a string')
+        if (!Validators.names.test(lastName) || typeof lastName === 'boolean')
+          errors.push('lastName should be a string')
       }
       return [errors]
     }

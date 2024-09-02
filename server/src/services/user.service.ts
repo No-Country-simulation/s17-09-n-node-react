@@ -7,7 +7,7 @@ import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
 import { envs } from '../config'
 import { IPayload } from '../config/user'
-import { UpdatePasswordDTO } from '../dtos/user/update-dto'
+import { UpdatePasswordDTO } from '../dtos/user/password-dto.user'
 
 const prisma = new PrismaClient()
 

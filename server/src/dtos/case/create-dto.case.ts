@@ -1,4 +1,5 @@
 import { CaseStatus, CaseType } from '@prisma/client'
+import { Validators } from '../../config/validators'
 
 export class CreateCaseDTO {
   constructor(
@@ -27,7 +28,15 @@ export class CreateCaseDTO {
     const keys = Object.keys(instance)
 
     if (
-      Object.keys(object).length > CreateCaseDTO.length ||
+      typeof caseName !== 'string' ||
+      typeof jury !== 'string' ||
+      typeof caseNumber !== 'string' ||
+      typeof applicant !== 'string' ||
+      typeof userId !== 'string' ||
+      typeof respondent !== 'string' ||
+      !Validators.enums(CaseType, type) ||
+      !Validators.enums(CaseStatus, status) ||
+      Object.values(object).length > CreateCaseDTO.length ||
       !keys.every((key) => Object.keys(object).includes(key))
     ) {
       let errors = []

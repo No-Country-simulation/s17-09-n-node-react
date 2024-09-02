@@ -4,7 +4,7 @@ import { RegisterUserDTO } from '../dtos/user/register-dto.user'
 import { LoginUserDTO } from '../dtos/user/login-dto.user'
 import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
-import { UpdatePasswordDTO } from '../dtos/user/update-dto'
+import { UpdatePasswordDTO } from '../dtos/user/password-dto.user'
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
