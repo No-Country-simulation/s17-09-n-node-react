@@ -21,7 +21,7 @@ const Logo = styled.div`
   background-image: url('/logo.png');
   background-size: contain;
   background-repeat: no-repeat;
-  width: 250px;  
+  width: 250px;
   height: 90px;
 `
 

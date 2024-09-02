@@ -132,8 +132,8 @@ const Login = () => {
             required
             InputProps={{
               sx: {
-                backgroundColor: 'white', // Fondo blanco para el input
-                color: 'black', // Color del texto
+                backgroundColor: 'white', 
+                color: 'black', 
               },
             }}
           />
