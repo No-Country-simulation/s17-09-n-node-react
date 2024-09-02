@@ -34,6 +34,7 @@ export class UserController {
       .then((user) => {
         if (user) {
           res.status(201).json(UserDTO.create(user))
+          return
         }
         res.status(201).json(user)
       })
@@ -80,6 +81,7 @@ export class UserController {
       .then((user) => {
         if (user) {
           res.status(201).json(UserDTO.create(user))
+          return
         }
         res.status(201).json(user)
       })
