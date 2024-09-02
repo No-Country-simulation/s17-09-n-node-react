@@ -6,8 +6,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { LoginPage, RegisterPage } from './modules/auth'
 
 import ProfilePage from './modules/auth/pages/ProfilePage'
+import { Cases } from './modules/cases/pages/Cases'
 
 import './App.css';
+
 
 
 const router = createBrowserRouter([
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage />,
+  },
+  {
+    path: '/cases',
+    element: <Cases />,
   },
 ])
 
