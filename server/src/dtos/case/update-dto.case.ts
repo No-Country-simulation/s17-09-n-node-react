@@ -32,7 +32,9 @@ export class UpdateCaseDTO {
     ) {
       let errors = []
       if (!keys.every((key) => Object.keys(object).includes(key))) {
-        if (!object) errors.push('At least one ')
+        Object.keys(object)
+          .filter((key) => !keys.includes(key))
+          .forEach((key) => errors.push(`'${key}' should not exist`))
       }
     }
 

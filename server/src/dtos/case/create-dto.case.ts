@@ -58,6 +58,14 @@ export class CreateCaseDTO {
             .filter((key) => !keys.includes(key))
             .forEach((key) => errors.push(`'${key}' should not exist`))
         }
+        if (typeof caseName !== 'string') errors.push('caseName should be a string')
+        if (typeof jury !== 'string') errors.push('jury should be a string')
+        if (typeof caseNumber !== 'string') errors.push('caseNumber should be a string')
+        if (typeof applicant !== 'string') errors.push('applicant should be a string')
+        if (typeof userId !== 'string') errors.push('userId should be a string')
+        if (typeof respondent !== 'string') errors.push('respondent should be a string')
+        if (!Validators.enums(CaseType, type)) errors.push('type is not valid')
+        if (!Validators.enums(CaseStatus, status)) errors.push('status is not valid')
       }
       return [errors]
     }
