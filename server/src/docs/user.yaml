@@ -1,31 +1,115 @@
 paths:
-  /api/v1/user:
+  /api/v1/user/admin:
     get:
-      summary: Get a list of users
+      summary: Get a list of users. Must be admin
       security:
         - bearerAuth: []
       tags:
         - user
-      responses: 
+      responses:
         '200':
           description: List of users
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
-                  type: string
-        '401': 
+                  $ref: '#components/schemas/User'
+        '401':
           description: 'Unauthorized: jwt not provided or wrong role'
         '403':
           description: Jwt expired
-        '500': 
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/{userId}:
+    get:
+      summary: Get logged in user's details. Must be logged in as admin to obtain any user
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    put:
+      summary: Update logged in user's name and/or last name. Must be logged in as admin to update any user
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Update'
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    delete:
+      summary: Delete user. Must be logged in as admin
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
           description: Unexpected error
 
   /api/v1/user/register:
     post:
       summary: Register a new user
-      tags: 
+      tags:
         - register
       requestBody:
         content:
@@ -45,7 +129,7 @@ paths:
   /api/v1/user/login:
     post:
       summary: User login
-      tags: 
+      tags:
         - login
       requestBody:
         content:
@@ -64,15 +148,14 @@ paths:
                     type: string
         '400':
           description: Some fields are not filled out
-        '401': 
+        '401':
           description: Invalid password
         '404':
           description: User not found
         '500':
           desrciption: Unexpected error
 
-
-components: 
+components:
   schemas:
     Register:
       type: object
@@ -91,4 +174,24 @@ components:
         email:
           type: string
         password:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+    Update:
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
           type: string
