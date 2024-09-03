@@ -3,7 +3,6 @@ import cors from 'cors'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 import AppRoutes from './routes'
-import { errorHandler } from './middleware/error-handler'
 import { envs } from './config'
 import { options } from './config/swagger'
 
@@ -19,7 +18,7 @@ export default class App {
 
     this.app.use(
       cors({
-        origin: [clientUrl],
+        origin: clientUrl,
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
@@ -39,9 +38,6 @@ export default class App {
 
     // ROUTES
     this.app.use('/api/v1', AppRoutes.routes)
-
-    // ERROR HANDLER
-    this.app.use(errorHandler)
 
     return this.app
   }

@@ -11,6 +11,7 @@
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-inferrable-types": "off",
+    "prefer-const": "off",
     "no-new": "off",
     "no-console": "warn",
     "prettier/prettier": [
@@ -18,7 +19,7 @@
       {
         "tabWidth": 2,
         "endOfLine": "auto",
-        "printWidth": 80,
+        "printWidth": 100,
         "singleQuote": true,
         "semi": false,
         "bracketSpacing": true

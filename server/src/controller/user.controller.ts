@@ -1,11 +1,14 @@
 import { Response, Request, NextFunction } from 'express'
 import { UserService } from '../services/user.service'
-import { RegisterUserDTO } from '../dtos/user/register-dto.user'
-import { LoginUserDTO } from '../dtos/user/login-dto.user'
 import HttpError from '../config/errors'
 import { HTTP_STATUS, ROLE } from '../enums/enum'
-import { UserDTO } from '../dtos/user/user-dto.user'
-import { UpdateUserDTO } from '../dtos/user/update-dto.user'
+import {
+  LoginUserDTO,
+  RegisterUserDTO,
+  UpdatePasswordDTO,
+  UpdateUserDTO,
+  UserDTO,
+} from '../dtos/user'
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -43,8 +46,7 @@ export class UserController {
 
   loginUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, loginUserDto] = LoginUserDTO.create(req.body)
-    if (error || !loginUserDto)
-      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    if (error || !loginUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
 
     this.userService
       .loginUser(loginUserDto)
@@ -56,12 +58,21 @@ export class UserController {
 
   registerUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, registerUserDto] = RegisterUserDTO.create(req.body)
-    if (error || !registerUserDto)
-      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    if (error || !registerUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
 
     this.userService
       .registerUser(registerUserDto)
-      .then((user: unknown) => res.status(201).json(user))
+      .then((message) => res.status(201).json(message))
+      .catch((error: unknown) => next(error))
+  }
+
+  updatePassword = (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params
+    const [error, updatePasswordDto] = UpdatePasswordDTO.create(req.body)
+    if (error || !updatePasswordDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    this.userService
+      .updatePassword(id, updatePasswordDto)
+      .then((message) => res.status(201).json(message))
       .catch((error: unknown) => next(error))
   }
 

@@ -8,51 +8,49 @@ export class RegisterUserDTO {
     public password: string,
   ) {}
 
-  static create(object: {
-    [key: string]: string
-  }): [string[]?, RegisterUserDTO?] {
+  static create(object: { [key: string]: string }): [string[]?, RegisterUserDTO?] {
     const { email, name, lastName, password } = object
-    const keys = ['email', 'name', 'lastName', 'password']
+    const instance = new RegisterUserDTO(email, name, lastName, password)
+    const keys = Object.keys(instance)
 
     if (
       Object.values(object).length > RegisterUserDTO.length ||
       !keys.every((key) => Object.keys(object).includes(key)) ||
       !Validators.email.test(email) ||
+      !Validators.names.test(name) ||
+      typeof name === 'boolean' ||
+      !Validators.names.test(lastName) ||
+      typeof lastName === 'boolean' ||
       password.length < 6
     ) {
-      // eslint-disable-next-line prefer-const
       let errors = []
       if (!keys.every((key) => Object.keys(object).includes(key))) {
         if (!email) errors.push(`Missing 'email'`)
         if (!name) errors.push(`Missing 'name'`)
         if (!lastName) errors.push(`Missing 'lastName'`)
         if (!password) errors.push(`Missing 'password'`)
+        if (!Validators.email.test(email)) errors.push('Email is not valid')
+        if (password.length < 6) errors.push('Password too short')
+        if (!Validators.names.test(name)) errors.push('name should be a string')
+        if (!Validators.names.test(lastName)) errors.push('lastName should be a string')
         Object.keys(object)
-          .filter(
-            (key) =>
-              key !== 'email' &&
-              key !== 'name' &&
-              key !== 'lastName' &&
-              key !== 'password',
-          )
+          .filter((key) => !keys.includes(key))
           .forEach((key) => errors.push(`'${key}' should not exist`))
       } else {
         if (Object.values(object).length > RegisterUserDTO.length)
           Object.keys(object)
-            .filter(
-              (key) =>
-                key !== 'email' &&
-                key !== 'name' &&
-                key !== 'lastName' &&
-                key !== 'password',
-            )
+            .filter((key) => !keys.includes(key))
             .forEach((key) => errors.push(`'${key}' should not exist`))
         if (!Validators.email.test(email)) errors.push('Email is not valid')
         if (password.length < 6) errors.push('Password too short')
+        if (!Validators.names.test(name) || typeof name === 'boolean')
+          errors.push('name should be a string')
+        if (!Validators.names.test(lastName) || typeof lastName === 'boolean')
+          errors.push('lastName should be a string')
       }
       return [errors]
     }
 
-    return [undefined, new RegisterUserDTO(email, name, lastName, password)]
+    return [undefined, instance]
   }
 }

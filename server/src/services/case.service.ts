@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { CreateCaseDTO } from '../dtos/case/create-dto.case'
 import { UpdateCaseDTO } from '../dtos/case/update-dto.case'
+import { HTTP_STATUS } from '../enums/enum'
+import HttpError from '../config/errors'
 
 const prisma = new PrismaClient()
 
@@ -14,7 +16,9 @@ export class CaseService {
   }
 
   async getCaseById(id: string) {
-    return await prisma.case.findUnique({ where: { id } })
+    const caseFound = await prisma.case.findUnique({ where: { id } })
+    if (!caseFound) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Case not found!')
+    return caseFound
   }
 
   async updateCase(id: string, updateCaseDTO: UpdateCaseDTO) {
