@@ -21,6 +21,7 @@ type Inputs = {
 
 const Register = () => {
   const [error, setError] = useState<null | string>(null)
+  const [success, setSuccess] = useState<null | string>(null)
   const navigate = useNavigate()
   
   const {
@@ -46,7 +47,10 @@ const Register = () => {
       )
   
       if (response.ok) {
-        navigate('/login')
+        setSuccess('Usuario registrado con éxito. Redirigiendo al inicio de sesión...')
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000) // Espera 2 segundos antes de redirigir
       } else {
         const errorData = await response.json()
         switch (response.status) {
@@ -221,6 +225,11 @@ const Register = () => {
           {error && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
               {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert severity='success' style={{ marginBottom: '1rem' }}>
+              {success}
             </Alert>
           )}
           <Button type='submit' variant='contained' color='inherit' sx={{backgroundColor: "#424769", color: "black"}} fullWidth>
