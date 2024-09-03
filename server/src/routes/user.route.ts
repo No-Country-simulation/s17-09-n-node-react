@@ -5,6 +5,7 @@ import errorHandler from '../middlewares/error-handler'
 import authHandler from '../middlewares/auth-handler'
 import rolesHandler from '../middlewares/role-handler'
 import { ROLE } from '../enums/enum'
+import refreshHandler from '../middlewares/refresh-handler'
 
 export default class UserRoutes {
   static get routes(): Router {
@@ -15,6 +16,7 @@ export default class UserRoutes {
 
     router.get('/', authHandler, rolesHandler(ROLE.ADMIN), controller.getUsers, errorHandler)
     router.get('/:id', authHandler, controller.getUserById, errorHandler)
+    router.get('/refresh', refreshHandler, errorHandler)
     router.post('/login', controller.loginUser, errorHandler)
     router.post('/register', controller.registerUser, errorHandler)
     router.put('/:id', authHandler, controller.updateUser, errorHandler)

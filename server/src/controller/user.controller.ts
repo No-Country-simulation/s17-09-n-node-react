@@ -51,7 +51,7 @@ export class UserController {
     this.userService
       .loginUser(loginUserDto)
       .then((accessToken) => {
-        res.status(201).json(accessToken)
+        res.status(200).json(accessToken)
       })
       .catch((error: unknown) => next(error))
   }
