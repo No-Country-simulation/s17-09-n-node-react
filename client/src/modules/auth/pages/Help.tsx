@@ -6,7 +6,6 @@ import {
   Collapse,
   Paper,
   Box,
-
 } from '@mui/material'
 import { ExpandMore, ExpandLess } from '@mui/icons-material'
 
@@ -56,25 +55,46 @@ const HelpPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth='md'>
-      <Typography variant='h4' gutterBottom align='center'>
+    <Container 
+      maxWidth={false} 
+      disableGutters 
+      sx={{ backgroundColor: '#2D3250', width: '100%', minHeight: '100vh', padding: 4 }}
+    >
+      <Typography variant='h4' gutterBottom align='center' sx={{ color: '#FFFFFF' }}>
         Página de Ayuda
       </Typography>
       <Box my={4}>
         {helpContent.map((item, index) => (
-          <Paper key={index} elevation={3} sx={{ marginBottom: '1rem', borderRadius: '8px' }}>
+          <Paper 
+            key={index} 
+            elevation={3} 
+            sx={{ 
+              marginBottom: '1rem', 
+              borderRadius: '8px', 
+              backgroundColor: '#424769' 
+            }}
+          >
             <Button
               fullWidth
               variant='contained'
               onClick={() => handleToggle(index)}
               endIcon={openIndex === index ? <ExpandLess /> : <ExpandMore />}
-              sx={{ backgroundColor: '#424769', color: 'white', textAlign: 'left', fontWeight: 'bold' }}
+              sx={{ 
+                backgroundColor: '#F6B17A', 
+                color: '#2D3250', 
+                textAlign: 'left', 
+                fontWeight: 'bold',
+                justifyContent: 'space-between',
+                padding: 2
+              }}
             >
               {item.question}
             </Button>
             <Collapse in={openIndex === index}>
-              <Box p={2} sx={{ backgroundColor: '#f5f5f5' }}>
-                <Typography variant='body1'>{item.answer}</Typography>
+              <Box p={2} sx={{ backgroundColor: '#7077A1' }}>
+                <Typography variant='body1' sx={{ color: '#FFFFFF' }}>
+                  {item.answer}
+                </Typography>
               </Box>
             </Collapse>
           </Paper>
