@@ -223,7 +223,7 @@ const Register = () => {
               {error}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='primary' fullWidth>
+          <Button type='submit' variant='contained' color='inherit' sx={{backgroundColor: "#424769", color: "black"}} fullWidth>
             Registrarse
           </Button>
         </form>
@@ -235,7 +235,7 @@ const Register = () => {
           ¿Ya tienes una cuenta?{' '}
           <Link
             to='/login'
-            style={{ color: '#1976d2', textDecoration: 'none' }}
+            style={{ color: '#424769', textDecoration: 'none' }}
           >
             Inicia sesión
           </Link>

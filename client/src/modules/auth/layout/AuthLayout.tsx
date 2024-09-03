@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { useLocation, Link } from 'react-router-dom'
 import { useThemeSwitcher } from '../../../hooks'
-import { lightTheme } from '../../../themes'
 
 const Navbar = styled.nav`
   position: sticky;
@@ -82,17 +81,17 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {location.pathname === '/login' && (
               <>
                 <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/register'>Registro</NavButton>
+                <NavButton to='/register'>Registrate</NavButton>
               </>
             )}
             {location.pathname === '/register' && (
               <>
                 <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/login'>Login</NavButton>
+                <NavButton to='/login'>Ingresar</NavButton>
               </>
             )}
             <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}>
-              {themeMode === lightTheme ? '🌙' : '☀️'}
+              {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
             </ThemeButton>
           </ButtonContainer>
         </Navbar>
