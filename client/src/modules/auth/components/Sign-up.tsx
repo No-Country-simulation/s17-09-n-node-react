@@ -9,6 +9,7 @@ import {
   Alert,
 } from '@mui/material'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import icono from "./icononombre.svg"
 
 type Inputs = {
   name: string
@@ -20,8 +21,9 @@ type Inputs = {
 
 const Register = () => {
   const [error, setError] = useState<null | string>(null)
+  const [success, setSuccess] = useState<null | string>(null)
   const navigate = useNavigate()
-
+  
   const {
     register,
     handleSubmit,
@@ -30,44 +32,47 @@ const Register = () => {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
-
     const { name, lastName, email, password } = data
-    // Verificar si hay errores
-    if (Object.keys(errors).length !== 0) {
-      setError('Por favor, corrige los errores antes de continuar.')
-    } else {
-      setError('')
-
-      // Envío de datos de registro a la API
-      try {
-        const response = await fetch(
-          'https://s17-09-n-node-react.onrender.com/api/v1/user/register',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, lastName, email, password }),
+  
+    try {
+      const response = await fetch(
+        'https://s17-09-n-node-react.onrender.com/api/v1/user/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        )
-
-        if (response.status === 200) {
-          navigate('/login') // Redirigir al login después del registro exitoso
-        } else if (response.status === 400) {
-          setError('Algunos campos no están completos.')
-        } else if (response.status === 409) {
-          setError('El email ya está registrado.')
-        } else {
-          setError('Error inesperado en el servidor.')
+          body: JSON.stringify({ email, name, lastName, password }), // Omitimos confirmPassword
+        },
+      )
+  
+      if (response.ok) {
+        setSuccess('Usuario registrado con éxito. Redirigiendo al inicio de sesión...')
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000) // Espera 2 segundos antes de redirigir
+      } else {
+        const errorData = await response.json()
+        switch (response.status) {
+          case 400:
+            setError(errorData.message || 'Algunos campos no están completos.')
+            break
+          case 409:
+            setError('El email ya está registrado.')
+            break
+          case 500:
+            setError('Error inesperado en el servidor.')
+            break
+          default:
+            setError('Error inesperado en el servidor.')
         }
-      } catch (error) {
-        setError('Error en el servidor.')
-        console.log(error)
       }
+    } catch (error) {
+      setError('Error en el servidor.')
+      console.error(error)
     }
   }
-
+  
   return (
     <Container maxWidth='xs'>
       <Box
@@ -88,73 +93,92 @@ const Register = () => {
           onSubmit={handleSubmit(onSubmit)}
           style={{ width: '100%', marginTop: '1rem', color: 'white' }}
         >
-          <TextField
-            label='Nombre'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('name', {
-              required: {
-                value: true,
-                message: 'El nombre es obligatorio.',
-              },
-            })}
-            error={!!errors?.name}
-            helperText={errors?.name?.message}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
-          />
-          <TextField
-            label='Apellido'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('lastName', {
-              required: {
-                value: true,
-                message: 'El apellido es obligatorio.',
-              },
-            })}
-            error={!!errors?.lastName}
-            helperText={errors?.lastName?.message}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
-          />
-          <TextField
-            label='Email'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('email', {
-              required: {
-                value: true,
-                message: 'Por favor, completa este campo.',
-              },
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: 'Por favor, ingresa un email válido.',
-              },
-            })}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
-          />
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+            <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
+            <TextField
+              label='Nombre'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('name', {
+                required: {
+                  value: true,
+                  message: 'El nombre es obligatorio.',
+                },
+              })}
+              error={!!errors?.name}
+              helperText={errors?.name?.message}
+              required
+              InputProps={{
+                sx: {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+            />
+          </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+            <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
+            <TextField
+              label='Apellido'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('lastName', {
+                required: {
+                  value: true,
+                  message: 'El apellido es obligatorio.',
+                },
+              })}
+              error={!!errors?.lastName}
+              helperText={errors?.lastName?.message}
+              required
+              InputProps={{
+                sx: {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+            />
+          </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+            <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
+            <TextField
+              label='Email'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('email', {
+                required: {
+                  value: true,
+                  message: 'Por favor, completa este campo.',
+                },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Por favor, ingresa un email válido.',
+                },
+              })}
+              error={!!errors?.email}
+              helperText={errors?.email?.message}
+              required
+              InputProps={{
+                sx: {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+            />
+          </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+                    <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
           <TextField
             label='Contraseña'
             type='password'
@@ -181,6 +205,12 @@ const Register = () => {
               },
             }}
           />
+          </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+                    <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
+          
           <TextField
             label='Confirmar Contraseña'
             type='password'
@@ -202,12 +232,18 @@ const Register = () => {
               },
             }}
           />
+          </div>
           {error && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
               {error}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='primary' fullWidth>
+          {success && (
+            <Alert severity='success' style={{ marginBottom: '1rem' }}>
+              {success}
+            </Alert>
+          )}
+          <Button type='submit' variant='contained' color='inherit' sx={{backgroundColor: "#424769", color: "black"}} fullWidth>
             Registrarse
           </Button>
         </form>
@@ -219,7 +255,7 @@ const Register = () => {
           ¿Ya tienes una cuenta?{' '}
           <Link
             to='/login'
-            style={{ color: '#1976d2', textDecoration: 'none' }}
+            style={{ color: '#424769', textDecoration: 'none' }}
           >
             Inicia sesión
           </Link>

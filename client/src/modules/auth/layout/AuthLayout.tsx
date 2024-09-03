@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { useLocation, Link } from 'react-router-dom'
 import { useThemeSwitcher } from '../../../hooks'
-import { lightTheme } from '../../../themes'
 
 const Navbar = styled.nav`
   position: sticky;
@@ -10,7 +9,7 @@ const Navbar = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
+  padding: 10px 20px;
   background-color: ${(props) => props.theme.background};
   opacity: 0.9;
   z-index: 1;
@@ -18,24 +17,28 @@ const Navbar = styled.nav`
 `
 
 const Logo = styled.div`
-  color: ${(props) => props.theme.accent};
-  font-size: 20px;
+  background-image: url('/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 250px;
+  height: 90px;
+  margin-left: 5%;
 `
 
-const ThemeButton = styled.button`
-  background-color: ${(props) => props.theme.accent};
-  color: ${(props) => props.theme.text};
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
+// const ThemeButton = styled.button`
+//   background-color: ${(props) => props.theme.accent};
+//   color: ${(props) => props.theme.text};
+//   border: none;
+//   padding: 8px 16px;
+//   cursor: pointer;
+//   font-size: 14px;
+//   border-radius: 5px;
+//   transition: all 0.3s ease-in-out;
 
-  &:hover {
-    background-color: ${(props) => props.theme.background};
-  }
-`
+//   &:hover {
+//     background-color: ${(props) => props.theme.background};
+//   }
+// `
 
 const NavButton = styled(Link)`
   background-color: ${(props) => props.theme.accent};
@@ -57,40 +60,43 @@ const NavButton = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: left;
+  margin-right: 8%
+  
 `
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-right: "10%";
 `
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation()
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher()
+  const { themeMode, ThemeProvider } = useThemeSwitcher()
 
   return (
     <ThemeProvider theme={themeMode}>
       <LayoutContainer>
         <Navbar>
-          <Logo>LawApp</Logo>
+          <Logo/>
           <ButtonContainer>
             {location.pathname === '/login' && (
               <>
                 <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/register'>Registro</NavButton>
+                <NavButton to='/register'>Registrate</NavButton>
               </>
             )}
             {location.pathname === '/register' && (
               <>
                 <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/login'>Login</NavButton>
+                <NavButton to='/login'>Ingresar</NavButton>
               </>
             )}
-            <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}>
-              {themeMode === lightTheme ? '🌙' : '☀️'}
-            </ThemeButton>
+            {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
+              {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
+            {/* </ThemeButton> */}
           </ButtonContainer>
         </Navbar>
         <main>{children}</main>
