@@ -8,6 +8,7 @@ import {
   Box,
 } from '@mui/material'
 import { ExpandMore, ExpandLess } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
 
 const helpContent = [
   {
@@ -100,6 +101,22 @@ const HelpPage: React.FC = () => {
           </Paper>
         ))}
       </Box>
+      <Box textAlign='center' mt={4}>
+        <Button 
+          component={Link} // Utiliza el componente Link de react-router-dom para navegar
+          to="/login" 
+          variant='contained' 
+     
+          sx={{ 
+            backgroundColor: '#F6B17A', 
+            color: '#2D3250', 
+            fontWeight: 'bold'
+          }}
+        >
+          Volver al Inicio
+        </Button>
+      </Box>
+
     </Container>
   )
 }
