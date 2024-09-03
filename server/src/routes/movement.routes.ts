@@ -6,6 +6,8 @@ export class MovementRoutes {
     const router = Router()
 
     const movementService = new MovementService()
+    // eslint-disable-next-line no-console
+    console.log(movementService)
     // const controller = new UserController(userService)
     // router.get('/')
 
