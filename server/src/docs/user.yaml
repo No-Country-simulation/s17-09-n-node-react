@@ -1,5 +1,5 @@
 paths:
-  /api/v1/user/admin:
+  /api/v1/user:
     get:
       summary: Get a list of users. Must be admin
       security:
@@ -22,7 +22,7 @@ paths:
         '500':
           description: Unexpected error
 
-  /api/v1/user/{userId}:
+  /api/v1/user/{id}:
     get:
       summary: Get logged in user's details. Must be logged in as admin to obtain any user
       security:
@@ -31,7 +31,7 @@ paths:
         - user
       parameters:
         - in: path
-          name: userId
+          name: id
           required: true
           schema:
             type: string
@@ -57,7 +57,7 @@ paths:
         - user
       parameters:
         - in: path
-          name: userId
+          name: id
           required: true
           schema:
             type: string
@@ -88,7 +88,7 @@ paths:
         - user
       parameters:
         - in: path
-          name: userId
+          name: id
           required: true
           schema:
             type: string
