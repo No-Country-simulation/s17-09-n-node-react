@@ -23,7 +23,7 @@ export class UserController {
   }
 
   getUserById = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
 
     // TODO: update
     if (req.user?.role !== ROLE.ADMIN) {
@@ -46,8 +46,9 @@ export class UserController {
 
   loginUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, loginUserDto] = LoginUserDTO.create(req.body)
-    if (error || !loginUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
-
+    if (error || !loginUserDto) {
+      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    }
     this.userService
       .loginUser(loginUserDto)
       .then((accessToken) => {
@@ -58,8 +59,9 @@ export class UserController {
 
   registerUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, registerUserDto] = RegisterUserDTO.create(req.body)
-    if (error || !registerUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
-
+    if (error || !registerUserDto) {
+      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    }
     this.userService
       .registerUser(registerUserDto)
       .then((message) => res.status(201).json(message))
@@ -69,7 +71,9 @@ export class UserController {
   updatePassword = (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params
     const [error, updatePasswordDto] = UpdatePasswordDTO.create(req.body)
-    if (error || !updatePasswordDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    if (error || !updatePasswordDto) {
+      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    }
     this.userService
       .updatePassword(id, updatePasswordDto)
       .then((message) => res.status(201).json(message))
@@ -77,7 +81,7 @@ export class UserController {
   }
 
   updateUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
     const updateUserDto = UpdateUserDTO.create(req.body)
 
     // TODO: update
@@ -100,7 +104,7 @@ export class UserController {
   }
 
   deleteUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
 
     this.userService
       .deleteUser(userId)
