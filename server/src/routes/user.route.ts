@@ -17,6 +17,16 @@ export default class UserRoutes {
     router.post('/login', controller.loginUser, errorHandler)
     router.post('/register', controller.registerUser, errorHandler)
 
+    router.put('/:userId', authHandler, controller.updateUser, errorHandler)
+
+    router.delete(
+      '/:userId',
+      authHandler,
+      rolesHandler(ROLE.ADMIN),
+      controller.deleteUser,
+      errorHandler,
+    )
+
     return router
   }
 }

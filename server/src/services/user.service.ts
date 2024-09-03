@@ -16,7 +16,7 @@ export class UserService {
     const user = await prisma.user.findUnique({
       where: { email: loginUserDTO.email },
     })
-    // TODO: update error
+
     if (!user) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'User not found!')
 
     const verify = await bcrypt.compare(loginUserDTO.password, user.password)
@@ -34,7 +34,6 @@ export class UserService {
 
     const accessToken = jwt.sign(payload, secret, { expiresIn: expiration })
 
-    // TODO: implement auth
     return { accessToken: accessToken }
   }
 
@@ -43,10 +42,8 @@ export class UserService {
       where: { email: registerUserDto.email },
     })
 
-    // TODO: update error
     if (userExists) throw new HttpError(409, HTTP_STATUS.CONFLICT, 'User already exists! ')
 
-    // TODO: implement auth
     registerUserDto.password = await bcrypt.hash(registerUserDto.password, 10)
 
     await prisma.user.create({ data: registerUserDto })
@@ -75,5 +72,24 @@ export class UserService {
     })
 
     return { message: 'Passwords successfully changed' }
+  }
+
+  async getUsers() {
+    return await prisma.user.findMany()
+  }
+
+  async getUserById(id: string) {
+    return await prisma.user.findUnique({ where: { id } })
+  }
+
+  async updateUser(id: string, updateUserDto: UpdateUserDTO) {
+    return await prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    })
+  }
+
+  async deleteUser(id: string) {
+    return await prisma.user.delete({ where: { id } })
   }
 }
