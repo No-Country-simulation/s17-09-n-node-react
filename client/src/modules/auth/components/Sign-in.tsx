@@ -42,13 +42,17 @@ const Login = () => {
       navigate('/profile') // Redirige al dashboard
     } else {
       try {
-        const response = await fetch('https://s17-09-n-node-react.onrender.com/api/v1/user/login', { // Cambia la URL a la correcta
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'https://s17-09-n-node-react.onrender.com/api/v1/user/login',
+          {
+            // Cambia la URL a la correcta
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
           },
-          body: JSON.stringify({ email, password }),
-        })
+        )
 
         if (!response.ok) {
           const contentType = response.headers.get('content-type')
@@ -137,8 +141,8 @@ const Login = () => {
             required
             InputProps={{
               sx: {
-                backgroundColor: 'white', 
-                color: 'black', 
+                backgroundColor: 'white',
+                color: 'black',
               },
             }}
           />
@@ -147,7 +151,18 @@ const Login = () => {
               {error}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='primary' fullWidth>
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            sx={{
+              backgroundColor: '#424769',
+              color: 'black',
+              width: '80%',
+              margin: '0 10%',
+            }}
+            fullWidth
+          >
             Ingresar
           </Button>
         </form>

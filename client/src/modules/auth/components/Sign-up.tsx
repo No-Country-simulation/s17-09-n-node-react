@@ -9,7 +9,9 @@ import {
   Alert,
 } from '@mui/material'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import icono from "./icononombre.svg"
+import icono from './icononombre.svg'
+import iconopass from './iconopass.svg'
+import mail from './mail.svg'
 
 type Inputs = {
   name: string
@@ -23,7 +25,7 @@ const Register = () => {
   const [error, setError] = useState<null | string>(null)
   const [success, setSuccess] = useState<null | string>(null)
   const navigate = useNavigate()
-  
+
   const {
     register,
     handleSubmit,
@@ -33,7 +35,7 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { name, lastName, email, password } = data
-  
+
     try {
       const response = await fetch(
         'https://s17-09-n-node-react.onrender.com/api/v1/user/register',
@@ -45,9 +47,11 @@ const Register = () => {
           body: JSON.stringify({ email, name, lastName, password }), // Omitimos confirmPassword
         },
       )
-  
+
       if (response.ok) {
-        setSuccess('Usuario registrado con éxito. Redirigiendo al inicio de sesión...')
+        setSuccess(
+          'Usuario registrado con éxito. Redirigiendo al inicio de sesión...',
+        )
         setTimeout(() => {
           navigate('/login')
         }, 2000) // Espera 2 segundos antes de redirigir
@@ -72,7 +76,7 @@ const Register = () => {
       console.error(error)
     }
   }
-  
+
   return (
     <Container maxWidth='xs'>
       <Box
@@ -93,9 +97,18 @@ const Register = () => {
           onSubmit={handleSubmit(onSubmit)}
           style={{ width: '100%', marginTop: '1rem', color: 'white' }}
         >
-          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
-            <img src={icono} alt="log" 
-              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+          >
+            <img
+              src={icono}
+              alt='log'
+              style={{
+                width: '15%',
+                height: '15%',
+                alignSelf: 'center',
+                padding: '2%',
+              }}
             />
             <TextField
               label='Nombre'
@@ -119,9 +132,18 @@ const Register = () => {
               }}
             />
           </div>
-          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
-            <img src={icono} alt="log" 
-              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+          >
+            <img
+              src={icono}
+              alt='log'
+              style={{
+                width: '15%',
+                height: '15%',
+                alignSelf: 'center',
+                padding: '2%',
+              }}
             />
             <TextField
               label='Apellido'
@@ -145,9 +167,18 @@ const Register = () => {
               }}
             />
           </div>
-          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
-            <img src={icono} alt="log" 
-              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+          >
+            <img
+              src={mail}
+              alt='log'
+              style={{
+                width: '15%',
+                height: '15%',
+                alignSelf: 'center',
+                padding: '2%',
+              }}
             />
             <TextField
               label='Email'
@@ -175,63 +206,81 @@ const Register = () => {
               }}
             />
           </div>
-          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
-                    <img src={icono} alt="log" 
-              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+          >
+            <img
+              src={iconopass}
+              alt='log'
+              style={{
+                width: '15%',
+                height: '15%',
+                alignSelf: 'center',
+                padding: '2%',
+              }}
             />
-          <TextField
-            label='Contraseña'
-            type='password'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('password', {
-              required: {
-                value: true,
-                message: 'Por favor, completa este campo.',
-              },
-              minLength: {
-                value: 8,
-                message: 'La contraseña debe tener al menos 8 caracteres.',
-              },
-            })}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
-          />
+            <TextField
+              label='Contraseña'
+              type='password'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('password', {
+                required: {
+                  value: true,
+                  message: 'Por favor, completa este campo.',
+                },
+                minLength: {
+                  value: 8,
+                  message: 'La contraseña debe tener al menos 8 caracteres.',
+                },
+              })}
+              error={!!errors?.password}
+              helperText={errors?.password?.message}
+              required
+              InputProps={{
+                sx: {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+            />
           </div>
-          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
-                    <img src={icono} alt="log" 
-              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+          <div
+            style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+          >
+            <img
+              src={iconopass}
+              alt='log'
+              style={{
+                width: '15%',
+                height: '15%',
+                alignSelf: 'center',
+                padding: '2%',
+              }}
             />
-          
-          <TextField
-            label='Confirmar Contraseña'
-            type='password'
-            variant='outlined'
-            fullWidth
-            margin='normal'
-            {...register('confirmPassword', {
-              required: 'Por favor repite la contraseña',
-              validate: (value) =>
-                value === watch('password') || 'Las contraseñas no coinciden',
-            })}
-            error={!!errors?.confirmPassword}
-            helperText={errors?.confirmPassword?.message}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white',
-                color: 'black',
-              },
-            }}
-          />
+
+            <TextField
+              label='Confirmar Contraseña'
+              type='password'
+              variant='outlined'
+              fullWidth
+              margin='normal'
+              {...register('confirmPassword', {
+                required: 'Por favor repite la contraseña',
+                validate: (value) =>
+                  value === watch('password') || 'Las contraseñas no coinciden',
+              })}
+              error={!!errors?.confirmPassword}
+              helperText={errors?.confirmPassword?.message}
+              required
+              InputProps={{
+                sx: {
+                  backgroundColor: 'white',
+                  color: 'black',
+                },
+              }}
+            />
           </div>
           {error && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
@@ -243,7 +292,18 @@ const Register = () => {
               {success}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='inherit' sx={{backgroundColor: "#424769", color: "black"}} fullWidth>
+          <Button
+            type='submit'
+            variant='contained'
+            color='inherit'
+            sx={{
+              backgroundColor: '#424769',
+              color: 'black',
+              width: '80%',
+              margin: '0 10%',
+            }}
+            fullWidth
+          >
             Registrarse
           </Button>
         </form>
@@ -253,10 +313,7 @@ const Register = () => {
           style={{ marginTop: '1rem' }}
         >
           ¿Ya tienes una cuenta?{' '}
-          <Link
-            to='/login'
-            style={{ color: '#424769', textDecoration: 'none' }}
-          >
+          <Link to='/login' style={{ color: 'black', textDecoration: 'none' }}>
             Inicia sesión
           </Link>
         </Typography>
