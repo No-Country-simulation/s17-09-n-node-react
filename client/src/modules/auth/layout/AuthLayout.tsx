@@ -22,22 +22,23 @@ const Logo = styled.div`
   background-repeat: no-repeat;
   width: 250px;
   height: 90px;
+  margin-left: 5%;
 `
 
-const ThemeButton = styled.button`
-  background-color: ${(props) => props.theme.accent};
-  color: ${(props) => props.theme.text};
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
-  transition: all 0.3s ease-in-out;
+// const ThemeButton = styled.button`
+//   background-color: ${(props) => props.theme.accent};
+//   color: ${(props) => props.theme.text};
+//   border: none;
+//   padding: 8px 16px;
+//   cursor: pointer;
+//   font-size: 14px;
+//   border-radius: 5px;
+//   transition: all 0.3s ease-in-out;
 
-  &:hover {
-    background-color: ${(props) => props.theme.background};
-  }
-`
+//   &:hover {
+//     background-color: ${(props) => props.theme.background};
+//   }
+// `
 
 const NavButton = styled(Link)`
   background-color: ${(props) => props.theme.accent};
@@ -59,18 +60,21 @@ const NavButton = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: left;
+  margin-right: 8%
+  
 `
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-right: "10%";
 `
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation()
-  const { themeMode, toggleTheme, ThemeProvider } = useThemeSwitcher()
+  const { themeMode, ThemeProvider } = useThemeSwitcher()
 
   return (
     <ThemeProvider theme={themeMode}>
@@ -90,9 +94,9 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 <NavButton to='/login'>Ingresar</NavButton>
               </>
             )}
-            <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}>
+            {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
               {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
-            </ThemeButton>
+            {/* </ThemeButton> */}
           </ButtonContainer>
         </Navbar>
         <main>{children}</main>

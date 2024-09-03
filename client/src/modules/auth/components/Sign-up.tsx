@@ -95,7 +95,7 @@ const Register = () => {
         >
           <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
             <img src={icono} alt="log" 
-              style={{width: "18%", height:"18%", alignSelf: "center", padding: "2%"}}
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
             />
             <TextField
               label='Nombre'
@@ -121,7 +121,7 @@ const Register = () => {
           </div>
           <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
             <img src={icono} alt="log" 
-              style={{width: "18%", height:"18%", alignSelf: "center", padding: "2%"}}
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
             />
             <TextField
               label='Apellido'
@@ -147,7 +147,7 @@ const Register = () => {
           </div>
           <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
             <img src={icono} alt="log" 
-              style={{width: "18%", height:"18%", alignSelf: "center", padding: "2%"}}
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
             />
             <TextField
               label='Email'
@@ -175,6 +175,10 @@ const Register = () => {
               }}
             />
           </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+                    <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
           <TextField
             label='Contraseña'
             type='password'
@@ -201,6 +205,12 @@ const Register = () => {
               },
             }}
           />
+          </div>
+          <div style={{display: "flex", flexDirection: "row", margin: "10px"}}>
+                    <img src={icono} alt="log" 
+              style={{width: "15%", height:"15%", alignSelf: "center", padding: "2%"}}
+            />
+          
           <TextField
             label='Confirmar Contraseña'
             type='password'
@@ -222,6 +232,7 @@ const Register = () => {
               },
             }}
           />
+          </div>
           {error && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
               {error}
