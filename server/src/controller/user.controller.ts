@@ -24,7 +24,7 @@ export class UserController {
   }
 
   getUserById = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
 
     // TODO: update
     if (req.user?.role !== ROLE.ADMIN) {
@@ -67,8 +67,9 @@ export class UserController {
 
   registerUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, registerUserDto] = RegisterUserDTO.create(req.body)
-    if (error || !registerUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
-
+    if (error || !registerUserDto) {
+      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    }
     this.userService
       .registerUser(registerUserDto)
       .then((message) => res.status(201).json(message))
@@ -106,7 +107,7 @@ export class UserController {
   }
 
   updateUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
     const updateUserDto = UpdateUserDTO.create(req.body)
 
     if (userId !== req.user?.id) {
@@ -126,7 +127,7 @@ export class UserController {
   }
 
   deleteUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userId } = req.params
+    const { id: userId } = req.params
 
     this.userService
       .deleteUser(userId)
