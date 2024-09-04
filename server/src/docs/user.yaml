@@ -1,5 +1,5 @@
 paths:
-  /api/v1/user/admin:
+  /api/v1/user:
     get:
       summary: Get a list of users. Must be admin
       security:
@@ -154,6 +154,46 @@ paths:
           description: User not found
         '500':
           desrciption: Unexpected error
+
+  /api/v1/user/logout:
+    get:
+      summary: User logout
+      tags:
+        - logout
+      responses: 
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Cookie not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/refresh:
+    get:
+      summary: Refresh Token
+      tags:
+        - refresh
+      responses: 
+        '200':
+          description: Successfully refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '403':
+          description: Cookie not found, token invalid or hacked user
+        '500':
+          description: Unexpected error
 
 components:
   schemas:

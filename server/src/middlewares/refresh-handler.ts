@@ -60,7 +60,8 @@ export default async function refreshHandler(req: Request, res: Response, next: 
         id: decoded.id,
         role: decoded.role,
       }
-      if (err || foundUser.id !== decoded.id) throw new HttpError(403, HTTP_STATUS.FORBIDDEN)
+      if (err || foundUser.id !== decoded.id)
+        throw new HttpError(403, HTTP_STATUS.FORBIDDEN, 'hacked user!')
       const accessToken = jwt.sign(payload, accessSecret, { expiresIn: accessJwtExpiration })
       const newRefreshToken = jwt.sign(payload, refreshSecret, {
         expiresIn: refreshJwtExpiration,
