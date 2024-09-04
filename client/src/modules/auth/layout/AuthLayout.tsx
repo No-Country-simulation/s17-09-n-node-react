@@ -10,7 +10,7 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: ${(props) => props.theme.background};
+  background-color: #2D3250;
   opacity: 0.9;
   z-index: 1;
   font-family: 'Inter', sans-serif;
@@ -22,7 +22,6 @@ const Logo = styled.div`
   background-repeat: no-repeat;
   width: 250px;
   height: 90px;
-  margin-left: 5%;
 `
 
 // const ThemeButton = styled.button`
@@ -61,14 +60,16 @@ const NavButton = styled(Link)`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: left;
-  margin-right: 8%;
+
+  
 `
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  margin-right: '10%';
+  background-color: #2D3250;
+
 `
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -79,7 +80,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <ThemeProvider theme={themeMode}>
       <LayoutContainer>
         <Navbar>
-          <Logo />
+          <Logo/>
           <ButtonContainer>
             {location.pathname === '/login' && (
               <>
@@ -94,7 +95,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </>
             )}
             {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
-            {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
+              {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
             {/* </ThemeButton> */}
           </ButtonContainer>
         </Navbar>

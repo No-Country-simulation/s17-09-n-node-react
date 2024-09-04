@@ -10,7 +10,10 @@ const RegistrationPageContainer = styled.div`
   color: ${(props) => props.theme.text};
   background-color: 'red';
   font-family: 'Inter', sans-serif;
-  width: 100%;
+  width: 80%;
+  margin: 10% 10% 10% 10%;
+
+    background-color: #4B527E;
 `
 
 const MainContent = styled.div`
@@ -18,31 +21,34 @@ const MainContent = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+
   position: static;
-  background-color: #424769;
 `
 
 const RegisterContainer = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   max-width: 100%;
-  background-color: ${(props) => props.theme.secondary};
+  background-color: #4B527E;
   padding: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
-  padding: 1%;
+  padding: 2%;
+  border-radius: 1%;
 `
 
 const RegisterFormContainer = styled.div`
-  width: 100%;
+  width: 90%;
   padding: 2%;
   margin: 5%;
-  background-color: ${(props) => props.theme.background};
+ 
 `
 
 const ImageContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  margin: 5%;
   text-align: center;
+
 `
 
 const RegistrationPage: React.FC = () => {
@@ -56,11 +62,7 @@ const RegistrationPage: React.FC = () => {
                 <Register />
               </RegisterFormContainer>
               <ImageContainer>
-                <img
-                  src={registrationImage}
-                  alt='Registro'
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
+                <img src={registrationImage} alt='Registro' />
               </ImageContainer>
             </RegisterContainer>
           </GoogleOAuthProvider>

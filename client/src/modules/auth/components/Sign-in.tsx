@@ -23,7 +23,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
 
   // Credenciales fake para acceso temporal
   const fakeCredentials = {
@@ -51,7 +51,7 @@ const Login = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
-          },
+          }
         )
 
         if (!response.ok) {
@@ -109,8 +109,8 @@ const Login = () => {
                 message: 'Por favor, ingresa un email válido.',
               },
             })}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             required
             InputProps={{
               sx: {
@@ -136,8 +136,8 @@ const Login = () => {
                 message: 'La contraseña debe tener al menos 8 caracteres.',
               },
             })}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             required
             InputProps={{
               sx: {
