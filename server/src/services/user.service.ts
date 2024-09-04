@@ -10,7 +10,9 @@ import { LoginUserDTO, RegisterUserDTO, UpdateUserDTO, UpdatePasswordDTO } from 
 const prisma = new PrismaClient()
 
 export class UserService {
-  async loginUser(loginUserDTO: LoginUserDTO): Promise<{ accessToken: string }> {
+  async loginUser(
+    loginUserDTO: LoginUserDTO,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await prisma.user.findUnique({
       where: { email: loginUserDTO.email },
     })
@@ -26,13 +28,19 @@ export class UserService {
       role: user.role,
     }
 
-    const secret = envs.nodeEnv === 'prod' ? (envs.jwtAccessSecret as string) : 'secret'
+    const accessTokenSecret = envs.nodeEnv === 'prod' ? (envs.jwtAccessSecret as string) : 'secret'
+    const refreshTokenSecret =
+      envs.nodeEnv === 'prod' ? (envs.jwtRefreshSecret as string) : 'secret'
 
-    const expiration = envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+    const accessJwtExpiration =
+      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+    const refreshJwtExpiration =
+      envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '3h'
 
-    const accessToken = jwt.sign(payload, secret, { expiresIn: expiration })
+    const accessToken = jwt.sign(payload, accessTokenSecret, { expiresIn: accessJwtExpiration })
+    const refreshToken = jwt.sign(payload, refreshTokenSecret, { expiresIn: refreshJwtExpiration })
 
-    return { accessToken: accessToken }
+    return { accessToken: accessToken, refreshToken: refreshToken }
   }
 
   async registerUser(registerUserDto: RegisterUserDTO) {
@@ -89,5 +97,39 @@ export class UserService {
 
   async deleteUser(id: string) {
     return await prisma.user.delete({ where: { id } })
+  }
+
+  async updateRefreshToken(email: string, refreshToken: string) {
+    const foundUser = await prisma.user.findUnique({
+      where: { email: email },
+    })
+
+    if (!foundUser) throw new HttpError(404, HTTP_STATUS.NOT_FOUND)
+
+    const refreshTokenArray = foundUser.refreshToken.filter((rt) => rt !== refreshToken)
+
+    const newRefreshTokenArray = [...refreshTokenArray, refreshToken]
+
+    await prisma.user.update({
+      where: { id: foundUser.id },
+      data: { refreshToken: newRefreshTokenArray },
+    })
+  }
+
+  async deleteRefreshToken(refreshToken: string) {
+    const foundUser = await prisma.user.findFirst({
+      where: { refreshToken: { has: refreshToken } },
+    })
+
+    if (!foundUser) throw new HttpError(404, HTTP_STATUS.NOT_FOUND)
+
+    const refreshTokenArray = foundUser.refreshToken.filter((rt) => rt !== refreshToken)
+
+    const newRefreshTokenArray = [...refreshTokenArray]
+
+    await prisma.user.update({
+      where: { id: foundUser.id },
+      data: { refreshToken: newRefreshTokenArray },
+    })
   }
 }
