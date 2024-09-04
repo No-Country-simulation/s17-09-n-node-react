@@ -103,7 +103,7 @@ const HelpPage: React.FC = () => {
       </Box>
       <Box textAlign='center' mt={4}>
         <Button 
-          component={Link} // Utiliza el componente Link de react-router-dom para navegar
+          component={Link} 
           to="/login" 
           variant='contained' 
      
