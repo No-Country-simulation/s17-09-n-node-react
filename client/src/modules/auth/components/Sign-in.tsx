@@ -49,7 +49,7 @@ const Login = () => {
         navigate('/dashboard'); // Redirige al dashboard
       } else {
         try {
-          const response = await fetch('/api/login', {
+          const response = await fetch('https://s17-09-n-node-react.onrender.com/api/v1/user/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
