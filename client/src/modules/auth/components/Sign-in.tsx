@@ -75,7 +75,7 @@ const Login = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Box
         display='flex'
         flexDirection='column'
@@ -83,7 +83,7 @@ const Login = () => {
         justifyContent='center'
         minHeight='100vh'
       >
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h4' component='h6' width="80%" gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant='body1' align='center' paragraph>
