@@ -15,6 +15,25 @@ export class MovementService {
     return await prisma.movement.findMany()
   }
 
+  async getMovementsByUserInTimeFrame(userId: string, startDate: Date, endDate: Date) {
+    const movements = await prisma.movement.findMany({
+      where: {
+        Case: {
+          userId: userId,
+        },
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      include: {
+        Case: true,
+      },
+    })
+
+    return movements
+  }
+
   async getMovementById(id: string) {
     const movementFound = await prisma.movement.findUnique({ where: { id } })
     if (!movementFound) {
