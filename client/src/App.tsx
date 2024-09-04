@@ -9,7 +9,10 @@ import ProfilePage from './modules/auth/pages/ProfilePage'
 
 
 import './App.css'
+
 import Layout from './pages/Layout'
+import HelpPage from './modules/auth/pages/Help'
+
 
 const router = createBrowserRouter([
   {
@@ -17,6 +20,10 @@ const router = createBrowserRouter([
     element: <p>Aquí debería ir la landing page</p>,
     errorElement: <p>Not found</p>,
     children: [],
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
   },
   {
     path: '/login',
