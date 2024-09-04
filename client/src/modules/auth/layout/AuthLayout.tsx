@@ -61,15 +61,14 @@ const NavButton = styled(Link)`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: left;
-  margin-right: 8%
-  
+  margin-right: 8%;
 `
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  margin-right: "10%";
+  margin-right: '10%';
 `
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -80,7 +79,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <ThemeProvider theme={themeMode}>
       <LayoutContainer>
         <Navbar>
-          <Logo/>
+          <Logo />
           <ButtonContainer>
             {location.pathname === '/login' && (
               <>
@@ -95,7 +94,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </>
             )}
             {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
-              {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
+            {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
             {/* </ThemeButton> */}
           </ButtonContainer>
         </Navbar>
