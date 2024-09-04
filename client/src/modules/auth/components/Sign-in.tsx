@@ -157,7 +157,7 @@ const Login = () => {
             color='primary'
             sx={{
               backgroundColor: '#424769',
-              color: 'black',
+              color: 'white',
               width: '80%',
               margin: '0 10%',
             }}

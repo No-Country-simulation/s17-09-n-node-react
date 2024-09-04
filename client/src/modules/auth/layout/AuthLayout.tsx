@@ -14,6 +14,8 @@ const Navbar = styled.nav`
   opacity: 0.9;
   z-index: 1;
   font-family: 'Inter', sans-serif;
+  padding-left: 10%;
+  padding-right: 10%;
 `
 
 const Logo = styled.div`
