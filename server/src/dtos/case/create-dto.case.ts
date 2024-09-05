@@ -1,5 +1,5 @@
-import { CaseStatus, CaseType } from '@prisma/client'
-import { Validators } from '../../config/validators'
+import { CaseStatus, CaseType } from '@prisma/client';
+import { Validators } from '../../config/validators';
 
 export class CreateCaseDTO {
   constructor(
@@ -14,62 +14,71 @@ export class CreateCaseDTO {
   ) {}
 
   static create(object: { [key: string]: string }): [string[]?, CreateCaseDTO?] {
-    const { caseName, jury, caseNumber, applicant, respondent, userId, type, status } = object
+    const { caseName, jury, caseNumber, applicant, respondent, userId, type, status } = object;
     const instance = new CreateCaseDTO(
       caseName,
       jury,
       caseNumber,
       applicant,
-      userId,
       respondent,
+      userId,
       type as CaseType,
       status as CaseStatus,
-    )
-    const keys = Object.keys(instance)
+    );
 
-    if (
-      typeof caseName !== 'string' ||
-      typeof jury !== 'string' ||
-      typeof caseNumber !== 'string' ||
-      typeof applicant !== 'string' ||
-      typeof userId !== 'string' ||
-      typeof respondent !== 'string' ||
-      !Validators.enums(CaseType, type) ||
-      !Validators.enums(CaseStatus, status) ||
-      Object.values(object).length > CreateCaseDTO.length ||
-      !keys.every((key) => Object.keys(object).includes(key))
-    ) {
-      let errors = []
-      if (!keys.every((key) => Object.keys(object).includes(key))) {
-        if (!caseName) errors.push(`'caseName' is missing`)
-        if (!jury) errors.push(`'jury' is missing`)
-        if (!caseNumber) errors.push(`'caseNumber' is missing`)
-        if (!applicant) errors.push(`'applicant' is missing`)
-        if (!userId) errors.push(`'userId' is missing`)
-        if (!respondent) errors.push(`'respondent' is missing`)
-        if (!type) errors.push(`'type' is missing`)
-        if (!status) errors.push(`'status' is missing`)
-        Object.keys(object)
-          .filter((key) => !keys.includes(key))
-          .forEach((key) => errors.push(`'${key}' should not exist`))
-      } else {
-        if (Object.values(object).length > CreateCaseDTO.length) {
-          Object.keys(object)
-            .filter((key) => !keys.includes(key))
-            .forEach((key) => errors.push(`'${key}' should not exist`))
-        }
-        if (typeof caseName !== 'string') errors.push('caseName should be a string')
-        if (typeof jury !== 'string') errors.push('jury should be a string')
-        if (typeof caseNumber !== 'string') errors.push('caseNumber should be a string')
-        if (typeof applicant !== 'string') errors.push('applicant should be a string')
-        if (typeof userId !== 'string') errors.push('userId should be a string')
-        if (typeof respondent !== 'string') errors.push('respondent should be a string')
-        if (!Validators.enums(type, CaseType)) errors.push('type is not valid')
-        if (!Validators.enums(status, CaseStatus)) errors.push('status is not valid')
-      }
-      return [errors]
+    const errors = this.validate(object, instance);
+    if (errors.length > 0) {
+      return [errors];
     }
 
-    return [undefined, instance]
+    return [undefined, instance];
+  }
+
+  private static validate(object: { [key: string]: string }, instance: CreateCaseDTO): string[] {
+    const keys = Object.keys(instance);
+    const errors: string[] = [];
+
+    if (!keys.every((key) => Object.keys(object).includes(key))) {
+      this.checkMissingFields(object, keys, errors);
+    } else {
+      this.checkFieldTypes(object, errors);
+      this.checkEnumValues(object, errors);
+      this.checkExtraFields(object, keys, errors);
+    }
+
+    return errors;
+  }
+
+  private static checkMissingFields(object: { [key: string]: string }, keys: string[], errors: string[]) {
+    if (!object.caseName) errors.push(`'caseName' is missing`);
+    if (!object.jury) errors.push(`'jury' is missing`);
+    if (!object.caseNumber) errors.push(`'caseNumber' is missing`);
+    if (!object.applicant) errors.push(`'applicant' is missing`);
+    if (!object.userId) errors.push(`'userId' is missing`);
+    if (!object.respondent) errors.push(`'respondent' is missing`);
+    if (!object.type) errors.push(`'type' is missing`);
+    if (!object.status) errors.push(`'status' is missing`);
+  }
+
+  private static checkFieldTypes(object: { [key: string]: string }, errors: string[]) {
+    if (!Validators.isString(object.caseName)) errors.push('caseName should be a string');
+    if (!Validators.isString(object.jury)) errors.push('jury should be a string');
+    if (!Validators.isString(object.caseNumber)) errors.push('caseNumber should be a string');
+    if (!Validators.isString(object.applicant)) errors.push('applicant should be a string');
+    if (!Validators.isString(object.userId)) errors.push('userId should be a string');
+    if (!Validators.isString(object.respondent)) errors.push('respondent should be a string');
+  }
+
+  private static checkEnumValues(object: { [key: string]: string }, errors: string[]) {
+    if (!Validators.enums(object.type, CaseType)) errors.push('type is not valid');
+    if (!Validators.enums(object.status, CaseStatus)) errors.push('status is not valid');
+  }
+
+  private static checkExtraFields(object: { [key: string]: string }, keys: string[], errors: string[]) {
+    if (Object.values(object).length > CreateCaseDTO.length) {
+      Object.keys(object)
+        .filter((key) => !keys.includes(key))
+        .forEach((key) => errors.push(`'${key}' should not exist`));
+    }
   }
 }
