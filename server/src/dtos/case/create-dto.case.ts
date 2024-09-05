@@ -64,8 +64,8 @@ export class CreateCaseDTO {
         if (typeof applicant !== 'string') errors.push('applicant should be a string')
         if (typeof userId !== 'string') errors.push('userId should be a string')
         if (typeof respondent !== 'string') errors.push('respondent should be a string')
-        if (!Validators.enums(CaseType, type)) errors.push('type is not valid')
-        if (!Validators.enums(CaseStatus, status)) errors.push('status is not valid')
+        if (!Validators.enums(type, CaseType)) errors.push('type is not valid')
+        if (!Validators.enums(status, CaseStatus)) errors.push('status is not valid')
       }
       return [errors]
     }

@@ -4,6 +4,7 @@ import { UserController } from '../controller/user.controller'
 import errorHandler from '../middlewares/error-handler'
 import authHandler from '../middlewares/auth-handler'
 import rolesHandler from '../middlewares/role-handler'
+import refreshHandler from '../middlewares/refresh-handler'
 import { ROLE } from '../enums/enum'
 
 export default class UserRoutes {
@@ -13,11 +14,20 @@ export default class UserRoutes {
     const userService = new UserService()
     const controller = new UserController(userService)
 
+    // GET
     router.get('/', authHandler, rolesHandler(ROLE.ADMIN), controller.getUsers, errorHandler)
+    router.get('/refresh', refreshHandler, errorHandler)
+    router.get('/logout', controller.logoutUser, errorHandler)
     router.get('/:id', authHandler, controller.getUserById, errorHandler)
+
+    // POST
     router.post('/login', controller.loginUser, errorHandler)
     router.post('/register', controller.registerUser, errorHandler)
-    router.put('/:id', authHandler, controller.updateUser, errorHandler)
+
+    // PUT
+    router.put('/:id', authHandler, rolesHandler(ROLE.ADMIN), controller.updateUser, errorHandler)
+
+    // DELETE
     router.delete(
       '/:id',
       authHandler,
