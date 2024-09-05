@@ -48,6 +48,9 @@ export class UserController {
   loginUser = (req: Request, res: Response, next: NextFunction) => {
     const [error, loginUserDto] = LoginUserDTO.create(req.body)
     if (error || !loginUserDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    const cookie = req.headers.cookie
+    if (cookie) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'already logged in!')
+
     const cookieName = envs.nodeEnv === 'prod' ? (envs.jwtCookieName as string) : 'jwt-cookie'
 
     this.userService
