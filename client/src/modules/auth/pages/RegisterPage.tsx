@@ -19,7 +19,7 @@ const MainContent = styled.div`
   align-items: center;
   height: 100%;
   position: static;
-  background-color:#424769
+  background-color: #424769;
 `
 
 const RegisterContainer = styled.div`

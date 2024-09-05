@@ -133,7 +133,18 @@ const Login = () => {
               {error}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='primary' fullWidth>
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            sx={{
+              backgroundColor: '#424769',
+              color: 'black',
+              width: '80%',
+              margin: '0 10%',
+            }}
+            fullWidth
+          >
             Ingresar
           </Button>
         </form>
