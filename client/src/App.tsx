@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { useThemeSwitcher } from './hooks'
+import { useSession, useThemeSwitcher } from './hooks'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { LoginPage, RegisterPage } from './modules/auth'
 
 import ProfilePage from './modules/auth/pages/ProfilePage'
 
-
 import './App.css'
 
 import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
-
 
 const router = createBrowserRouter([
   {
@@ -62,7 +60,17 @@ const router = createBrowserRouter([
 ])
 
 const App: React.FC = () => {
+  const { loading } = useSession()
   const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
+
+  useEffect(() => {
+    // Cada vez que se recarga navegador
+    // Verificar si el token existe, es válido y no ha expirado (llamar endpoint refresh)
+    // Si todo sale bien, crear la sesión y obtener el perfil del usuario
+    // Si algo sale mal, eliminar la sesión y sacar al usuario
+  }, [])
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <CustomThemeProvider theme={themeMode}>
