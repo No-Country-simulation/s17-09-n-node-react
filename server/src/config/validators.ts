@@ -7,6 +7,10 @@ export class Validators {
     return /^[a-zA-Z]+$/
   }
 
+  static isString(value: any): boolean {
+    return typeof value === 'string' || value instanceof String;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static enums(value: any, enumObj: any): boolean {
     return Object.values(enumObj).includes(value)
