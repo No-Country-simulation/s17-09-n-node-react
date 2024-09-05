@@ -1,9 +1,31 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import { LiaEdit } from 'react-icons/lia'
 import ProfileModal from '../components/ProfileModal'
-import { useState } from 'react'
 
 const ProfilePage: React.FC = () => {
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    lastName: '',
+    email: '',
+    role: '',
+  })
   const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/api/v1/user/{id}')
+        setUser(response.data)
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -18,8 +40,8 @@ const ProfilePage: React.FC = () => {
               alt=''
               className='w-40'
             />
-            <h3 className='text-3xl'>Clara Gomez</h3>
-            <p>C.Gomez@gmail.com</p>
+            <h3 className='text-3xl'>{user.name} {user.lastName}</h3>
+            <p>{user.email}</p>
           </section>
           <section className='bg-policeBlue px-12 py-14 pr-32 rounded-lg flex flex-col gap-6 relative'>
             <button
@@ -36,15 +58,15 @@ const ProfilePage: React.FC = () => {
                 <span className='font-semibold'>Email</span>
               </div>
               <div className='flex flex-col gap-2'>
-                <span>Gomez</span>
-                <span>Clara</span>
-                <span>C.Gomez@gmail.com</span>
+                <span>{user.lastName}</span>
+                <span>{user.name}</span>
+                <span>{user.email}</span>
               </div>
             </div>
           </section>
         </div>
       </div>
-      <ProfileModal handleClose={handleClose} open={open} />
+      <ProfileModal handleClose={handleClose} open={open} user={user} setUser={setUser} />
     </main>
   )
 }
