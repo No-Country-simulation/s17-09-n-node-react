@@ -56,7 +56,7 @@ export class UserController {
         await this.userService.updateRefreshToken(loginUserDto.email, refreshToken)
         res.cookie(cookieName, refreshToken, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           sameSite: 'none',
           maxAge: 3 * 60 * 1000,
         })
