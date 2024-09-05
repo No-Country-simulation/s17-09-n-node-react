@@ -19,15 +19,15 @@ const MainContent = styled.div`
   align-items: center;
   height: 100%;
   position: static;
+  background-color: #424769;
 `
 
 const RegisterContainer = styled.div`
   display: flex;
-  width: 100%;
+  width: 80%;
   max-width: 100%;
   background-color: ${(props) => props.theme.secondary};
   padding: 5px;
-  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;
   padding: 1%;

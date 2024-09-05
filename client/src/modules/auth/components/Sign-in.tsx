@@ -39,24 +39,33 @@ const Login = () => {
       password === fakeCredentials.password
     ) {
       localStorage.setItem('token', 'fake-token') // Simula el almacenamiento de un token
-      navigate('/dashboard') // Redirige al dashboard
+      navigate('/profile') // Redirige al dashboard
     } else {
       try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'https://s17-09-n-node-react.onrender.com/api/v1/user/login',
+          {
+            // Cambia la URL a la correcta
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
           },
-          body: JSON.stringify({ email, password }),
-        })
+        )
 
         if (!response.ok) {
-          const { message } = await response.json()
-          setError(message || 'Credenciales incorrectas.')
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            const { message } = await response.json()
+            setError(message || 'Credenciales incorrectas.')
+          } else {
+            setError('Error inesperado. Por favor, intenta nuevamente.')
+          }
         } else {
           const { accessToken } = await response.json()
           localStorage.setItem('token', accessToken)
-          navigate('/dashboard')
+          navigate('/profile')
         }
       } catch (error) {
         setError('Error en el servidor.')
@@ -132,8 +141,8 @@ const Login = () => {
             required
             InputProps={{
               sx: {
-                backgroundColor: 'white', // Fondo blanco para el input
-                color: 'black', // Color del texto
+                backgroundColor: 'white',
+                color: 'black',
               },
             }}
           />
@@ -142,7 +151,18 @@ const Login = () => {
               {error}
             </Alert>
           )}
-          <Button type='submit' variant='contained' color='primary' fullWidth>
+          <Button
+            type='submit'
+            variant='contained'
+            color='primary'
+            sx={{
+              backgroundColor: '#424769',
+              color: 'black',
+              width: '80%',
+              margin: '0 10%',
+            }}
+            fullWidth
+          >
             Ingresar
           </Button>
         </form>
