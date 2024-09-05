@@ -9,8 +9,8 @@ import './App.css';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <p>Aquí debería ir la landing page</p>,
+    path: '/LandingPage',
+    element: <LandingPage>,
     errorElement: <p>Not found</p>,
     children: [],
   },
