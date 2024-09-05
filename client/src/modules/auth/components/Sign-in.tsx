@@ -30,7 +30,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data
@@ -46,7 +46,7 @@ const Login = () => {
       // TODO Obtener el perfil del usuario
       // para que cuando se inicie sesión, el usuario ya tega cargado su perfil.
 
-      // const { data: profile } = await lawCaseApi.get('user/profile') // ejemplo (no existe este endpoint)
+      // const { data: profile } = await lawCaseApi.get('user/profile') // (no existe este endpoint)
       // createSession({ ...profile })
 
       createSession({
@@ -79,7 +79,7 @@ const Login = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Box
         display='flex'
         flexDirection='column'
@@ -87,7 +87,7 @@ const Login = () => {
         justifyContent='center'
         minHeight='100vh'
       >
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h4' component='h6' width='80%' gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant='body1' align='center' paragraph>
@@ -113,8 +113,8 @@ const Login = () => {
                 message: 'Por favor, ingresa un email válido.',
               },
             })}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             required
             InputProps={{
               sx: {
@@ -140,8 +140,8 @@ const Login = () => {
                 message: 'La contraseña debe tener al menos 8 caracteres.',
               },
             })}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             required
             InputProps={{
               sx: {
@@ -161,7 +161,7 @@ const Login = () => {
             color='primary'
             sx={{
               backgroundColor: '#424769',
-              color: 'black',
+              color: 'white',
               width: '80%',
               margin: '0 10%',
             }}

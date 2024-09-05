@@ -82,20 +82,22 @@ const Register = () => {
       <Box
         display='flex'
         flexDirection='column'
-        alignItems='center'
+    
         justifyContent='center'
         minHeight='100vh'
-      >
-        <Typography variant='h4' component='h1' gutterBottom>
-          Crear una cuenta
+       >
+        <Typography variant='h4' component='h1' align='left' gutterBottom>
+          Registrate
         </Typography>
-        <Typography variant='body1' align='center' paragraph>
-          Completa el formulario para registrarte y comenzar a usar nuestros
-          servicios.
+        <Typography variant='body1' align='left' paragraph>
+          Crea tu cuenta y 
+          unete a miles de profesionales
+          que ya utilizan nuestros servicios.
         </Typography>
+        <div className='ml-[-20%]'>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          style={{ width: '100%', marginTop: '1rem', color: 'white' }}
+ 
         >
           <div
             style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
@@ -135,6 +137,8 @@ const Register = () => {
                 sx: {
                   backgroundColor: 'white',
                   color: 'black',
+                  height: '50px',
+                  widht: '100%'
                 },
               }}
             />
@@ -177,6 +181,9 @@ const Register = () => {
                 sx: {
                   backgroundColor: 'white',
                   color: 'black',
+                  height: '50px',
+                  widht: '100%'
+                
                 },
               }}
             />
@@ -215,6 +222,9 @@ const Register = () => {
                 sx: {
                   backgroundColor: 'white',
                   color: 'black',
+                  height: '50px',
+                  widht: '100%'
+                
                 },
               }}
             />
@@ -257,7 +267,9 @@ const Register = () => {
               helperText={errors?.password?.message}
               InputProps={{
                 sx: {
-                  backgroundColor: 'white',
+                  height: '50px',
+                  widht: '100%',
+                             backgroundColor: 'white',
                   color: 'black',
                 },
               }}
@@ -294,6 +306,8 @@ const Register = () => {
                 sx: {
                   backgroundColor: 'white',
                   color: 'black',
+                  height: '50px',
+                  widht: '100%',
                 },
               }}
             />
@@ -313,17 +327,22 @@ const Register = () => {
             variant='contained'
             color='inherit'
             sx={{
-              backgroundColor: '#424769',
-              color: 'black',
-              width: '80%',
+              backgroundColor: '#4B527E',
+              color: 'white',
               margin: '0 10%',
+              boxShadow: "10px black",
+              borderRadius: "15px",
+              border: "2px solid white"
+         
+              
             }}
             disabled={isSubmitting}
             fullWidth
           >
-            Registrarse
+            Registrarme
           </Button>
         </form>
+        </div>
         <Typography
           variant='body2'
           color='textSecondary'
@@ -331,7 +350,7 @@ const Register = () => {
           style={{ marginTop: '1rem' }}
         >
           ¿Ya tienes una cuenta?{' '}
-          <Link to='/login' style={{ textDecoration: 'none', color: '#424769' }}>
+          <Link to='/login' style={{ textDecoration: 'none', color: "#749BFF" }}>
             Inicia sesión aquí
           </Link>
         </Typography>
