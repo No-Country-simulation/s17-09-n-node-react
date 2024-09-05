@@ -1,25 +1,178 @@
-import { Typography, CardContent, Card, Box } from "@mui/material";
+import React from "react";
+import {
+  Typography,
+  Paper,
+  Box,
+  Button,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Divider,
+} from "@mui/material";
 
-const CaseProfileCard: React.FC = () => {
+import {
+  InitialStateIcon,
+  ProofStateIcon,
+  VeredictStateIcon,
+  ArchiveIcon,
+} from "../assets";
+
+interface CaseProfileProps {
+  caseState: string;
+  setCaseState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const CaseProfileCard: React.FC<CaseProfileProps> = ({
+  caseState,
+  setCaseState,
+}) => {
+  // Menu states
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenuItemClick = (newState: string) => {
+    setCaseState(newState);
+    handleClose();
+  };
+
+  const renderIconForState = () => {
+    switch (caseState) {
+      case "initial":
+        return <InitialStateIcon size={"30px"} color={"white"} />;
+      case "proof":
+        return <ProofStateIcon size={"30px"} color={"white"} />;
+      case "veredict":
+        return <VeredictStateIcon size={"30px"} color={"white"} />;
+      case "archive":
+        return <ArchiveIcon size={"30px"} color={"white"} />;
+      default:
+        return <InitialStateIcon size={"30px"} color={"white"} />;
+    }
+  };
+
   return (
     <Box display={"flex"} justifyContent={"center"}>
-      <Card sx={{ width: { xs: "300px", sm: "500px" } }}>
-        <CardContent>
-          <Box display={"flex"} flexDirection={"column"}>
-            <Box border={"solid"} display={"flex"} justifyContent={"end"}>
-              <Typography variant="body2">icono</Typography>
+      <Paper
+        sx={{
+          width: "400px",
+          padding: "10px",
+          backgroundColor: "#424769",
+        }}
+        elevation={5}
+      >
+        <Box display={"flex"} flexDirection={"column"}>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            p={2}
+          >
+            <Box>
+              <Typography variant="body1" color="white">
+                Nombre completo del caso
+              </Typography>
             </Box>
-            <Box display={"flex"} flexDirection={"column"} px={2}>
-              <Typography variant="h6">Nombre del caso</Typography>
-              <Typography variant="subtitle2">Juzgado: </Typography>
-              <Typography variant="subtitle2">Numero de Causa:</Typography>
-              <Typography variant="body2">Demandante:</Typography>
-              <Typography variant="body2">Demandado:</Typography>
-              <Typography variant="body2">Tipo de proceso:</Typography>
+
+            <Box>
+              <Box>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  {renderIconForState()}
+                </Button>
+              </Box>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+                sx={{
+                  "& .MuiPaper-root": {
+                    backgroundColor: "#7077A1",
+                    color: "white",
+                    paddingX: "10px",
+                  },
+                }}
+              >
+                <MenuItem onClick={() => handleMenuItemClick("initial")}>
+                  <ListItemIcon>
+                    <InitialStateIcon size={"25px"} color={"white"} />
+                  </ListItemIcon>
+                  <ListItemText>Inicio</ListItemText>
+                </MenuItem>
+                <Divider
+                  sx={{
+                    backgroundColor: "white",
+                  }}
+                />
+                <MenuItem onClick={() => handleMenuItemClick("proof")}>
+                  <ListItemIcon>
+                    <ProofStateIcon size={"25px"} color={"white"} />
+                  </ListItemIcon>
+                  <ListItemText>Prueba</ListItemText>
+                </MenuItem>
+                <Divider
+                  sx={{
+                    backgroundColor: "white",
+                  }}
+                />
+                <MenuItem onClick={() => handleMenuItemClick("veredict")}>
+                  <ListItemIcon>
+                    <VeredictStateIcon size={"25px"} color={"white"} />
+                  </ListItemIcon>
+                  <ListItemText>Sentencia</ListItemText>
+                </MenuItem>
+                <Divider
+                  sx={{
+                    backgroundColor: "white",
+                  }}
+                />
+                <MenuItem onClick={() => handleMenuItemClick("archive")}>
+                  <ListItemIcon>
+                    <ArchiveIcon size={"25px"} color={"white"} />
+                  </ListItemIcon>
+                  <ListItemText>Archivo</ListItemText>
+                </MenuItem>
+              </Menu>
             </Box>
           </Box>
-        </CardContent>
-      </Card>
+          <Divider
+            sx={{
+              backgroundColor: "white",
+            }}
+          />
+          <Box display={"flex"} flexDirection={"column"} p={2}>
+            <Typography variant="body2" color="white">
+              Juzgado:
+            </Typography>
+            <Typography variant="body2" color="white">
+              Numero de expediente:
+            </Typography>
+            <Typography variant="body2" color="white">
+              Demandante:
+            </Typography>
+            <Typography variant="body2" color="white">
+              Demandado:
+            </Typography>
+            <Typography variant="body2" color="white">
+              Tipo de caso:
+            </Typography>
+          </Box>
+        </Box>
+      </Paper>
     </Box>
   );
 };

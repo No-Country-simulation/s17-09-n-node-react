@@ -9,16 +9,58 @@ import AgendaTypeIcon from "../assets/AgendaTypeIcon";
 import ProceduralTypeIcon from "../assets/ProceduralTypeIcon";
 import AllTypesIcon from "../assets/AllTypesIcon";
 import CreationTypeIcon from "../assets/CreationTypeIcon";
-
-import { useState } from "react";
-import styled from "styled-components";
-
-const FilterBar = () => {
-  const [value, setValue] = useState("all");
-
+import { useEffect } from "react";
+const FilterBar = ({
+  value,
+  setValue,
+  searchText,
+  initialMovements,
+  setMovements,
+  setSearchText,
+}: any) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    console.log(value);
+
+    if (newValue === "agenda") {
+      // Filtrar por tipo "agenda"
+      const movementsFilterdByAgenda = initialMovements.filter(
+        (element: any) => element.type === "agenda"
+      );
+      setMovements(movementsFilterdByAgenda);
+    } else if (newValue === "procedural") {
+      // Filtrar por tipo "procedural"
+      const movementsFilterdByProcedural = initialMovements.filter(
+        (element: any) => element.type === "procedural"
+      );
+      setMovements(movementsFilterdByProcedural);
+    } else {
+      // Mostrar todos los movimientos si el valor es "all"
+      setMovements(initialMovements);
+    }
   };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
+  useEffect(() => {
+    let filteredMovements = initialMovements;
+
+    if (value !== "all") {
+      filteredMovements = filteredMovements.filter(
+        (movement: any) => movement.type === value
+      );
+    }
+
+    if (searchText) {
+      filteredMovements = filteredMovements.filter((movement: any) =>
+        movement.content.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    setMovements(filteredMovements);
+  }, [value, searchText]);
 
   return (
     <Box
@@ -27,7 +69,7 @@ const FilterBar = () => {
       flexDirection={{ xs: "column", sm: "row", lg: "row" }}
       justifyContent={"space-between"}
       alignItems={"center"}
-      px={5}
+      px={10}
     >
       <Paper
         component="form"
@@ -42,6 +84,8 @@ const FilterBar = () => {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search"
           inputProps={{ "aria-label": "Search" }}
+          value={searchText}
+          onChange={handleSearchChange}
         />
         <IconButton type="button" sx={{ p: "5px" }} aria-label="search">
           <SearchIcon />
@@ -50,7 +94,7 @@ const FilterBar = () => {
 
       <Box
         display={"flex"}
-        justifyContent={"center"}
+        justifyContent={"end"}
         sx={{ width: { sm: "50vw", xs: "100%" } }}
         bgcolor={"none"}
       >
@@ -75,7 +119,7 @@ const FilterBar = () => {
           <BottomNavigationAction
             label="Procesal"
             value="procedural"
-            icon={<ProceduralTypeIcon />}
+            icon={<ProceduralTypeIcon color={"white"} />}
             sx={{
               color: "white",
               "&.Mui-selected": {

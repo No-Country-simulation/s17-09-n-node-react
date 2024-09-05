@@ -1,16 +1,17 @@
 import { Box } from "@mui/material";
-import CaseProfileCard from "../components/CaseProfileCard";
-import FilterBar from "../components/FilterBar";
 import MovementHistory from "../components/MovementHistory";
+import NavTest from "../components/NavTest";
 const CaseDetailsPage: React.FC = () => {
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={2} bgcolor={"#2D3250"}>
-      <Box border={"solid"} maxWidth={"full"}>
-        <h1>top</h1>
-      </Box>
-      {/* Details Card */}
-      <CaseProfileCard />
-      <FilterBar />
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      gap={3}
+      bgcolor={"#2D3250"}
+      width={"100%"}
+      height={"100vh"}
+    >
+      <NavTest />
       <MovementHistory />
     </Box>
   );

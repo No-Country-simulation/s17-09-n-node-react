@@ -1,6 +1,6 @@
-const CalendarIcon = () => {
+const AgendaTypeIcon = ({ size }: any) => {
   return (
-    <svg width="30" height="30px" viewBox="0 0 56 56" version="1.1">
+    <svg width={size} height={size} viewBox="0 0 56 56" version="1.1">
       <title>Icons 56/event_outline_56</title>
       <desc>Created with Sketch.</desc>
       <g
@@ -23,4 +23,4 @@ const CalendarIcon = () => {
   );
 };
 
-export default CalendarIcon;
+export default AgendaTypeIcon;
