@@ -14,7 +14,7 @@ export default function authHandler(req: Request, res: Response, next: NextFunct
       req.user = payload as IPayload
       return next()
     } else {
-      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'The jwt is not provided')
+      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED)
     }
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {

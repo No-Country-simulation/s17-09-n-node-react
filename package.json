@@ -15,6 +15,7 @@
     "back:lint": "cd server && npm run lint",
     "back:test": "cd server && npm run test",
     "test:e2e": "cd client && npm run e2e",
+    "back:generate": "cd server && npm run generate",
     "prepare": "husky"
   },
   "keywords": [],
