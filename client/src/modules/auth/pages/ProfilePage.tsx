@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { LiaEdit } from 'react-icons/lia'
 import ProfileModal from '../components/ProfileModal'
+import { useSessionFake } from '../../../services/useSessionFake'
 
 const ProfilePage: React.FC = () => {
+  const { session, loading } = useSessionFake() // Ahora usa los datos simulados
   const [user, setUser] = useState({
     id: '',
     name: '',
@@ -11,62 +13,114 @@ const ProfilePage: React.FC = () => {
     email: '',
     role: '',
   })
+  const [profilePic, setProfilePic] = useState('https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg')
   const [open, setOpen] = useState(false)
+  const [editMode, setEditMode] = useState(false) // Para activar el modo de edición
+  const [newName, setNewName] = useState('')
+  const [newLastName, setNewLastName] = useState('')
+  const [newProfilePic, setNewProfilePic] = useState('')
 
+  // Aquí actualizamos el estado del usuario con los datos simulados de la sesión
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('/api/v1/user/{id}')
-        setUser(response.data)
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-      }
+    if (!loading && session?.user) {
+      setUser(session.user)
+      setNewName(session.user.name)
+      setNewLastName(session.user.lastName)
+      setNewProfilePic(profilePic)
     }
-
-    fetchUserData()
-  }, [])
+  }, [session, loading])
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const handleProfilePicUpdate = (newUrl: string) => {
+    setProfilePic(newUrl)
+    setNewProfilePic(newUrl) // Asegúrate de actualizar newProfilePic también
+  }
+
+  const handleSaveChanges = async () => {
+    try {
+      const response = await axios.put(`/api/v1/user/${user.id}`, {
+        name: newName || user.name, // Mantiene el valor original si no se cambia
+        lastName: newLastName || user.lastName,
+        profilePic: newProfilePic || profilePic // Actualiza la URL de la imagen si se cambió
+      })
+      setUser(response.data) // Actualiza el estado con los nuevos datos del usuario
+      setEditMode(false) // Desactiva el modo de edición
+    } catch (error) {
+      console.error('Error updating user:', error)
+    }
+  }
 
   return (
     <main className='min-h-screen bg-bg flex justify-center items-center'>
       <div className='flex flex-col justify-center items-center gap-12'>
         <h1 className='self-start text-3xl font-bold'>Mi perfil</h1>
-        <div className='flex gap-10'>
-          <section className='bg-policeBlue px-20 py-14 rounded-lg flex flex-col justify-center items-center'>
+        <div className='flex gap-10 text-white'>
+          <section className='bg-policeBlue px-20 py-14 rounded-lg flex flex-col justify-center items-center relative'>
             <img
-              src='https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg'
-              alt=''
+              src={profilePic}
+              alt='Perfil'
               className='w-40'
             />
-            <h3 className='text-3xl'>{user.name} {user.lastName}</h3>
+            <button
+              className='absolute top-0 right-0 mt-16 mr-16'
+              onClick={handleOpen}
+            >
+              <LiaEdit className='w-7 text-white' />
+            </button>
+            <h3 className='text-3xl mt-20'>{user.name} {user.lastName}</h3>
             <p>{user.email}</p>
           </section>
           <section className='bg-policeBlue px-12 py-14 pr-32 rounded-lg flex flex-col gap-6 relative'>
-            <button
-              className='absolute top-0 right-0 mt-6 mr-6'
-              onClick={handleOpen}
-            >
-              <LiaEdit className='w-7' />
-            </button>
             <h2 className='text-3xl font-semibold'>Detalles de perfil</h2>
-            <div className='flex gap-10'>
-              <div className='flex flex-col gap-2'>
-                <span className='font-semibold'>Apellido</span>
-                <span className='font-semibold'>Nombre</span>
-                <span className='font-semibold'>Email</span>
+
+            {editMode ? (
+              <div className='flex flex-col gap-4'>
+                <input
+                  type='text'
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder='Nombre'
+                  className='p-2 rounded border'
+                />
+                <input
+                  type='text'
+                  value={newLastName}
+                  onChange={(e) => setNewLastName(e.target.value)}
+                  placeholder='Apellido'
+                  className='p-2 rounded border'
+                />
+                <button
+                  className='bg-green-500 text-white p-2 rounded'
+                  onClick={handleSaveChanges}
+                >
+                  Guardar cambios
+                </button>
+                <button
+                  className='bg-red-500 text-white p-2 rounded'
+                  onClick={() => setEditMode(false)}
+                >
+                  Cancelar
+                </button>
               </div>
-              <div className='flex flex-col gap-2'>
-                <span>{user.lastName}</span>
-                <span>{user.name}</span>
-                <span>{user.email}</span>
-              </div>
-            </div>
+            ) : (
+              <button
+                className='bg-blue-500 text-white p-2 rounded'
+                onClick={() => setEditMode(true)}
+              >
+                Editar perfil
+              </button>
+            )}
           </section>
         </div>
+        <ProfileModal
+          open={open}
+          onClose={handleClose}
+          currentProfilePic={profilePic}
+          onProfilePicUpdate={handleProfilePicUpdate}
+        />
       </div>
-      <ProfileModal handleClose={handleClose} open={open} user={user} setUser={setUser} />
     </main>
   )
 }
