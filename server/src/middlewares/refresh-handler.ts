@@ -75,7 +75,7 @@ export default async function refreshHandler(req: Request, res: Response, next: 
       })
       res.cookie(cookieName, newRefreshToken, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'none',
         maxAge: 3 * 60 * 1000,
       })
