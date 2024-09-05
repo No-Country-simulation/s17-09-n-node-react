@@ -23,7 +23,7 @@ type Inputs = {
 
 const Login = () => {
   const navigate = useNavigate()
-  const { createSession, user } = useSession()
+  const { createSession } = useSession()
   const [error, setError] = useState<null | string>(null)
 
   const {
@@ -34,16 +34,38 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data
+
     try {
       const res = await lawCaseApi.post('/user/login', { email, password })
 
-      if (res.status !== 201) return
+      if (res.status !== 201) {
+        setError('Ocurrió un error. Por favor intente más tarde.')
+        return
+      }
+
+      // TODO Obtener el perfil del usuario
+      // para que cuando se inicie sesión, el usuario ya tega cargado su perfil.
+
+      // const { data: profile } = await lawCaseApi.get('user/profile') // ejemplo (no existe este endpoint)
+      // createSession({ ...profile })
+
+      createSession({
+        id: '123',
+        name: 'John',
+        lastName: 'Doe',
+        email: 'john@example.com',
+        role: 'USER',
+      })
 
       localStorage.setItem('token', res.data.accessToken)
+
       navigate('/profile')
     } catch (error) {
       if (error instanceof AxiosError) {
-        if (error.response && !error.response.data.success) {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 404)
+        ) {
           setError('Credenciales Inválidas')
         } else {
           setError('Error en el servidor.')
