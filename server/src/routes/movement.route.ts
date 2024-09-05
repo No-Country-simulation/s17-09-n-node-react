@@ -23,6 +23,12 @@ export class MovementRoutes {
 
     router.get('/:id', authHandler, movementController.getMovementById, errorHandler)
 
+    router.post('/', authHandler, movementController.createMovement, errorHandler)
+
+    router.put('/:id', authHandler, movementController.updateMovement, errorHandler)
+
+    router.delete('/:id', authHandler, movementController.deleteMovement, errorHandler)
+
     return router
   }
 }

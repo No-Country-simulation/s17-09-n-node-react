@@ -11,9 +11,9 @@ export class MovementService {
     return await prisma.movement.create({ data: createMovementDto })
   }
 
-  async checkUserId(userId: string, caseId: string) {
+  async checkUserIdAndCreateMovement(userId: string, createMovementDto: CreateMovementDTO) {
     const caseFound = await prisma.case.findUnique({
-      where: { id: caseId },
+      where: { id: createMovementDto.caseId },
     })
 
     if (!caseFound) {
@@ -28,7 +28,7 @@ export class MovementService {
       )
     }
 
-    return true
+    return await this.createMovement(createMovementDto)
   }
 
   async getMovements() {
@@ -117,7 +117,57 @@ export class MovementService {
     })
   }
 
+  async checkUserIdAndUpdateMovement(
+    userId: string,
+    movementId: string,
+    updateMovementDto: UpdateMovementDTO,
+  ) {
+    const movementWithCase = await prisma.movement.findUnique({
+      where: { id: movementId },
+      include: {
+        Case: true,
+      },
+    })
+
+    if (!movementWithCase) {
+      throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Movement not found!')
+    }
+
+    if (movementWithCase.Case.userId !== userId) {
+      throw new HttpError(
+        403,
+        HTTP_STATUS.FORBIDDEN,
+        'You do not have permission to update this movement!',
+      )
+    }
+
+    return await this.updateMovement(movementId, updateMovementDto)
+  }
+
   async deleteMovement(id: string) {
     return await prisma.movement.delete({ where: { id } })
+  }
+
+  async checkUserIdAndDeleteMovement(userId: string, movementId: string) {
+    const movementWithCase = await prisma.movement.findUnique({
+      where: { id: movementId },
+      include: {
+        Case: true,
+      },
+    })
+
+    if (!movementWithCase) {
+      throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Movement not found!')
+    }
+
+    if (movementWithCase.Case.userId !== userId) {
+      throw new HttpError(
+        403,
+        HTTP_STATUS.FORBIDDEN,
+        'You do not have permission to delete this movement!',
+      )
+    }
+
+    return await this.deleteMovement(movementId)
   }
 }
