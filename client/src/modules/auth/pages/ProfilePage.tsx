@@ -5,7 +5,7 @@ import ProfileModal from '../components/ProfileModal'
 import { useSessionFake } from '../../../services/useSessionFake'
 
 const ProfilePage: React.FC = () => {
-  const { session, loading } = useSessionFake() // Ahora usa los datos simulados
+  const { session, loading } = useSessionFake() 
   const [user, setUser] = useState({
     id: '',
     name: '',
@@ -15,7 +15,7 @@ const ProfilePage: React.FC = () => {
   })
   const [profilePic, setProfilePic] = useState('https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg')
   const [open, setOpen] = useState(false)
-  const [editMode, setEditMode] = useState(false) // Para activar el modo de edición
+  const [editMode, setEditMode] = useState(false) 
   const [newName, setNewName] = useState('')
   const [newLastName, setNewLastName] = useState('')
   const [newProfilePic, setNewProfilePic] = useState('')
@@ -23,12 +23,10 @@ const ProfilePage: React.FC = () => {
   // Aquí actualizamos el estado del usuario con los datos simulados de la sesión
   useEffect(() => {
     if (!loading && session?.user) {
-      setUser(session.user)
-      setNewName(session.user.name)
-      setNewLastName(session.user.lastName)
+
       setNewProfilePic(profilePic)
     }
-  }, [session, loading])
+  }, [session, loading, profilePic])
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)

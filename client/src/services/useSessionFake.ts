@@ -7,6 +7,7 @@ export const useSessionFake = () => {
         lastName: 'Doe',
         email: 'john.doe@example.com',
         role: 'admin',
+        profilePic: "https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg"
       }
     }
     const loading = false // Simulamos que ya cargó la sesión

@@ -65,6 +65,7 @@ const Login = () => {
         } else {
           const { accessToken } = await response.json()
           localStorage.setItem('token', accessToken)
+          console.log(accessToken)
           navigate('/profile')
         }
       } catch (error) {
