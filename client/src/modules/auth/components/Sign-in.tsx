@@ -23,7 +23,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
 
   // Credenciales fake para acceso temporal
   const fakeCredentials = {
@@ -51,7 +51,7 @@ const Login = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
-          },
+          }
         )
 
         if (!response.ok) {
@@ -75,7 +75,7 @@ const Login = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Box
         display='flex'
         flexDirection='column'
@@ -83,7 +83,7 @@ const Login = () => {
         justifyContent='center'
         minHeight='100vh'
       >
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h4' component='h6' width="80%" gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant='body1' align='center' paragraph>
@@ -109,8 +109,8 @@ const Login = () => {
                 message: 'Por favor, ingresa un email válido.',
               },
             })}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             required
             InputProps={{
               sx: {
@@ -136,8 +136,8 @@ const Login = () => {
                 message: 'La contraseña debe tener al menos 8 caracteres.',
               },
             })}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             required
             InputProps={{
               sx: {
@@ -157,7 +157,7 @@ const Login = () => {
             color='primary'
             sx={{
               backgroundColor: '#424769',
-              color: 'black',
+              color: 'white',
               width: '80%',
               margin: '0 10%',
             }}

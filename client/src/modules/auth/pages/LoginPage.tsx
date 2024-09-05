@@ -20,17 +20,18 @@ const MainContent = styled.div`
   align-items: center;
   padding: 20px;
   height: calc(100vh - 60px);
-  margin-top: 5%;
+  margin-top: 12%;
 `
 
 const LoginContainer = styled.div`
-  width: 80%;
+  width: 50%;
   max-width: 420px;
   background-color: ${(props) => props.theme.background};
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 5%;
+  margin-right: 8%;
   opacity: 0.9;
+  height: 90vh;
 `
 
 const LoginPage: React.FC = () => {
