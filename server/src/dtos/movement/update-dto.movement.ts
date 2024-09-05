@@ -17,7 +17,7 @@ export class UpdateMovementDTO {
     public done?: boolean,
   ) {}
 
-  static create(object: IUpdateMovement) {
+  static create(object: IUpdateMovement): [string[]?, UpdateMovementDTO?] {
     const { date, title, type, content, done } = object
     const instance = new UpdateMovementDTO(date, title, type, content, done)
     const errors: string[] = []

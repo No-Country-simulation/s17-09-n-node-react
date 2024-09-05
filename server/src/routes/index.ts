@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import UserRoutes from './user.route'
 import CaseRoutes from './case.routes'
-import { MovementRoutes } from './movement.routes'
+import { MovementRoutes } from './movement.route'
 
 export default class AppRoutes {
   static get routes(): Router {
