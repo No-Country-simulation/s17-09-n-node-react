@@ -20,6 +20,7 @@ export class LoginUserDTO {
       if (!keys.every((key) => Object.keys(object).includes(key))) {
         if (!email) errors.push(`Missing 'email'`)
         if (!password) errors.push(`Missing 'password'`)
+        if (email && !Validators.email.test(email)) errors.push(`'email' provided is not valid`)
         Object.keys(object)
           .filter((key) => !keys.includes(key))
           .forEach((key) => errors.push(`'${key}' should not exist`))

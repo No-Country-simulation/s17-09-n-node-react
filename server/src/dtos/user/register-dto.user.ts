@@ -14,7 +14,7 @@ export class RegisterUserDTO {
     const keys = Object.keys(instance)
 
     if (
-      Object.values(object).length > RegisterUserDTO.length ||
+      Object.values(object).length > keys.length ||
       !keys.every((key) => Object.keys(object).includes(key)) ||
       !Validators.email.test(email) ||
       !Validators.names.test(name) ||
@@ -29,8 +29,8 @@ export class RegisterUserDTO {
         if (!name) errors.push(`Missing 'name'`)
         if (!lastName) errors.push(`Missing 'lastName'`)
         if (!password) errors.push(`Missing 'password'`)
-        if (!Validators.email.test(email)) errors.push('Email is not valid')
-        if (password.length < 6) errors.push('Password too short')
+        if (password?.length < 6) errors.push('Password too short')
+        if (email && !Validators.email.test(email)) errors.push('Email is not valid')
         if (!Validators.names.test(name)) errors.push('name should be a string')
         if (!Validators.names.test(lastName)) errors.push('lastName should be a string')
         Object.keys(object)
