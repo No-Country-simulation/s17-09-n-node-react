@@ -45,6 +45,14 @@ model Movement {
   caseId    String       @db.ObjectId
 }
 
+model Document {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime    @default(now())
+  header    String
+  body      String
+  footer    String
+}
+
 enum Role {
   USER
   ADMIN
