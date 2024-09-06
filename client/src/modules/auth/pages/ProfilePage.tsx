@@ -1,11 +1,14 @@
 import { LiaEdit } from 'react-icons/lia'
 import ProfileModal from '../components/ProfileModal'
 import { useState } from 'react'
+import { useSession } from '../../../hooks'
 
 const ProfilePage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const { user } = useSession()
 
   return (
     <main className='min-h-screen bg-bg flex justify-center items-center'>
@@ -18,8 +21,8 @@ const ProfilePage: React.FC = () => {
               alt=''
               className='w-40'
             />
-            <h3 className='text-3xl'>Clara Gomez</h3>
-            <p>C.Gomez@gmail.com</p>
+            <h3 className='text-3xl'>{user?.name}</h3>
+            <p>{user?.email}</p>
           </section>
           <section className='bg-policeBlue px-12 py-14 pr-32 rounded-lg flex flex-col gap-6 relative'>
             <button
@@ -36,9 +39,9 @@ const ProfilePage: React.FC = () => {
                 <span className='font-semibold'>Email</span>
               </div>
               <div className='flex flex-col gap-2'>
-                <span>Gomez</span>
-                <span>Clara</span>
-                <span>C.Gomez@gmail.com</span>
+                <span>{user?.lastName}</span>
+                <span>{user?.name}</span>
+                <span>{user?.email}</span>
               </div>
             </div>
           </section>
