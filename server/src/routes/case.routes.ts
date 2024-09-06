@@ -11,10 +11,15 @@ export default class CaseRoutes {
     const caseService = new CaseService()
     const controller = new CaseController(caseService)
 
-    router.post('/', authHandler, controller.createCase, errorHandler)
+    // GET routes
     router.get('/', authHandler, controller.getCases, errorHandler)
     router.get('/:id', authHandler, controller.getCaseById, errorHandler)
+    router.get('/user/:userId', authHandler, controller.getCasesByUserId, errorHandler)
+    // POST routes
+    router.post('/', authHandler, controller.createCase, errorHandler)
+    // PUT routes
     router.put('/:id', authHandler, controller.updateCase, errorHandler)
+    // DELETE routes
     router.delete('/:id', authHandler, controller.deleteCase, errorHandler)
 
     return router

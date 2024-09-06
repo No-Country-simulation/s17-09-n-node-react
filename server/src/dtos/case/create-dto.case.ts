@@ -44,6 +44,7 @@ export class CreateCaseDTO {
       this.checkFieldTypes(object, errors);
       this.checkEnumValues(object, errors);
       this.checkExtraFields(object, keys, errors);
+      this.checkEmptyString(object, errors);
     }
 
     return errors;
@@ -80,5 +81,14 @@ export class CreateCaseDTO {
         .filter((key) => !keys.includes(key))
         .forEach((key) => errors.push(`'${key}' should not exist`));
     }
+  }
+
+  private static checkEmptyString(object: { [key: string]: string }, errors: string[]) {
+    if (object.caseName.trim() === '') errors.push('caseName should not be an empty string');
+    if (object.jury.trim() === '') errors.push('jury should not be an empty string');
+    if (object.caseNumber.trim() === '') errors.push('caseNumber should not be an empty string');
+    if (object.applicant.trim() === '') errors.push('applicant should not be an empty string');
+    if (object.userId.trim() === '') errors.push('userId should not be an empty string');
+    if (object.respondent.trim() === '') errors.push('respondent should not be an empty string');
   }
 }
