@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import { CaseService } from '../services/case.service'
 import { CaseController } from '../controller/case.controller'
 import authHandler from '../middlewares/auth-handler'
 import errorHandler from '../middlewares/error-handler'
@@ -8,8 +7,7 @@ export default class CaseRoutes {
   static get routes(): Router {
     const router = Router()
 
-    const caseService = new CaseService()
-    const controller = new CaseController(caseService)
+    const controller = new CaseController()
 
     router.post('/', authHandler, controller.createCase, errorHandler)
     router.get('/', authHandler, controller.getCases, errorHandler)

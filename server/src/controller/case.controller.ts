@@ -8,8 +8,6 @@ import { HTTP_STATUS } from '../enums/enum'
 const caseService = new CaseService()
 
 export class CaseController {
-  constructor(private readonly caseService: CaseService) {}
-
   createCase(req: Request, res: Response, next: NextFunction) {
     const [error, createCaseDto] = CreateCaseDTO.create(req.body)
     if (error || !createCaseDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
