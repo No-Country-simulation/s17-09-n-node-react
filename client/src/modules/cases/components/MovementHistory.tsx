@@ -7,7 +7,7 @@ import CaseProfileCard from "./CaseProfileCard";
 
 const InitialCase = {
   caseName: "Perez Carlos c/ Almada Gladis",
-  Jury: "Juzgado Nº2 en lo Civil y Comercial",
+  jury: "Juzgado Nº2 en lo Civil y Comercial",
   caseNumber: "26478/2024",
   applicant: "Perez Carlos",
   respondent: "Almada Gladis",
@@ -47,7 +47,16 @@ const MovementHistory = () => {
   return (
     <>
       {/* PROFILE CASE-STATE MENU */}
-      <CaseProfileCard caseState={caseState} setCaseState={setCaseState} />
+      <CaseProfileCard
+        caseState={caseState}
+        setCaseState={setCaseState}
+        caseName={InitialCase.caseName}
+        jury={InitialCase.jury}
+        caseNumber={InitialCase.caseNumber}
+        applicant={InitialCase.applicant}
+        respondent={InitialCase.respondent}
+        caseType={InitialCase.caseType}
+      />
 
       {/* FILTER */}
       <FilterBar

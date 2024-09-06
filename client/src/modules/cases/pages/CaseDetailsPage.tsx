@@ -8,8 +8,7 @@ const CaseDetailsPage: React.FC = () => {
       flexDirection={"column"}
       gap={3}
       bgcolor={"#2D3250"}
-      width={"100%"}
-      height={"100vh"}
+      p={3}
     >
       <NavTest />
       <MovementHistory />

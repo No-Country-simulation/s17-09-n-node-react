@@ -21,11 +21,23 @@ import {
 interface CaseProfileProps {
   caseState: string;
   setCaseState: React.Dispatch<React.SetStateAction<string>>;
+  caseName: string;
+  jury: string;
+  caseNumber: string;
+  applicant: string;
+  respondent: string;
+  caseType: string;
 }
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
   caseState,
   setCaseState,
+  caseName,
+  jury,
+  caseNumber,
+  applicant,
+  respondent,
+  caseType,
 }) => {
   // Menu states
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -75,7 +87,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
           >
             <Box>
               <Typography variant="body1" color="white">
-                Nombre completo del caso
+                {caseName}
               </Typography>
             </Box>
 
@@ -156,19 +168,19 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
           />
           <Box display={"flex"} flexDirection={"column"} p={2}>
             <Typography variant="body2" color="white">
-              Juzgado:
+              Juzgado: {jury}
             </Typography>
             <Typography variant="body2" color="white">
-              Numero de expediente:
+              Numero de expediente: {caseNumber}
             </Typography>
             <Typography variant="body2" color="white">
-              Demandante:
+              Demandante: {applicant}
             </Typography>
             <Typography variant="body2" color="white">
-              Demandado:
+              Demandado: {respondent}
             </Typography>
             <Typography variant="body2" color="white">
-              Tipo de caso:
+              Tipo de caso: {caseType}
             </Typography>
           </Box>
         </Box>

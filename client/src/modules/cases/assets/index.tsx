@@ -6,6 +6,9 @@ export { default as DoneIcon } from "./DoneIcon";
 export { default as EditIcon } from "./EditIcon";
 export { default as MenuIcon } from "./MenuIcon";
 export { default as SearchIcon } from "./SearchIcon";
+export { default as ContactIcon } from "./ContactIcon";
+export { default as CasesFolderIcon } from "./CasesFolderIcon";
+export { default as HomeIcon } from "./HomeIcon";
 //Movements Types Icons
 export { default as AgendaTypeIcon } from "./AgendaTypeIcon";
 export { default as ProceduralTypeIcon } from "./ProceduralTypeIcon";
@@ -20,19 +23,22 @@ export { default as ArchiveIcon } from "./ArchiveIcon";
 //Full importation
 
 // import {
-//     AgendaTypeIcon,
-//     ProceduralTypeIcon,
-//     CreationTypeIcon,
-//     AllTypesIcon,
-//     InitialStateIcon,
-//     ProofStateIcon,
-//     VeredictStateIcon,
-//     ArchiveIcon,
-//     AddIcon,
-//     CloseIcon,
-//     DeleteIcon,
-//     DoneIcon,
-//     EditIcon,
-//     MenuIcon,
-//     SearchIcon,
-//   } from "../assets";
+//   AgendaTypeIcon,
+//   ProceduralTypeIcon,
+//   CreationTypeIcon,
+//   AllTypesIcon,
+//   InitialStateIcon,
+//   ProofStateIcon,
+//   VeredictStateIcon,
+//   ArchiveIcon,
+//   AddIcon,
+//   CloseIcon,
+//   DeleteIcon,
+//   DoneIcon,
+//   EditIcon,
+//   MenuIcon,
+//   SearchIcon,
+//   ContactIcon,
+//   CasesFolderIcon,
+//   HomeIcon,
+// } from "../assets";
