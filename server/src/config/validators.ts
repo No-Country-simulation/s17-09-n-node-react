@@ -15,4 +15,8 @@ export class Validators {
   static enums(value: any, enumObj: any): boolean {
     return Object.values(enumObj).includes(value)
   }
+
+  static isNonEmptyString(value: any): boolean {
+    return this.isString(value) && value.trim() !== '';
+  }
 }
