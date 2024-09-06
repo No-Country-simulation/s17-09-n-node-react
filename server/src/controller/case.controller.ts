@@ -40,12 +40,17 @@ export class CaseController {
 
   async updateCase(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params
-      const updateCaseDTO: UpdateCaseDTO = req.body
-      const updatedCase = await caseService.updateCase(id, updateCaseDTO)
-      res.status(200).json(updatedCase)
+      const { id } = req.params;
+      const [errors, updateCaseDto] = UpdateCaseDTO.create(req.body);
+
+      if (errors) {
+        return res.status(400).json({ errors });
+      }
+
+      const updatedCase = await caseService.updateCase(id, updateCaseDto!);
+      res.status(200).json(updatedCase);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 

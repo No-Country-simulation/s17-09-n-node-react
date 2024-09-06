@@ -21,11 +21,11 @@ export class CaseService {
     return caseFound
   }
 
-  async updateCase(id: string, updateCaseDTO: UpdateCaseDTO) {
+  async updateCase(caseId: string, updateCaseDto: UpdateCaseDTO) {
     return await prisma.case.update({
-      where: { id },
-      data: updateCaseDTO,
-    })
+      where: { id: caseId },
+      data: updateCaseDto,
+    });
   }
 
   async deleteCase(id: string) {
