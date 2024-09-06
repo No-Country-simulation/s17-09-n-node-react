@@ -19,8 +19,8 @@ export class UpdateCaseDTO {
       jury,
       caseNumber,
       applicant,
-      userId,
       respondent,
+      userId,
       type as CaseType,
       status as CaseStatus,
     )
