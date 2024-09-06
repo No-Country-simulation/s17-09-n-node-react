@@ -21,6 +21,12 @@ export class CaseService {
     return caseFound
   }
 
+  async getCasesByUserId(userId: string) {
+    return await prisma.case.findMany({
+      where: { userId },
+    });
+  }
+
   async updateCase(caseId: string, updateCaseDto: UpdateCaseDTO) {
     return await prisma.case.update({
       where: { id: caseId },

@@ -38,6 +38,19 @@ export class CaseController {
       .catch((error) => next(error))
   }
 
+  async getCasesByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params;
+      const cases = await caseService.getCasesByUserId(userId);
+      if (cases.length === 0) {
+        return res.status(404).json({ message: "No cases found for the specified user ID." });
+      }
+      res.status(200).json(cases);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updateCase(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
