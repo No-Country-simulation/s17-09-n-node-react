@@ -11,4 +11,9 @@ export class Validators {
   static enums(value: any, enumObj: any): boolean {
     return Object.values(enumObj).includes(value)
   }
+
+  static isValidISODate(date: string) {
+    const parsedDate = new Date(date)
+    return !isNaN(parsedDate.getTime())
+  }
 }

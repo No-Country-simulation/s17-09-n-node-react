@@ -2,7 +2,7 @@ import { MovementType } from '@prisma/client'
 import { Validators } from '../../config/validators'
 
 interface IMovement {
-  date: Date
+  date: string
   title: string
   type: MovementType
   content: string
@@ -11,7 +11,7 @@ interface IMovement {
 
 export class CreateMovementDTO {
   constructor(
-    public date: Date,
+    public date: string,
     public title: string,
     public type: MovementType,
     public content: string,
@@ -32,13 +32,14 @@ export class CreateMovementDTO {
       if (!keys.includes(key)) errors.push(`'${key}' should not exist`)
     })
 
-    if (!(date instanceof Date)) {
-      errors.push(`'date' should be a Date object`)
+    if (!Validators.isValidISODate(date)) {
+      errors.push(`'date' should be a valid ISO 8601 date string`)
     }
+
     if (typeof title !== 'string') {
       errors.push(`'title' should be a string`)
     }
-    if (!Validators.enums(MovementType, type)) {
+    if (!Validators.enums(type, MovementType)) {
       errors.push(`'type' should be a valid MovementType`)
     }
     if (typeof content !== 'string') {
