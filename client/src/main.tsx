@@ -15,7 +15,9 @@ import theme from './theme/theme.ts'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SessionProvider>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </SessionProvider>
   </StrictMode>,
 )
