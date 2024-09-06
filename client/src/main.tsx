@@ -9,6 +9,9 @@ import './reset.css'
 
 import './index.css'
 
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './theme/theme.ts'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SessionProvider>
