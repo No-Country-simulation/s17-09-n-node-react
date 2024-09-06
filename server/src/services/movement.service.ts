@@ -36,10 +36,17 @@ export class MovementService {
   }
 
   async getMovementById(id: string) {
-    const movementFound = await prisma.movement.findUnique({ where: { id } })
+    const movementFound = await prisma.movement.findUnique({
+      where: { id },
+      include: {
+        Case: true,
+      },
+    })
+
     if (!movementFound) {
       throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Movement not found!')
     }
+
     return movementFound
   }
 

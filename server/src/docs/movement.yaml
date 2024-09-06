@@ -1,0 +1,218 @@
+paths:
+  /api/v1/movement:
+    get:
+      summary: Get a list of movements. Must be admin
+      security:
+        - bearerAuth: []
+      tags:
+        - movement
+      responses:
+        '200':
+          description: List of movements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Movement'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/movement/{id}:
+    get:
+      summary: Get user's movement by id. Must be logged in as admin to obtain any movement
+      security:
+        - bearerAuth: []
+      tags:
+        - movement
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Movement details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    put:
+      summary: Update logged in user's name and/or last name. Must be logged in as admin to update any user
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Update'
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    delete:
+      summary: Delete user. Must be logged in as admin
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/register:
+    post:
+      summary: Register a new user
+      tags:
+        - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Register'
+      responses:
+        '200':
+          description: Successfully registered
+        '400':
+          description: Some fields are not filled out
+        '409':
+          description: Already existing email
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/login:
+    post:
+      summary: User login
+      tags:
+        - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Login'
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '400':
+          description: Some fields are not filled out
+        '401':
+          description: Invalid password
+        '404':
+          description: User not found
+        '500':
+          desrciption: Unexpected error
+
+  /api/v1/user/logout:
+    get:
+      summary: User logout
+      tags:
+        - logout
+      responses:
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Cookie not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/refresh:
+    get:
+      summary: Refresh Token
+      tags:
+        - refresh
+      responses:
+        '200':
+          description: Successfully refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '403':
+          description: Cookie not found, token invalid or hacked user
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    Movement:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        date:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        done:
+          type: boolean
+        content:
+          type: string
+        caseId:
+          type: string
