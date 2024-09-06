@@ -1,7 +1,8 @@
 import { MovementType } from '@prisma/client'
+import { Validators } from '../../config/validators'
 
 interface IUpdateMovement {
-  date?: Date
+  date?: string
   title?: string
   type?: MovementType
   content?: string
@@ -10,7 +11,7 @@ interface IUpdateMovement {
 
 export class UpdateMovementDTO {
   constructor(
-    public date?: Date,
+    public date?: string,
     public title?: string,
     public type?: MovementType,
     public content?: string,
@@ -28,13 +29,13 @@ export class UpdateMovementDTO {
       errors.push('At least one property must be provided')
     }
 
-    if (date !== undefined && !(date instanceof Date)) {
+    if (date !== undefined && !Validators.isValidISODate(date)) {
       errors.push(`'date' should be a Date object`)
     }
     if (title !== undefined && typeof title !== 'string') {
       errors.push(`'title' should be a string`)
     }
-    if (type !== undefined && !Object.values(MovementType).includes(type)) {
+    if (type !== undefined && !Validators.enums(type, MovementType)) {
       errors.push(`'type' should be a valid MovementType`)
     }
     if (content !== undefined && typeof content !== 'string') {
