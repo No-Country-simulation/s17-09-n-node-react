@@ -1,6 +1,38 @@
 import React, { useState } from 'react';
 
-
+// Componente para el carrusel de testimonios
+const TestimonialCarousel: React.FC = () => {
+    const testimonials = [
+      { name: "Juan Pérez", quote: "Excelente servicio, ¡lo recomiendo!" },
+      { name: "María González", quote: "Muy satisfecha con la atención." },
+      // Agrega más testimonios aquí
+    ];
+  
+    const [activeIndex, setActiveIndex] = useState(0);
+  
+    const nextTestimonial = () => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+    };
+  
+    const prevTestimonial = () => {
+      setActiveIndex((prevIndex) =>
+        prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+      );
+    };
+  
+    return (
+      <div className="testimonial-carousel">
+        <div className="testimonial">
+          <p className="quote">"{testimonials[activeIndex].quote}"</p>
+          <p className="author">- {testimonials[activeIndex].name}</p>
+        </div>
+        <div className="controls">
+          <button onClick={prevTestimonial}>Anterior</button>
+          <button onClick={nextTestimonial}>Siguiente</button>
+        </div>
+      </div>
+    );
+  };
 
 const LandingPage: React.FC = () => {
   return (

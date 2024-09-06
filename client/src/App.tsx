@@ -3,14 +3,15 @@ import React from 'react'
 import { useThemeSwitcher } from './hooks'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { LoginPage, RegisterPage } from './modules/auth'
+import { LoginPage, RegisterPage,  } from './modules/auth'
 import './App.css';
+import  LandingPage from "./pages/LandingPage" 
 
 
 const router = createBrowserRouter([
   {
     path: '/LandingPage',
-    element: <LandingPage>,
+    element: <LandingPage />,
     errorElement: <p>Not found</p>,
     children: [],
   },
@@ -34,4 +35,4 @@ const App: React.FC = () => {
   )
 }
 
-export default App
+export default App;
