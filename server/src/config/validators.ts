@@ -7,8 +7,8 @@ export class Validators {
     return /^[a-zA-Z]+$/
   }
 
-  static isString(value: any): boolean {
-    return typeof value === 'string' || value instanceof String;
+  static isString(value: unknown): value is string {
+    return typeof value === 'string' || value instanceof String
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,10 +16,11 @@ export class Validators {
     return Object.values(enumObj).includes(value)
   }
 
-  static isNonEmptyString(value: any): boolean {
-    return this.isString(value) && value.trim() !== '';
-    
-  static isValidISODate(date: string) {
+  static isNonEmptyString(value: unknown): boolean {
+    return this.isString(value) && value.trim() !== ''
+  }
+
+  static isValidISODate(date: string): boolean {
     const parsedDate = new Date(date)
     return !isNaN(parsedDate.getTime())
   }
