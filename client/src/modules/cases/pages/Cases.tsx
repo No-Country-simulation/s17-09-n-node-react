@@ -13,10 +13,11 @@ export const Cases = () => {
   return (
     <div>
         <h1>Página para vista de casos</h1>
+      
 
         <div className='flex justify-center'>
-        <button onClick={()=>{setOpenModal(true)}} className='border-solid border-2 bg-blue-200 '>Nuevo caso</button>
-        <button onClick={()=>{setUpdateModal(true)}}  className='border-solid border-2 bg-green-200 '>Actualizar</button>
+        <button onClick={()=>{setOpenModal(true)}} className='border-solid border-2 bg-blue-500 '>Nuevo caso</button>
+        <button onClick={()=>{setUpdateModal(true)}}  className='border-solid border-2 bg-green-500 '>Actualizar</button> 
         </div>
        
 { openModal && (
@@ -39,7 +40,7 @@ export const Cases = () => {
    onClick={() => setUpdateModal(false)}
  />
     <Modal>
-    <UpdateCase setUpdateModal={setUpdateModal} />
+    <UpdateCase setUpdateModal={setUpdateModal}  />
   </Modal>
   </div>
   

@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { IoMdCloseCircleOutline } from 'react-icons/io'
@@ -8,8 +8,20 @@ import { Case, newCase } from '../libs/caseActions'
 
 export const CaseForm = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<boolean>>}) => {
 
-    const {register, handleSubmit } = useForm<Case>()
-    const [error, setError] = useState<null | string>(null)
+    const {register, handleSubmit, reset } = useForm<Case>()
+    const [alert, serAlert] = useState<null | string>(null)
+    const [show, setShow] = useState(false)
+
+    useEffect(() => {
+      const timeId = setTimeout(() => {
+        
+        setShow(false)
+      }, 3000)
+  
+      return () => clearTimeout(timeId)
+    }, [alert]);
+
+
 
     const INPUTS_FORM: { label: string; name: keyof Case }[] = 
         [
@@ -22,18 +34,25 @@ export const CaseForm = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<b
    
     const onSubmit =  handleSubmit( async(data) => {
         //console.log("data del form ", data)
+        console.log('hola hook')
          data.userId = '66d3b52c06804da30eb2c9c6'
          data.status = 'INITIATED'
     
-        try {
-            const response = await newCase(data);
-            console.log('El nuevo caso fue creado');
-            console.log(response)
-          } catch (error) {
-            console.error('Error al crear el caso: ', error);
-            setError('No se pudo crear el caso' );
-          }
-          
+      
+            const res = await newCase(data);
+            console.log('hola hook 2', alert, 'la res', res)
+            if (!res?.ok) {
+              serAlert("No pudo crear el caso")
+              setShow(true)
+              console.log('hola hola',alert)
+            
+              throw new Error('No se pudo crear el caso');
+            
+            } else {
+              serAlert("Nuevo caso creado")
+              setShow(true)
+              reset()
+            }
     })
   /*  console.log(res)
     if(!res.ok){
@@ -52,7 +71,7 @@ export const CaseForm = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<b
           <IoMdCloseCircleOutline className='hover:text-red-600 h-8 w-8 text-white' onClick={()=>setOpenModal(false)}  />
       </Box>
           <Typography variant="h3" component="h3" sx={{color: 'white'}}>
-      Formulario
+              Formulario
         </Typography>
       <form onSubmit={onSubmit}>
         {
@@ -94,8 +113,11 @@ export const CaseForm = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<b
         Crear
           </Button>
       </form>
-      {error &&
-      <Alert severity="error" >{error}</Alert>
+      {/*error && show &&
+      <Alert severity="error" >{error}</Alert>*/
+      alert && show &&
+      <Alert severity="error" >{"Error de caso"}</Alert>
+
       }
       
     </Container>

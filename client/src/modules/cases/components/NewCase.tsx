@@ -1,69 +1,54 @@
 
 import {Typography, Box, Button, Container, TextField, Select, MenuItem, InputLabel, FormControl, Alert} from '@mui/material'
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { INPUTS_FORM, MODEL_TYPE } from '../libs/utils';
+import { Case, newCase } from '../libs/caseActions';
 
+
+interface AlertState {
+  message: string;
+  tipe: 'success' | 'error' | 'info';
+}
 
 export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<boolean>>}) =>  {
 
-  const {register, handleSubmit } = useForm()
-  const [error, setError] = useState<null | string>(null)
-  
+  const {register, handleSubmit, reset } = useForm<Case>()
+  const [alert, setAlert] = useState<AlertState>({message: '', tipe: 'info' })
+  const [show, setShow] = useState(false)
 
-  const MODEL_TYPE = {
-    options:[
-      { label: 'Sucesión', value: 'SUCCESSION' },
-      { label: 'Ejecución', value: 'EXECUTION' },
-      { label: 'Terminación', value: 'TERMINATION' },
-      { label: 'Daños y pérdidas', value: 'DAMAGES_AND_LOSSES' },
-      { label: 'Constrato de disputa', value: 'CONTRACT_DISPUTE' },
-      { label: 'Criminal', value: 'CRIMINAL' },
-      { label: 'Propiedad y disputa', value: 'PROPERTY_DISPUTE' },
-      { label: 'Lesiones personales', value: 'PERSONAL_INJURY' },
-      { label: 'Propiedad intelectual', value: 'INTELLECTUAL_PROPERTY' },
-    ]
-  } as const
-
-  const INPUTS_FORM = 
-        [
-        {label: "Nombre del caso", name: 'caseName' },
-        {label: "Jurado", name: 'jury' },
-        {label: "Numero del caso", name: 'caseNumber' },
-        {label: "Solicitante", name: 'applicant' },
-        {label: "Demandado", name: 'respondent' }
-            ] as const
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      
+      setShow(false)
+    }, 3000)
+    return () => clearTimeout(timeId)
+  }, [alert]);
 
 
- const onSubmit =  handleSubmit( async(data) =>{ // TO-DO: validar y procesar  los datos del caso 
-  
-  data.userId = '66d3b52c06804da30eb2c9c6'
-  data.status = 'INITIATED'
-  console.log(data)
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZDNiNTJjMDY4MDRkYTMwZWIyYzljNiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNTQwMjA0NCwiZXhwIjoxNzI1NDAyOTQ0fQ.mVK46exsB3GmMGe_SXP0Bv3Wl44Eccl1Z2ID4nJtxjA'
 
-  try {
-  const res = await fetch(`https://s17-09-n-node-react.onrender.com/api/v1/cases`, {  //TO-DO: cambair link
-    method: "POST",
-    headers: { "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-     },
-    body: JSON.stringify(data),
-  });
- 
-  console.log(res)
-  if(!res.ok){
-    console.log('No se pudo crear el caso')  // TO-DO: Cambair por las notificaciones
-    setError('No se pudo crear el caso')
-  } else {
-    console.log('El nuevo caso fue creado')
-  }
- } catch (error) {
-  console.error('Error del server: ', error)
- 
- }
-   
- })
+const onSubmit =  handleSubmit( async(data) => {
+  //console.log("data del form ", data)
+  console.log('hola hook')
+ //  data.userId = '66d3b52c06804da30eb2c9c6'
+   data.status = 'INITIATED'
+
+
+      const res = await newCase(data);
+      console.log('hola hook 2', alert, 'la res', res)
+      if (!res?.ok) {
+        setAlert({...alert, message: "No se pudo crear el caso", tipe: 'error' })
+        setShow(true)
+        console.log('hola hola',alert)
+        throw new Error('No se pudo crear el caso');
+      
+    } else {
+      setAlert({...alert, message: "El caso fue creado", tipe: 'success' })
+      setShow(true)
+      reset()
+    }
+})
 
 
   return (
@@ -116,10 +101,10 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
         Crear
           </Button>
       </form>
-      {error &&
-      <Alert severity="error" >{error}</Alert>
+      {
+      alert && show &&
+      <Alert severity={alert.tipe} >{alert.message}</Alert>
       }
-      
     </Container>
 
   
