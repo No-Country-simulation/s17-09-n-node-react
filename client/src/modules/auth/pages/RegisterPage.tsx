@@ -29,7 +29,7 @@ const RegisterContainer = styled.div`
   display: flex;
   width: 100%;
   max-width: 100%;
-  background-color: #4B527E;
+  background-color: #a1a2ae;
   padding: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   align-items: center;

@@ -11,6 +11,7 @@ import {
 import { useForm, SubmitHandler } from 'react-hook-form';
 import icono from './icononombre.svg';
 import iconopass from './iconopass.svg';
+import axios from 'axios'; 
 import mail from './mail.svg';
 
 type Inputs = {
@@ -26,54 +27,49 @@ const Register = () => {
   const [success, setSuccess] = useState<null | string>(null);
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>({ mode: 'onChange' }); // Cambié el modo a 'onChange'
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<Inputs>({ mode: 'onChange' });
+
+  const handleError = (error: unknown) => {
+    if (axios.isAxiosError(error) && error.response) {
+      const { status, data } = error.response;
+
+      switch (status) {
+        case 400:
+          setError(data.message || 'Algunos campos no están completos.');
+          break;
+        case 409:
+          setError('El email ya está registrado.');
+          break;
+        case 500:
+          setError('Error inesperado en el servidor.');
+          break;
+        default:
+          setError('Error inesperado en el servidor.');
+      }
+    } else {
+      setError('Error en el servidor.');
+    }
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { name, lastName, email, password } = data;
+    //const imagen = 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg';
 
     try {
-      const response = await fetch(
+      const response = await axios.post(
         'https://s17-09-n-node-react.onrender.com/api/v1/user/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, name, lastName, password }), // Omitimos confirmPassword
-        }
+        { email, name, lastName, password},
+        { headers: { 'Content-Type': 'application/json' } }
       );
 
-      if (response.ok) {
-        setSuccess(
-          'Usuario registrado con éxito. Redirigiendo al inicio de sesión...'
-        );
+      if (response.status === 200) {
+        setSuccess('Usuario registrado con éxito. Redirigiendo al inicio de sesión...');
         setTimeout(() => {
           navigate('/login');
         }, 2000); // Espera 2 segundos antes de redirigir
-      } else {
-        const errorData = await response.json();
-        switch (response.status) {
-          case 400:
-            setError(errorData.message || 'Algunos campos no están completos.');
-            break;
-          case 409:
-            setError('El email ya está registrado.');
-            break;
-          case 500:
-            setError('Error inesperado en el servidor.');
-            break;
-          default:
-            setError('Error inesperado en el servidor.');
-        }
       }
     } catch (error) {
-      setError('Error en el servidor.');
-      console.error(error);
+      handleError(error);
     }
   };
 
@@ -85,7 +81,7 @@ const Register = () => {
     
         justifyContent='center'
         minHeight='100vh'
-       >
+        marginRight='-20%'       >
         <Typography variant='h4' component='h1' align='left' gutterBottom>
           Registrate
         </Typography>
@@ -220,7 +216,7 @@ const Register = () => {
               helperText={errors?.email?.message}
               InputProps={{
                 sx: {
-                  backgroundColor: 'white',
+                  backgroundColor: 'gray',
                   color: 'black',
                   height: '50px',
                   widht: '100%'
@@ -329,14 +325,19 @@ const Register = () => {
             sx={{
               backgroundColor: '#4B527E',
               color: 'white',
-              margin: '0 10%',
+              width: "40%",
+              margin: '0 30%',
               boxShadow: "10px black",
               borderRadius: "15px",
-              border: "2px solid white"
-         
-              
+              border: "2px solid white",
+              transition: 'all 0.3s ease', // Para una animación suave
+              '&:hover': {
+                backgroundColor: '#3B416E', // Color de fondo al hacer hover
+                boxShadow: '0 4px 20px rgba(0,0,0,0.3)', // Cambia el efecto de sombra
+                transform: 'scale(1.05)', // Leve aumento de tamaño
+              },
             }}
-            disabled={isSubmitting}
+              disabled={isSubmitting}
             fullWidth
           >
             Registrarme
