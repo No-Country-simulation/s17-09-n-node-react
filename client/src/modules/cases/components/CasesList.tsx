@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from '@mui/material'
 import CaseCard from './CaseCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
+import CasesScrollbar from './CasesScrollBar'
 
 const initialCases = [
   {
@@ -36,18 +37,23 @@ const CasesList = () => {
       <Box
         borderRadius={2}
         bgcolor='primary.main'
-        px={5}
-        pt={5}
-        pb={2}
-        mx={{ sm: 5, xs: 0, lg: 5 }}
+        px={3}
+        pt={4}
         mt={3}
-        //sx={{ maxHeight: 500}}
+        sx={{ minHeight: { sm: 350, xs: 400 } }}
       >
-        <ul style={{ listStyle: 'none', padding: 5 }}>
-          {initialCases.map((caseInfo, index) => (
-            <CaseCard key={index} caseInfo={caseInfo} />
-          ))}
-        </ul>
+        <CasesScrollbar>
+          <ul
+            style={{
+              listStyle: 'none',
+              padding: 5,
+            }}
+          >
+            {initialCases.map((caseInfo, index) => (
+              <CaseCard key={index} caseInfo={caseInfo} />
+            ))}
+          </ul>
+        </CasesScrollbar>
 
         <Box display={'flex'} justifyContent={'center'}>
           <Button

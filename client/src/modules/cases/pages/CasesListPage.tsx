@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import FilterBar from '../components/FilterBar'
+import CasesFilterBar from '../components/CasesFilterBar'
 import DoneIcon from '@mui/icons-material/Done'
 import ErrorIcon from '@mui/icons-material/Error'
 import GroupsIcon from '@mui/icons-material/Groups'
@@ -33,23 +33,22 @@ const CasesListPage: React.FC = () => {
       sx={{
         bgcolor: 'primary.dark',
         minHeight: '100vh',
+        px:1,
+        pt: '10vh'
       }}
     >
       <Box
         sx={{
-          pt: 5,
-          px: 5,
           minHeight: '100vh',
+          maxWidth: 1000,
+          mx: 'auto',
+          my: 'auto',
         }}
       >
-        <Typography
-          variant='h5'
-          color='primary.contrastText'
-          sx={{ ml: 5, mb: 2 }}
-        >
+        <Typography variant='h5' color='primary.contrastText'>
           Mis casos:
         </Typography>
-        <FilterBar actions={actions} />
+        <CasesFilterBar actions={actions} />
         <CasesList />
       </Box>
     </Box>

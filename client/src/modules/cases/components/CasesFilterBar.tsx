@@ -14,7 +14,7 @@ interface BottomNavComponentProp {
   actions: BottomNavigationActionType[]
 }
 
-const FilterBar: React.FC<BottomNavComponentProp> = ({ actions }) => {
+const CasesFilterBar: React.FC<BottomNavComponentProp> = ({ actions }) => {
   const [value, setValue] = useState('all')
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -29,9 +29,6 @@ const FilterBar: React.FC<BottomNavComponentProp> = ({ actions }) => {
       flexDirection={{ xs: 'column', md: 'row' }}
       justifyContent={'space-between'}
       alignItems={'center'}
-      pb={2}
-      mx={{ sm: 5, xs: 0, lg: 5 }}
-      mt={3}
     >
       <Paper
         component='form'
@@ -98,4 +95,4 @@ const FilterBar: React.FC<BottomNavComponentProp> = ({ actions }) => {
   )
 }
 
-export default FilterBar
+export default CasesFilterBar
