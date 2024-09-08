@@ -1,32 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Box, Typography, Button, Avatar, CircularProgress, TextField } from '@mui/material'
-import { styled } from '@mui/system'
+import { Modal, Box, Typography, Button, Avatar, CircularProgress } from '@mui/material'
 import axios from 'axios'
 
 // Configura Cloudinary
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dx0htqhaq/image/upload'
 const CLOUDINARY_UPLOAD_PRESET = 'zwtk1tj5'
 
-// Estilos del modal
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: '#2D3250',
   boxShadow: 24,
   p: 4,
 }
-
-// Contenedor del avatar
-const AvatarContainer = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginBottom: '1rem',
-})
 
 type ProfileModalProps = {
   open: boolean
@@ -38,14 +27,11 @@ type ProfileModalProps = {
 const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfilePic, onProfilePicUpdate }) => {
   const [uploading, setUploading] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
-  const [customProfilePic, setCustomProfilePic] = useState<string>(currentProfilePic)
 
-  // Manejador de cambio de archivo
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Comienza el proceso de subida
     setUploading(true)
     const formData = new FormData()
     formData.append('file', file)
@@ -55,7 +41,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
       const response = await axios.post(CLOUDINARY_URL, formData)
       const newImageUrl = response.data.secure_url
       setNewProfilePic(newImageUrl)
-      setCustomProfilePic(newImageUrl)
     } catch (error) {
       console.error('Error subiendo la imagen a Cloudinary:', error)
     } finally {
@@ -63,20 +48,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
     }
   }
 
-  // Actualiza el customProfilePic cuando newProfilePic cambia
   useEffect(() => {
     if (newProfilePic) {
-      setCustomProfilePic(newProfilePic)
+      onProfilePicUpdate(newProfilePic)
     }
-  }, [newProfilePic])
-
-  // Manejador para actualizar la imagen de perfil con URL personalizada
-  const handleCustomUrlChange = () => {
-    if (customProfilePic !== currentProfilePic) {
-      onProfilePicUpdate(customProfilePic)
-    }
-    onClose()
-  }
+  }, [newProfilePic, onProfilePicUpdate])
 
   return (
     <Modal
@@ -86,11 +62,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
       aria-describedby="profile-modal-description"
     >
       <Box sx={style}>
-        <Typography id="profile-modal-title" variant="h6" component="h2" gutterBottom>
+        <Typography id="profile-modal-title" variant="h6" gutterBottom>
           Actualiza tu foto de perfil
         </Typography>
 
-        <AvatarContainer>
+        <div className="flex justify-center items-center mb-4">
           {uploading ? (
             <CircularProgress />
           ) : (
@@ -100,44 +76,24 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
               sx={{ width: 100, height: 100 }}
             />
           )}
-        </AvatarContainer>
+        </div>
 
         <Button
           variant="contained"
           component="label"
-          color="primary"
-          disabled={uploading}
           fullWidth
+          disabled={uploading}
         >
           Subir nueva foto
           <input type="file" hidden onChange={handleFileChange} />
         </Button>
 
-        <TextField
-          label="URL de la imagen de perfil"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={customProfilePic}
-          onChange={(e) => setCustomProfilePic(e.target.value)}
-        />
-
         <Button
           variant="contained"
           color="primary"
-          onClick={handleCustomUrlChange}
-          sx={{ mt: 2 }}
           fullWidth
-        >
-          Guardar cambios
-        </Button>
-
-        <Button
-          variant="outlined"
-          color="secondary"
+          sx={{ mt: 2 }}
           onClick={onClose}
-          sx={{ mt: 2 }}
-          fullWidth
         >
           Cerrar
         </Button>
