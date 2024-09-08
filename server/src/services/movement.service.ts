@@ -3,6 +3,7 @@ import { CreateMovementDTO } from '../dtos/movement/create-dto.movement'
 import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
 import { UpdateMovementDTO } from '../dtos/movement/update-dto.movement'
+import { DateMovementDTO } from '../dtos/movement/date-dto.movement'
 
 const prisma = new PrismaClient()
 
@@ -73,15 +74,11 @@ export class MovementService {
     return movementWithCase
   }
 
-  async getMovementsByUserInTimeFrame(userId: string, startDate: Date, endDate: Date) {
+  async getMovementsByUserId(userId: string) {
     const movements = await prisma.movement.findMany({
       where: {
         Case: {
           userId: userId,
-        },
-        date: {
-          gte: startDate,
-          lte: endDate,
         },
       },
       include: {
@@ -92,30 +89,36 @@ export class MovementService {
     return movements
   }
 
-  // getMovementsByUserOnSpecificDate = async (userId: string, specificDate: Date) => {
-  //   const startOfDay = new Date(specificDate)
-  //   startOfDay.setHours(0, 0, 0, 0)
+  getMovementsByUserIdAndDate = async (userId: string, dateMovementDto: DateMovementDTO) => {
+    let { date } = dateMovementDto
 
-  //   const endOfDay = new Date(specificDate)
-  //   endOfDay.setHours(23, 59, 59, 999)
+    if (date === undefined) {
+      date = new Date().toISOString()
+    }
 
-  //   const movements = await prisma.movement.findMany({
-  //     where: {
-  //       Case: {
-  //         userId: userId,
-  //       },
-  //       date: {
-  //         gte: startOfDay,
-  //         lte: endOfDay,
-  //       },
-  //     },
-  //     include: {
-  //       Case: true,
-  //     },
-  //   })
+    const startOfDay = new Date(date)
+    startOfDay.setHours(0, 0, 0, 0)
 
-  //   return movements
-  // }
+    const endOfDay = new Date(date)
+    endOfDay.setHours(23, 59, 59, 999)
+
+    const movements = await prisma.movement.findMany({
+      where: {
+        Case: {
+          userId: userId,
+        },
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+      include: {
+        Case: true,
+      },
+    })
+
+    return movements
+  }
 
   async updateMovement(id: string, updateMovementDto: UpdateMovementDTO) {
     return await prisma.movement.update({
