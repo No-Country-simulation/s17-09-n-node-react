@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  name     String
+  lastName String
+  password String
+  role     Role   @default(USER)
+  refreshToken String[] @default([])
+  imageUrl String @default("image")
+  cases    Case[]
+}
+
+model Case {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime   @default(now())
+  caseName   String
+  jury       String
+  caseNumber String
+  applicant  String
+  respondent String
+  type       CaseType
+  status     CaseStatus @default(INITIATED)
+  User       User       @relation(fields: [userId], references: [id])
+  userId     String     @db.ObjectId
+  movements  Movement[]
+}
+
+model Movement {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime     @default(now())
+  date      DateTime
+  title     String
+  type      MovementType
+  done      Boolean      @default(false)
+  content   String
+  Case      Case         @relation(fields: [caseId], references: [id])
+  caseId    String       @db.ObjectId
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum CaseType {
+  SUCCESSION
+  EXECUTION
+  TERMINATION
+  DAMAGES_AND_LOSSES
+  CONTRACT_DISPUTE
+  FAMILY_LAW
+  CRIMINAL
+  PROPERTY_DISPUTE
+  PERSONAL_INJURY
+  INTELLECTUAL_PROPERTY
+}
+
+enum CaseStatus {
+  INITIATED
+  EVIDENCE
+  JUDGMENT
+  CLOSED
+}
+
+enum MovementType {
+  APPOINTMENT
+  PROCEDURAL_ACTION
+}

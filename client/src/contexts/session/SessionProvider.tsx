@@ -1,34 +1,32 @@
-import { useReducer } from 'react'
-
-import { SessionContext } from './SessionContext'
-import { sessionReducer } from './sessionReducer'
-
-import { ISession, ISessionUser } from '../../interfaces'
+import { useReducer } from 'react';
+import { SessionContext } from './SessionContext';
+import { sessionReducer } from './sessionReducer';
+import { ISession, ISessionUser } from '../../interfaces';
 
 interface ISessionProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const initialState: ISession = {
   loading: false,
   user: null,
   status: 'checking',
-}
+};
 
 export const SessionProvider = ({ children }: ISessionProviderProps) => {
-  const [state, dispath] = useReducer(sessionReducer, initialState)
+  const [state, dispatch] = useReducer(sessionReducer, initialState);
 
   const createSession = (user: ISessionUser) => {
-    dispath({ type: 'setSession', payload: user })
-  }
+    dispatch({ type: 'setSession', payload: user });
+  };
 
   const deleteSession = () => {
-    dispath({ type: 'removeSession' })
-  }
+    dispatch({ type: 'removeSession' });
+  };
 
   const loadingSession = () => {
-    dispath({ type: 'setLoadingSession' })
-  }
+    dispatch({ type: 'setLoadingSession' });
+  };
 
   return (
     <SessionContext.Provider
@@ -41,5 +39,5 @@ export const SessionProvider = ({ children }: ISessionProviderProps) => {
     >
       {children}
     </SessionContext.Provider>
-  )
-}
+  );
+};

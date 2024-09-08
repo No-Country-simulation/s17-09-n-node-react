@@ -1,0 +1,255 @@
+paths:
+  /api/v1/user:
+    get:
+      summary: Get logged in user's details.
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    put:
+      summary: Update logged in user's name, last name and/or profile image
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Update'
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/{id}:
+    get:
+      summary: Get logged in user's details. Must be logged in as admin to obtain any user
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    delete:
+      summary: Delete user. Must be logged in as admin
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/list:
+    get:
+      summary: Get a list of users. Must be admin
+      security:
+        - bearerAuth: []
+      tags:
+        - user
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+
+  /api/v1/user/register:
+    post:
+      summary: Register a new user
+      tags:
+        - register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Register'
+      responses:
+        '200':
+          description: Successfully registered
+        '400':
+          description: Some fields are not filled out
+        '409':
+          description: Already existing email
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/login:
+    post:
+      summary: User login
+      tags:
+        - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Login'
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '400':
+          description: Some fields are not filled out
+        '401':
+          description: Invalid password
+        '404':
+          description: User not found
+        '500':
+          desrciption: Unexpected error
+
+  /api/v1/user/logout:
+    get:
+      summary: User logout
+      tags:
+        - logout
+      responses: 
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Cookie not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/refresh:
+    get:
+      summary: Refresh Token
+      tags:
+        - refresh
+      responses: 
+        '200':
+          description: Successfully refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        '403':
+          description: Cookie not found, token invalid or hacked user
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    Register:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        imageUrl:
+          type: string
+    Update:
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        imageUrl:
+          type: string

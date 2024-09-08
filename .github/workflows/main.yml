@@ -85,7 +85,7 @@ jobs:
         run: npm run front:lint
 
   full:
-    if: github.event_name == 'pull_request_target' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

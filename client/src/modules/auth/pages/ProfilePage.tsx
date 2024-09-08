@@ -1,73 +1,80 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { LiaEdit } from 'react-icons/lia'
-import ProfileModal from '../components/ProfileModal'
-import { useSession } from '../../../hooks'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { LiaEdit } from 'react-icons/lia';
+import ProfileModal from '../components/ProfileModal';
+import { useSession } from '../../../hooks'; // Ajusta la ruta si es necesario
 
 const ProfilePage: React.FC = () => {
-  const { session, loading } = useSession() // Get session and loading state
-  const [user, setUser] = useState({
-    id: '',
-    name: '',
-    lastName: '',
-    email: '',
-    role: '',
-  })
-  const [profilePic, setProfilePic] = useState('https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg')
-  const [open, setOpen] = useState(false) // Modal state
-  const [editMode, setEditMode] = useState(false) // Edit mode state
-  const [newName, setNewName] = useState('')
-  const [newLastName, setNewLastName] = useState('')
-  const [newProfilePic, setNewProfilePic] = useState('')
+  const { user, loading, createSession } = useSession();
+  const [open, setOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [newName, setNewName] = useState(user?.name || '');
+  const [newLastName, setNewLastName] = useState(user?.lastName || '');
+  const [newProfilePic, setNewProfilePic] = useState(user?.profilePic || '');
 
-  // Update user data from session when it's loaded
   useEffect(() => {
-    if (!loading && session?.user) {
-      setUser(session.user) // Set user from session
-      setNewProfilePic(session.user.profilePic || profilePic)
+    if (!loading && user) {
+      console.log('User loaded:', user); // Verifica que el usuario se carga correctamente
+      setNewName(user.name);
+      setNewLastName(user.lastName);
+      setNewProfilePic(user.profilePic || '');
     }
-  }, [session, loading])
+  }, [user, loading]);
 
-  const handleOpen = () => setOpen(true) // Open modal
-  const handleClose = () => setOpen(false) // Close modal
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  // Handle profile picture update
   const handleProfilePicUpdate = (newUrl: string) => {
-    setProfilePic(newUrl)
-    setNewProfilePic(newUrl) // Sync new profile pic
-  }
+    setNewProfilePic(newUrl);
+  };
 
-  // Save changes to user profile
   const handleSaveChanges = async () => {
+    console.log('Saving changes with:', {
+      id: user?.id,
+      name: newName,
+      lastName: newLastName,
+      profilePic: newProfilePic,
+    }); // Verifica los datos que se envían a la API
+
+    if (!user?.id) {
+      console.error('User ID is not defined.');
+      return;
+    }
+
     try {
       const response = await axios.put(`/api/v1/user/${user.id}`, {
-        name: newName || user.name,
-        lastName: newLastName || user.lastName,
-        profilePic: newProfilePic || profilePic,
-      })
-      setUser(response.data) // Update user state
-      setEditMode(false) // Exit edit mode
+        name: newName,
+        lastName: newLastName,
+        profilePic: newProfilePic,
+      });
+      console.log('Update response:', response.data); // Verifica la respuesta de la API
+      createSession(response.data);
+      setEditMode(false);
     } catch (error) {
-      console.error('Error updating user:', error)
+      console.error('Error updating user:', error);
     }
-  }
+  };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <main className="min-h-screen bg-bg flex justify-center items-center">
       <div className="flex flex-col justify-center items-center gap-12">
         <h1 className="self-start text-3xl font-bold">Mi perfil</h1>
         <div className="flex gap-10 text-white">
-          {/* Profile section */}
           <section className="bg-policeBlue px-20 py-14 rounded-lg flex flex-col justify-center items-center relative">
-            <img src={profilePic} alt="Perfil" className="w-40" />
+            <img
+              src={newProfilePic || 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg'}
+              alt="Perfil"
+              className="w-40"
+            />
             <button className="absolute top-0 right-0 mt-16 mr-16" onClick={handleOpen}>
               <LiaEdit className="w-7 text-white" />
             </button>
-            <h3 className="text-3xl mt-20">{user.name} {user.lastName}</h3>
-            <p>{user.email}</p>
+            <h3 className="text-3xl mt-20">{newName} {newLastName}</h3>
+            <p>{user?.email}</p>
           </section>
 
-          {/* Edit section */}
           <section className="bg-policeBlue px-12 py-14 pr-32 rounded-lg flex flex-col gap-6 relative">
             <h2 className="text-3xl font-semibold">Detalles de perfil</h2>
 
@@ -101,16 +108,15 @@ const ProfilePage: React.FC = () => {
             )}
           </section>
         </div>
-        {/* Profile picture modal */}
         <ProfileModal
           open={open}
           onClose={handleClose}
-          currentProfilePic={profilePic}
+          currentProfilePic={newProfilePic}
           onProfilePicUpdate={handleProfilePicUpdate}
         />
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
