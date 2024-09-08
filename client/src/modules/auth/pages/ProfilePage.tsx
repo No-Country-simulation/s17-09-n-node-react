@@ -75,6 +75,7 @@ const ProfilePage: React.FC = () => {
     setNewPassword('')
     setError('')
   }
+//  const { user } = useSession()
 
   return (
     <main className="min-h-screen z-0 bg-[#424769] flex justify-center items-center w-full">
