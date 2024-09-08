@@ -5,6 +5,7 @@ import HttpError from '../config/errors'
 import { CreateMovementDTO } from '../dtos/movement/create-dto.movement'
 import { UpdateMovementDTO } from '../dtos/movement/update-dto.movement'
 import { DateMovementDTO } from '../dtos/movement/date-dto.movement'
+import { UserDateMovementDTO } from '../dtos/movement/user-date-dto.movement'
 
 export class MovementController {
   constructor(private readonly movementService: MovementService) {}
@@ -68,7 +69,10 @@ export class MovementController {
   getMovementsByUserIdAndDate = (req: Request, res: Response, next: NextFunction) => {
     const { userId } = req.params
 
-    const [error, dateMovementDto] = DateMovementDTO.create(req.query)
+    const [error, dateMovementDto] = UserDateMovementDTO.create({
+      ...req.query,
+      ...req.params,
+    })
 
     if (error || !dateMovementDto) {
       throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)

@@ -11,11 +11,15 @@ export class UserDateMovementDTO {
     const instance = new UserDateMovementDTO(userId, date)
     const errors: string[] = []
 
-    if (!date) {
-      errors.push('Must provide date')
+    if (!userId) {
+      errors.push('Must provide userId')
+    } else if (!Validators.isValidObjectId(userId)) {
+      errors.push(`'userId' is not valid objectId`)
     }
 
-    if (date !== undefined && !Validators.isValidISODate(date)) {
+    if (!date) {
+      errors.push('Must provide date')
+    } else if (!Validators.isValidISODate(date)) {
       errors.push(`'date' should be a valid ISO 8601 date string`)
     }
 
