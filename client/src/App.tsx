@@ -15,6 +15,7 @@ import { CasesListPage } from './modules/cases'
 import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
 import ProfilePage from './modules/auth/pages/ProfilePage'
+import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
 
 import './App.css'
 
@@ -63,11 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'cases/[caseId]',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá debería ir el caso específico
-          </div>
-        ),
+        element: <CaseDetailsPage />,
       },
     ],
   },
