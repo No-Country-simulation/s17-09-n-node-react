@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+
 import {
-  TextField,
-  Button,
-  Typography,
-  Container,
   Box,
   Alert,
+  Button,
+  Container,
+  TextField,
+  Typography,
 } from '@mui/material'
+
 import { useForm, SubmitHandler } from 'react-hook-form'
+
+import { AxiosError } from 'axios'
+import { lawCaseApi } from '../../../apis'
+import { useSession } from '../../../hooks'
 
 type Inputs = {
   email: string
@@ -16,66 +22,64 @@ type Inputs = {
 }
 
 const Login = () => {
-  const [error, setError] = useState<null | string>(null)
   const navigate = useNavigate()
+  const { createSession } = useSession()
+  const [error, setError] = useState<null | string>(null)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
-
-  // Credenciales fake para acceso temporal
-  const fakeCredentials = {
-    email: 'user@fake.com',
-    password: 'password123',
-  }
+  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data
-    // Verificación de credenciales fake
-    if (
-      email === fakeCredentials.email &&
-      password === fakeCredentials.password
-    ) {
-      localStorage.setItem('token', 'fake-token') // Simula el almacenamiento de un token
-      navigate('/profile') // Redirige al dashboard
-    } else {
-      try {
-        const response = await fetch(
-          'https://s17-09-n-node-react.onrender.com/api/v1/user/login',
-          {
-            // Cambia la URL a la correcta
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-          },
-        )
 
-        if (!response.ok) {
-          const contentType = response.headers.get('content-type')
-          if (contentType && contentType.includes('application/json')) {
-            const { message } = await response.json()
-            setError(message || 'Credenciales incorrectas.')
-          } else {
-            setError('Error inesperado. Por favor, intenta nuevamente.')
-          }
+    try {
+      const res = await lawCaseApi.post('/user/login', { email, password })
+
+      if (res.status !== 200) {
+        setError('Ocurrió un error. Por favor intente más tarde.')
+        return
+      }
+
+      // TODO Obtener el perfil del usuario
+      // para que cuando se inicie sesión, el usuario ya tega cargado su perfil.
+
+      // const { data: profile } = await lawCaseApi.get('user/profile') // (no existe este endpoint)
+      // createSession({ ...profile })
+
+      createSession({
+        id: '123',
+        name: 'John',
+        lastName: 'Doe',
+        email: 'john@example.com',
+        role: 'USER',
+      })
+
+      localStorage.setItem('token', res.data.accessToken)
+
+      navigate('/profile')
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 404)
+        ) {
+          setError('Credenciales Inválidas')
         } else {
-          const { accessToken } = await response.json()
-          localStorage.setItem('token', accessToken)
-          navigate('/profile')
+          setError('Error en el servidor.')
         }
-      } catch (error) {
-        setError('Error en el servidor.')
-        console.log(error)
+      } else if (error instanceof Error) {
+        setError('Error: ' + error.message)
+      } else {
+        setError('Error desconocido:' + error)
       }
     }
   }
 
   return (
-    <Container maxWidth='xs'>
+    <Container maxWidth='sm'>
       <Box
         display='flex'
         flexDirection='column'
@@ -83,7 +87,7 @@ const Login = () => {
         justifyContent='center'
         minHeight='100vh'
       >
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h4' component='h6' width='80%' gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant='body1' align='center' paragraph>
@@ -109,8 +113,8 @@ const Login = () => {
                 message: 'Por favor, ingresa un email válido.',
               },
             })}
-            error={!!errors?.email}
-            helperText={errors?.email?.message}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             required
             InputProps={{
               sx: {
@@ -136,8 +140,8 @@ const Login = () => {
                 message: 'La contraseña debe tener al menos 8 caracteres.',
               },
             })}
-            error={!!errors?.password}
-            helperText={errors?.password?.message}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             required
             InputProps={{
               sx: {
@@ -157,7 +161,7 @@ const Login = () => {
             color='primary'
             sx={{
               backgroundColor: '#424769',
-              color: 'black',
+              color: 'white',
               width: '80%',
               margin: '0 10%',
             }}
