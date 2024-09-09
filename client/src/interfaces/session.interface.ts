@@ -10,7 +10,9 @@ export interface ISessionUser {
   lastName: string
   email: string
   role: TSessionUserRole
+  profilePic?: string
 }
+
 
 export type TSessionStatus = 'valid' | 'expired' | 'checking'
 

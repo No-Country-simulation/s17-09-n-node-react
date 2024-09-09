@@ -1,11 +1,10 @@
-import { createContext } from 'react'
-
-import type { ISession, ISessionUser } from '../../interfaces'
+import React from 'react';
+import { ISession, ISessionUser } from '../../interfaces';
 
 interface ISessionContext extends ISession {
-  createSession: (user: ISessionUser) => void
-  deleteSession: () => void
-  loadingSession: () => void
+  createSession: (user: ISessionUser) => void;
+  deleteSession: () => void;
+  loadingSession: () => void;
 }
 
-export const SessionContext = createContext<ISessionContext | null>(null)
+export const SessionContext = React.createContext<ISessionContext | undefined>(undefined);

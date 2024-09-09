@@ -13,7 +13,7 @@ import {
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { AxiosError } from 'axios'
-import { lawCaseApi } from '../../../apis'
+import lawCaseApi from '../../../apis/lawCaseApi'
 import { useSession } from '../../../hooks'
 
 type Inputs = {
@@ -23,42 +23,37 @@ type Inputs = {
 
 const Login = () => {
   const navigate = useNavigate()
-  const { createSession } = useSession()
+  const { createSession } = useSession() // Obtener la función para crear sesión
   const [error, setError] = useState<null | string>(null)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
+  } = useForm<Inputs>({ mode: 'onChange' })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data
 
     try {
+      // Hacer la solicitud de login
       const res = await lawCaseApi.post('/user/login', { email, password })
 
-      if (res.status !== 201) {
+      if (res.status !== 200) {
         setError('Ocurrió un error. Por favor intente más tarde.')
         return
       }
 
-      // TODO Obtener el perfil del usuario
-      // para que cuando se inicie sesión, el usuario ya tega cargado su perfil.
-
-      // const { data: profile } = await lawCaseApi.get('user/profile') // (no existe este endpoint)
-      // createSession({ ...profile })
-
-      createSession({
-        id: '123',
-        name: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        role: 'USER',
-      })
-
+      // Guardar el token en localStorage
       localStorage.setItem('token', res.data.accessToken)
 
+      // Obtener el perfil del usuario
+      const { data: profile } = await lawCaseApi.get(`/user/${res.data.userId}`)
+
+      // Crear la sesión con el perfil obtenido
+      createSession(profile)
+
+      // Redirigir al perfil del usuario
       navigate('/profile')
     } catch (error) {
       if (error instanceof AxiosError) {
