@@ -14,11 +14,11 @@ const ProfilePage: React.FC = () => {
       ? JSON.parse(storedUser)
       : {
           id: '123',
-          name: 'Law',
-          lastName: 'Case',
-          email: 'law@case.com',
+          name: 'Josefa',
+          lastName: 'Elifonzo',
+          email: 'jose@mail.com',
           role: 'User',
-          profilePic: 'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg',
+          profilePic: './Abogada3.png',
           password: 'password123'
         }
   })
@@ -81,7 +81,7 @@ const ProfilePage: React.FC = () => {
       <div className="flex flex-col z-1 w-full lg:w-3/4 p-6 bg-[#7077A1] m-8 shadow-lg rounded-md h-full">
         <div className="flex w-full p-8 justify-between items-center">
           <h1 className="text-3xl text-white font-semibold">Mi perfil</h1>
-          <button onClick={() => navigate('/home')} className="text-white hover:text-[#7077A1]">
+          <button onClick={() => navigate('/register')} className="text-white hover:text-[#7077A1]">
             X
           </button>
         </div>
@@ -116,7 +116,7 @@ const ProfilePage: React.FC = () => {
           </section>
           <section className="bg-[#424769] rounded-lg flex z-2 flex-col justify-center items-center gap-2 w-full lg:w-1/2">
             {editMode ? (
-              <div className="flex flex-col w-[80%] gap-4">
+              <div className="flex flex-col w-[80%] gap-2 p-4">
                 <img
                   src="/logo.png"
                   alt="logo"
@@ -170,7 +170,7 @@ const ProfilePage: React.FC = () => {
                 </button>
                 <button
                   className="bg-[#F6B17A] border-[#2D3250] text-[#2D3250]
-                  border-2 rounded m-0
+                  border-2 rounded mt-0
                   hover:bg-[#7077A1] hover:border-white hover:text-white hover:border-2"
                   onClick={() => setEditMode(false)}
                 >

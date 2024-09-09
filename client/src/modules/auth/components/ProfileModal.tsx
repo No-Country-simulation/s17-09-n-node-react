@@ -79,11 +79,26 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
         </div>
 
         <Button
-          variant="contained"
-          component="label"
-          fullWidth
-          disabled={uploading}
-        >
+    variant="contained"
+    component="label"
+    fullWidth
+    disabled={uploading}
+    sx={{
+      backgroundColor: '#F6B17A',
+      border: '2px solid #2D3250',
+      color: '#2D3250',
+      borderRadius: '0.375rem', 
+      padding: '0.375rem 1rem', 
+      margin: 0,
+      '&:hover': {
+        backgroundColor: '#7077A1',
+        borderColor: 'white',
+        color: 'white',
+      },
+    }}
+    className="transition-colors duration-300 ease-in-out"
+  >
+
           Subir nueva foto
           <input type="file" hidden onChange={handleFileChange} />
         </Button>
@@ -92,8 +107,26 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ open, onClose, currentProfi
           variant="contained"
           color="primary"
           fullWidth
-          sx={{ mt: 2 }}
+          
           onClick={onClose}
+
+          sx={{
+            backgroundColor: '#F6B17A',
+            border: '2px solid #2D3250',
+            color: '#2D3250',
+            borderRadius: '0.375rem', 
+            padding: '0.375rem 1rem', 
+            margin: 0,
+            marginTop: 2,
+            '&:hover': {
+              backgroundColor: '#7077A1',
+              borderColor: 'white',
+              color: 'white',
+            
+            },
+          }}
+          className="transition-colors duration-300 ease-in-out"
+
         >
           Cerrar
         </Button>

@@ -1,20 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
 import {
+  TextField,
+  Button,
+  Typography,
+  Container,
   Box,
   Alert,
-  Button,
-  Container,
-  TextField,
-  Typography,
 } from '@mui/material'
-
 import { useForm, SubmitHandler } from 'react-hook-form'
-
-import { AxiosError } from 'axios'
-import lawCaseApi from '../../../apis/lawCaseApi'
-import { useSession } from '../../../hooks'
 
 type Inputs = {
   email: string
@@ -22,53 +16,60 @@ type Inputs = {
 }
 
 const Login = () => {
-  const navigate = useNavigate()
-  const { createSession } = useSession() // Obtener la función para crear sesión
   const [error, setError] = useState<null | string>(null)
+  const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ mode: 'onChange' })
+  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
+
+  // Credenciales fake para acceso temporal
+  const fakeCredentials = {
+    email: 'user@fake.com',
+    password: 'password123',
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { email, password } = data
+    // Verificación de credenciales fake
+    if (
+      email === fakeCredentials.email &&
+      password === fakeCredentials.password
+    ) {
+      localStorage.setItem('token', 'fake-token') // Simula el almacenamiento de un token
+      navigate('/profile') // Redirige al dashboard
+    } else {
+      try {
+        const response = await fetch(
+          'https://s17-09-n-node-react.onrender.com/api/v1/user/login',
+          {
+            // Cambia la URL a la correcta
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+          }
+        )
 
-    try {
-      // Hacer la solicitud de login
-      const res = await lawCaseApi.post('/user/login', { email, password })
-
-      if (res.status !== 200) {
-        setError('Ocurrió un error. Por favor intente más tarde.')
-        return
-      }
-
-      // Guardar el token en localStorage
-      localStorage.setItem('token', res.data.accessToken)
-
-      // Obtener el perfil del usuario
-      const { data: profile } = await lawCaseApi.get(`/user/${res.data.userId}`)
-
-      // Crear la sesión con el perfil obtenido
-      createSession(profile)
-
-      // Redirigir al perfil del usuario
-      navigate('/profile')
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 404)
-        ) {
-          setError('Credenciales Inválidas')
+        if (!response.ok) {
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            const { message } = await response.json()
+            setError(message || 'Credenciales incorrectas.')
+          } else {
+            setError('Error inesperado. Por favor, intenta nuevamente.')
+          }
         } else {
-          setError('Error en el servidor.')
+          const { accessToken } = await response.json()
+          localStorage.setItem('token', accessToken)
+          navigate('/profile')
         }
-      } else if (error instanceof Error) {
-        setError('Error: ' + error.message)
-      } else {
-        setError('Error desconocido:' + error)
+      } catch (error) {
+        setError('Error en el servidor.')
+        console.log(error)
       }
     }
   }
@@ -82,7 +83,7 @@ const Login = () => {
         justifyContent='center'
         minHeight='100vh'
       >
-        <Typography variant='h4' component='h6' width='80%' gutterBottom>
+        <Typography variant='h4' component='h6' width="80%" gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
         <Typography variant='body1' align='center' paragraph>
