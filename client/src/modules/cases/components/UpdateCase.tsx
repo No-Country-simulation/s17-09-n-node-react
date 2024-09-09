@@ -37,7 +37,6 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
       
     })
  
-     //  const id = '66db5fc124b09a44d6c1f6a7'
 
   useEffect (()=>{
     const fetchData = async () =>{
@@ -81,8 +80,6 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
 
     const onSubmit =  handleSubmit( async(data) =>{
         console.log('form acutaluzar: ', data)
-       
-       
 
            const res = await updateCase(data, id);
      
@@ -98,7 +95,6 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
              setShow(true)
              reset()
            }
-
 
     })
 
