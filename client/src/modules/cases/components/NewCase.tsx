@@ -31,7 +31,8 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
 const onSubmit =  handleSubmit( async(data) => {
   //console.log("data del form ", data)
   console.log('hola hook')
- //  data.userId = '66d3b52c06804da30eb2c9c6'
+  // data.userId = '66da27b3bed71ced1c4917e3'
+   data.userId = '66de6f26b40072153d42795c'
    data.status = 'INITIATED'
 
 
@@ -80,14 +81,16 @@ const onSubmit =  handleSubmit( async(data) => {
               />
             ))
         }
-  <FormControl required sx={{ my:1,  minWidth: '100%'}}>
-        <InputLabel id="demo-simple-select-required-label">Tipo</InputLabel>
+ <FormControl  required      sx={{ my:1,  minWidth: '100%'}}> 
+        <InputLabel id="demo-simple">Tipo</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black',}}
-          labelId="demo-simple-select-required-label"
+         
+          labelId="demo-simple"
           id="demo-simple-select-required"
-         {...register('type')} 
-          label="Tipo *"
-          required
+          defaultValue=''
+         {...register('type', {required: true})} 
+         label="Tipo *"
+     
         >
           {
             MODEL_TYPE.options.map((item)=>(
@@ -95,7 +98,10 @@ const onSubmit =  handleSubmit( async(data) => {
             ))
           }
         </Select>
+   
+     
         </FormControl>
+     
    
         <Button sx={{my: 3}} type="submit" variant="contained" color="primary" fullWidth >
         Crear

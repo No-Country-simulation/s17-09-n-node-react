@@ -1,15 +1,20 @@
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGEyN2IzYmVkNzFjZWQxYzQ5MTdlMyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNTY2NzM1MCwiZXhwIjoxNzI1NjY4MjUwfQ.MYGSbvVMbvQz6V-iwPQJXus8joTvrYuL5OUBEsLq20o'
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI1ODU5MTQzLCJleHAiOjE3MjU4NjAwNDN9.ZxBmny4V5yhKfaAx4JczAm0I8C6Fn4sjiyX18inHLLU'
 const API_BACK = 'https://s17-09-n-node-react.onrender.com/api/v1'
 export interface Case {
+    id?: string
+    createdAt?: string
     caseName:   string
     jury:       string
     caseNumber: string
     applicant:  string
     respondent: string
-    type:       string 
-    status:     string // TO DO añadir  valor por defecto 
+    type:       typeTipo 
+    status:     typeStatus // TO DO añadir  valor por defecto 
     userId:     string   
   } 
+
+  export type typeStatus = 'INITIATED' | 'EVIDENCE' | 'JUDGMENT' | 'CLOSED';
+  export type typeTipo = 'SUCCESSION' | 'EXECUTION' | 'TERMINATION'| 'DAMAGES_AND_LOSSES' |'CONTRACT_DISPUTE' |'FAMILY_LAW'| 'CRIMINAL'| 'PROPERTY_DISPUTE' |'PERSONAL_INJURY' |'INTELLECTUAL_PROPERTY'
 
 export const newCase = async(data: Case) => {
 
@@ -39,7 +44,7 @@ export const updateCase = async(data: Case, id: string) => {
 
     let res
    try {
-    res = await fetch(`${API_BACK}/${id}`, {  //TO-DO: cambair link
+    res = await fetch(`${API_BACK}/cases/${id}`, {  //TO-DO: cambair link
      method: "PUT",
      headers: {
         "Content-Type": "application/json",

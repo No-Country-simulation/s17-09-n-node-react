@@ -35,6 +35,8 @@ import { Case } from "./caseActions";
         ]
       } as const
 
+      
+
 
   export const MODEL_STATUS = {
     options:[
@@ -43,7 +45,7 @@ import { Case } from "./caseActions";
       { label: 'Juicio', value: 'JUDGMENT' },
       { label: 'Cerrado', value: 'CLOSED' },
     ]
-  } as const 
+  } 
 
 
 

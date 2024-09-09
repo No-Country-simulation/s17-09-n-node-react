@@ -1,15 +1,15 @@
-import { Alert, Box, Button, Container, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { IoMdCloseCircleOutline } from "react-icons/io"
 import { INPUTS_FORM_UPD, MODEL_STATUS, MODEL_TYPE } from "../libs/utils"
 import { useForm } from "react-hook-form"
-import { Case, getCase, updateCase } from "../libs/caseActions"
+import { Case, getCase, typeStatus, typeTipo, updateCase } from "../libs/caseActions"
 
 interface AlertState {
   message: string;
   tipe: 'success' | 'error';
 }
-export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAction<boolean>>}) => {
+export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetStateAction<boolean>>, id:string}) => {
  
  
     const {register, handleSubmit, reset } = useForm<Case>({
@@ -19,20 +19,33 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
         caseNumber: '',
         applicant:  '',
         respondent: '',
-        type:       '' ,
-        status:     'CLOSED',
+        type:       'SUCCESSION' ,
+        status:     'INITIATED',
       }
     })
     const [alert, setAlert] = useState<AlertState>({message: '', tipe: 'error' })
     const [show, setShow] = useState(false)
+    const [dataForm, setDataForm] = useState<Case>({
+        userId: '',
+        caseName: '',
+        jury:       '',
+        caseNumber: '',
+        applicant:  '',
+        respondent: '',
+        type:       'SUCCESSION' ,
+        status:     'INITIATED',
+      
+    })
  
-       const id = '66db5fc124b09a44d6c1f6a7'
+     //  const id = '66db5fc124b09a44d6c1f6a7'
 
   useEffect (()=>{
     const fetchData = async () =>{
       try {
-        const caseData = await getCase(id)
+        const caseData: Case = await getCase(id)
         if(caseData){
+          console.log('data data: ', caseData )
+          setDataForm(caseData)
           reset({
             caseName: caseData.caseName,
             jury:       caseData.jury,
@@ -43,17 +56,16 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
             status:     caseData.status , // TO DO añadir  valor por defecto        
          
           })
-          console.log('update data: ', caseData )
+          console.log('data nuevo estado: ', dataForm )
         }
       } catch (error) {
-      //  setShow(true)
-     //   setAlert({...alert, message: "Error al cargar los datos", tipe: 'error' })
-        console.error(error)
-     //   console.log(alert)
+          console.error(error)
+
       }
     }
     fetchData()
-  }, [id, reset])
+  }, [])
+
 
 
     useEffect(() => {
@@ -68,7 +80,7 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
    
 
     const onSubmit =  handleSubmit( async(data) =>{
-        console.log(data)
+        console.log('form acutaluzar: ', data)
        
        
 
@@ -127,15 +139,21 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
         }
 
     <div className="flex gap-6 justify-between">
-    <div className=" w-full">
+    <FormControl required sx={{ my:1,  minWidth: '45%'}}>
     <InputLabel id="demo">Tipo</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black',}}
           labelId="demo"
-         //id="demo"
-         defaultValue= ''
+         id="demo"
+        
          {...register('type')} 
+          value={dataForm?.type || ''}
           label="Tipo *"
-          required
+          onChange={(event) => {
+    
+               setDataForm({ ...dataForm, type: event.target.value as typeTipo });
+           
+        }}
+
         >
           {
               
@@ -144,18 +162,22 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
             ))
           }
         </Select>
-        </div>
+        </FormControl>
       
-      { //  <FormControl required sx={{ my:1,  minWidth: '45%'}}>  
-       }
-       <div className=" w-full">
-        <InputLabel id="demo-simple-select-required-label" >Estado</InputLabel>
+        <FormControl required sx={{ my:1,  minWidth: '45%'}}>  
+       
+        <InputLabel id="select-estado" >Estado</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black'}}
-        labelId="demo-simple-select-required-label"
-        // id="demo-simple-select-required-label"
-          defaultValue=''
+        labelId="select-estado"
+ 
+          defaultValue={dataForm?.status}
            {...register('status', {required: true})} 
+           value={dataForm?.status || ''}
+    
           label="Estado *"
+          onChange={(event) => {
+            setDataForm({ ...dataForm, status: event.target.value as typeStatus });  
+     }}
       
         >
           {
@@ -163,16 +185,10 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
               <MenuItem value={item.value} key={item.value}>{item.label}</MenuItem>
             ))
           }
-          
-             {/*      <MenuItem value='INITIATED' >Iniciado</MenuItem>
-                   <MenuItem value='EVIDENCE' >Evidencia</MenuItem>
-                   <MenuItem value='JUDGMENT' >Juicio</MenuItem>
-                   <MenuItem value='CLOSED' >Cerrado</MenuItem> */ }
-                   
+      
         </Select>
-        </div>
-      { //  </FormControl> 
-      }
+        </FormControl> 
+      
     </div>
        
         <Button sx={{my: 3}} type="submit" variant="contained" color="primary" fullWidth >
@@ -182,7 +198,6 @@ export const UpdateCase = ({setUpdateModal}:{setUpdateModal: Dispatch<SetStateAc
       {
       alert && show &&
       <Alert severity={alert.tipe} >{alert.message}</Alert>
-
       }
 
     </Container>

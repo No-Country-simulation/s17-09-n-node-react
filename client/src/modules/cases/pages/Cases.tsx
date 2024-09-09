@@ -9,6 +9,7 @@ export const Cases = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [updateModal, setUpdateModal] = useState<boolean>(false);
 
+    const id = '66de70c1b40072153d42795d'
 
   return (
     <div>
@@ -40,7 +41,7 @@ export const Cases = () => {
    onClick={() => setUpdateModal(false)}
  />
     <Modal>
-    <UpdateCase setUpdateModal={setUpdateModal}  />
+    <UpdateCase setUpdateModal={setUpdateModal} id={id} />
   </Modal>
   </div>
   
