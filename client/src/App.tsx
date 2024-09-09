@@ -65,7 +65,8 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'cases/[caseId]',
+        path: 'cases/details/:id',
+        // path: 'cases/[caseId]',
         element: <CaseDetailsPage />,
       },
     ],
