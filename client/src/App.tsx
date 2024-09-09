@@ -9,6 +9,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import { useSession, useThemeSwitcher } from './hooks'
 import { LoginPage, RegisterPage } from './modules/auth'
+import { CasesListPage } from './modules/cases'
+
 
 import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
@@ -57,12 +59,8 @@ const router = createBrowserRouter([
         element: <ProfilePage />,
       },
       {
-        path: 'cases',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá deberían ir los casos
-          </div>
-        ),
+        path: '/cases',
+        element: <CasesListPage />,
       },
       {
         path: 'cases/[caseId]',
