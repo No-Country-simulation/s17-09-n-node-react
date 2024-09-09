@@ -26,6 +26,14 @@ export default function getUsersListPdf(options: ListOptions): TDocumentDefiniti
     header: headerSection({}),
     footer: footerSection,
     pageMargins: [40, 110, 40, 60],
+    watermark: {
+      text: 'Confidencial',
+      color: 'gray',
+      opacity: 0.3,
+      bold: true,
+      fontSize: 100,
+      angle: 45,
+    },
     content: [
       {
         style: 'header',

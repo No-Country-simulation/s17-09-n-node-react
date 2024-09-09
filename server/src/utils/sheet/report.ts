@@ -25,24 +25,46 @@ export default function getReport(): TDocumentDefinitions {
   const docDefinitions: TDocumentDefinitions = {
     styles: styles,
     pageMargins: [40, 60, 40, 60],
+    pageSize: 'A4',
     header: headerSection({
       showDate: true,
       showLogo: true,
     }),
     footer: footerSection,
+    watermark: {
+      text: 'Prototipo',
+      color: 'gray',
+      opacity: 0.3,
+      bold: true,
+      fontSize: 120,
+      angle: 45,
+    },
     content: [
       {
         qr: 'https://s17-09-n-node-react-2.onrender.com',
         fit: 75,
         alignment: 'right',
+        marginBottom: 10,
+      },
+      {
+        canvas: [
+          {
+            type: 'line',
+            x1: 0,
+            y1: 5,
+            x2: 515,
+            y2: 5,
+            lineWidth: 1,
+            lineColor: '#3d3d3d',
+          },
+        ],
       },
       {
         text: 'PROTOTIPO DE DOCUMENTO',
         style: 'header',
       },
       {
-        text: `Me dirijo a ustedes para presentar el prototipo del documento de reporte para la aplicación. Como prodrá ver, el mismo tiene una estructura basica: el icono de la aplicación, el cuerpo de texto y la firma de sus respectivo autor.\n 
-      Estoy abierto a sugerencias para la mejora del mismo y que se adapte a las formalidades requeridas. Y como simepre, quisiera expresar mi agradecimiento por el desarrollo del proyecto en el cual forma parte este documento.\n`,
+        text: `Me dirijo a ustedes para presentar el prototipo del documento de reporte para la aplicación. Como prodrá ver, el mismo tiene una estructura basica: el icono de la aplicación, el cuerpo de texto y la firma de sus respectivo autor.\n\nEstoy abierto a sugerencias para la mejora del mismo y que se adapte a las formalidades requeridas. Y como simepre, quisiera expresar mi agradecimiento por el desarrollo del proyecto en el cual forma parte este documento.\n`,
         style: 'body',
       },
       {

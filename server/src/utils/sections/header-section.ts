@@ -19,6 +19,7 @@ interface HeadersOptions {
   subtitle?: string
   showLogo?: boolean
   showDate?: boolean
+  showQr?: boolean
 }
 
 export default function headerSection(options: HeadersOptions): Content {
@@ -28,8 +29,8 @@ export default function headerSection(options: HeadersOptions): Content {
   const headerDate: Content = showDate
     ? {
         text: `${formatter.format(new Date())}`,
+        margin: [0, 20, 15, 20],
         alignment: 'right',
-        margin: [0, 20, 35, 20],
       }
     : ''
 

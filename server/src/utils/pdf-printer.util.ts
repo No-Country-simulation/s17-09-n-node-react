@@ -21,7 +21,7 @@ const customTableLayouts: Record<string, CustomTableLayout> = {
       if (i === 0 || i === node.table.body.length) return 0
       return i === node.table.headerRows ? 2 : 1
     },
-    vLineWidth: function (i) {
+    vLineWidth: function () {
       return 0
     },
     hLineColor: function (i) {
