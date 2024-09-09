@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SetStateAction, useState } from 'react'
 import { Box, IconButton, InputBase, Paper } from '@mui/material'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
@@ -12,14 +12,24 @@ interface BottomNavigationActionType {
 
 interface BottomNavComponentProp {
   actions: BottomNavigationActionType[]
+  setFilter: SetStateAction<null | any>
 }
 
-const CasesFilterBar: React.FC<BottomNavComponentProp> = ({ actions }) => {
+const CasesFilterBar: React.FC<BottomNavComponentProp> = ({
+  actions,
+  setFilter,
+}) => {
   const [value, setValue] = useState('all')
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
     event.preventDefault()
+    if (newValue == value) {
+      setValue('all')
+      setFilter(null)
+    } else {
+      setValue(newValue)
+      setFilter(newValue)
+    }
   }
 
   return (

@@ -1,37 +1,35 @@
+import { useEffect, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
-import CaseCard from './CaseCard'
+import CaseCard, { CaseInfoType } from './CaseCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CasesScrollbar from './CasesScrollBar'
 
-const initialCases = [
-  {
-    title: 'Carlos Montiel',
-    type: 'Suceción',
-    state: 'Prueba',
-  },
-  {
-    title: 'Nicolás Ferreyra c/Julia Solen',
-    type: 'Ejecución',
-    state: 'Inicio',
-  },
-  {
-    title: 'Claudia Marquez c/Esteban López',
-    type: 'Despido',
-    state: 'Sentencia',
-  },
-  {
-    title: 'Maira Alvarez c/ Nestor Astorgas',
-    type: 'Daños y perjuicios',
-    state: 'Archivado',
-  },
-  {
-    title: 'Juan Perez c/Marcos Gonzalez',
-    type: 'Daños y perjuicios',
-    state: 'Inicio',
-  },
-]
+const CasesList = ({
+  items,
+  filter,
+}: {
+  items: CaseInfoType[]
+  filter: undefined | null | string
+}) => {
+  const [filteredCases, setFilteredCases] = useState<[] | CaseInfoType[]>([])
 
-const CasesList = () => {
+  useEffect(() => {
+    const filtered = (value: string) => {
+      return items.filter((i) => i.status == value)
+    }
+    if (filter && filter === 'inicio') {
+      setFilteredCases(filtered('INITIATED'))
+    } else if (filter && filter === 'prueba') {
+      setFilteredCases(filtered('EVIDENCE'))
+    } else if (filter && filter === 'sentencia') {
+      setFilteredCases(filtered('JUDGMENT'))
+    } else if (filter && filter === 'archivado') {
+      setFilteredCases(filtered('CLOSED'))
+    } else {
+      setFilteredCases(items)
+    }
+  }, [items, filter])
+
   return (
     <>
       <Box
@@ -49,7 +47,7 @@ const CasesList = () => {
               padding: 5,
             }}
           >
-            {initialCases.map((caseInfo, index) => (
+            {filteredCases.map((caseInfo, index) => (
               <CaseCard key={index} caseInfo={caseInfo} />
             ))}
           </ul>

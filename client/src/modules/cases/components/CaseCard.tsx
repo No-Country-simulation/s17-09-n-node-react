@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Paper,
@@ -17,10 +18,38 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 
-interface CaseInfoType {
-  title: string
+const CaseTypes: { [key: string]: string } = {
+  SUCCESSION: 'Sucesión',
+  EXECUTION: 'Ejecución',
+  TERMINATION: 'Despido',
+  DAMAGES_AND_LOSSES: 'Daños y perjuicios',
+  CONTRACT_DISPUTE: 'Disputa contractual',
+  FAMILY_LAW: 'Derecho de familia',
+  CRIMINAL: 'Penal',
+  PROPERTY_DISPUTE: 'Disputa de propiedad',
+  PERSONAL_INJURY: 'Lesiones personales',
+  INTELLECTUAL_PROPERTY: 'Propiedad intelectual',
+}
+
+const CasesStatus: { [key: string]: string } = {
+  INITIATED: 'Inicio',
+  EVIDENCE: 'Prueba',
+  JUDGMENT: 'Sentencia',
+  CLOSED: 'Archivado',
+}
+
+// Type de Caso
+export interface CaseInfoType {
+  id: string
+  createdAt: string
+  caseName: string
+  jury: string
+  caseNumber: string
+  applicant: string
+  respondent: string
   type: string
-  state: string
+  status: string
+  userId: string
 }
 
 interface CaseCardProp {
@@ -28,14 +57,20 @@ interface CaseCardProp {
 }
 
 const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
+  const navigate = useNavigate()
   // Menu states
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleOpenCase = () => {
+    navigate(`/cases/${caseInfo.id}`)
   }
 
   return (
@@ -70,28 +105,32 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               px={0}
               color={'white'}
             >
-              {caseInfo.state == 'Inicio' && <DoneIcon sx={{ width: 50 }} />}
-              {caseInfo.state == 'Prueba' && <ErrorIcon sx={{ width: 50 }} />}
-              {caseInfo.state == 'Sentencia' && (
+              {caseInfo.status == 'INITIATED' && (
+                <DoneIcon sx={{ width: 50 }} />
+              )}
+              {caseInfo.status == 'EVIDENCE' && (
+                <ErrorIcon sx={{ width: 50 }} />
+              )}
+              {caseInfo.status == 'JUDGMENT' && (
                 <GroupsIcon sx={{ width: 50 }} />
               )}
-              {caseInfo.state == 'Archivado' && (
+              {caseInfo.status == 'CLOSED' && (
                 <ArchiveIcon sx={{ width: 50 }} />
               )}
               <Typography variant='caption'>
-                {`${caseInfo.state} - ${caseInfo.type}`}
+                {`${CasesStatus[caseInfo.status]} - ${CaseTypes[caseInfo.type]}`}
               </Typography>
             </Box>
 
-            {/* Titulo del caso */}
+            {/* Nombre del caso */}
             <Box display={'flex'} justifyContent={'center'}>
-              <Button>
+              <Button onClick={handleOpenCase}>
                 <Typography
                   variant='body1'
                   color={'white'}
                   sx={{ textTransform: 'none' }}
                 >
-                  {caseInfo.title}
+                  {caseInfo.caseName}
                 </Typography>
               </Button>
             </Box>

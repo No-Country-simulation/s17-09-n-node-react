@@ -56,23 +56,33 @@ const HelpPage: React.FC = () => {
   }
 
   return (
-    <Container 
-      maxWidth={false} 
-      disableGutters 
-      sx={{ backgroundColor: '#2D3250', width: '100%', minHeight: '100vh', padding: 4 }}
+    <Container
+      maxWidth={false}
+      disableGutters
+      sx={{
+        backgroundColor: '#2D3250',
+        width: '100%',
+        minHeight: '100vh',
+        padding: 4,
+      }}
     >
-      <Typography variant='h4' gutterBottom align='center' sx={{ color: '#FFFFFF' }}>
+      <Typography
+        variant='h4'
+        gutterBottom
+        align='center'
+        sx={{ color: '#FFFFFF' }}
+      >
         Página de Ayuda
       </Typography>
       <Box my={4}>
         {helpContent.map((item, index) => (
-          <Paper 
-            key={index} 
-            elevation={3} 
-            sx={{ 
-              marginBottom: '1rem', 
-              borderRadius: '8px', 
-              backgroundColor: '#424769' 
+          <Paper
+            key={index}
+            elevation={3}
+            sx={{
+              marginBottom: '1rem',
+              borderRadius: '8px',
+              backgroundColor: '#424769',
             }}
           >
             <Button
@@ -80,13 +90,13 @@ const HelpPage: React.FC = () => {
               variant='contained'
               onClick={() => handleToggle(index)}
               endIcon={openIndex === index ? <ExpandLess /> : <ExpandMore />}
-              sx={{ 
-                backgroundColor: '#F6B17A', 
-                color: '#2D3250', 
-                textAlign: 'left', 
+              sx={{
+                backgroundColor: '#F6B17A',
+                color: '#2D3250',
+                textAlign: 'left',
                 fontWeight: 'bold',
                 justifyContent: 'space-between',
-                padding: 2
+                padding: 2,
               }}
             >
               {item.question}
@@ -102,21 +112,19 @@ const HelpPage: React.FC = () => {
         ))}
       </Box>
       <Box textAlign='center' mt={4}>
-        <Button 
-          component={Link} 
-          to="/login" 
-          variant='contained' 
-     
-          sx={{ 
-            backgroundColor: '#F6B17A', 
-            color: '#2D3250', 
-            fontWeight: 'bold'
+        <Button
+          component={Link}
+          to='/login'
+          variant='contained'
+          sx={{
+            backgroundColor: '#F6B17A',
+            color: '#2D3250',
+            fontWeight: 'bold',
           }}
         >
           Volver al Inicio
         </Button>
       </Box>
-
     </Container>
   )
 }

@@ -10,7 +10,7 @@ const Navbar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #2D3250;
+  background-color: #2d3250;
   opacity: 0.9;
   z-index: 1;
   font-family: 'Inter', sans-serif;
@@ -62,16 +62,13 @@ const NavButton = styled(Link)`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: left;
-
-  
 `
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #2D3250;
-
+  background-color: #2d3250;
 `
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -82,7 +79,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <ThemeProvider theme={themeMode}>
       <LayoutContainer>
         <Navbar>
-          <Logo/>
+          <Logo />
           <ButtonContainer>
             {location.pathname === '/login' && (
               <>
@@ -97,7 +94,7 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               </>
             )}
             {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
-              {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
+            {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
             {/* </ThemeButton> */}
           </ButtonContainer>
         </Navbar>

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import casesService from '../services/cases.service'
 import { Box, Typography } from '@mui/material'
 import CasesFilterBar from '../components/CasesFilterBar'
 import DoneIcon from '@mui/icons-material/Done'
@@ -7,8 +9,75 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import TodayIcon from '@mui/icons-material/Today'
 import CasesList from '../components/CasesList'
 
+const Cases = [
+  {
+    id: '1',
+    createdAt: '2024-09-08T05:42:20.568Z',
+    caseName: 'Carlos Montiel',
+    jury: '',
+    caseNumber: '1234',
+    applicant: '',
+    respondent: '',
+    type: 'SUCCESSION',
+    status: 'EVIDENCE',
+    userId: '1',
+  },
+  {
+    id: '2',
+    createdAt: '2024-09-08T05:42:20.568Z',
+    caseName: 'Nicolás Ferreyra c/Julia Solen',
+    jury: '',
+    caseNumber: '1235',
+    applicant: '',
+    respondent: '',
+    type: 'EXECUTION',
+    status: 'INITIATED',
+    userId: '1',
+  },
+  {
+    id: '3',
+    createdAt: '2024-09-08T05:42:20.568Z',
+    caseName: 'Claudia Marquez c/Esteban López',
+    jury: '',
+    caseNumber: '1236',
+    applicant: '',
+    respondent: '',
+    type: 'TERMINATION',
+    status: 'JUDGMENT',
+    userId: '1',
+  },
+  {
+    id: '4',
+    createdAt: '2024-09-08T05:42:20.568Z',
+    caseName: 'Maira Alvarez c/ Nestor Astorgas',
+    jury: '',
+    caseNumber: '1237',
+    applicant: '',
+    respondent: '',
+    type: 'DAMAGES_AND_LOSSES',
+    status: 'CLOSED',
+    userId: '1',
+  },
+  {
+    id: '5',
+    createdAt: '2024-09-08T05:42:20.568Z',
+    caseName: 'Juan Perez c/Marcos Gonzalez',
+    jury: '',
+    caseNumber: '1237',
+    applicant: '',
+    respondent: '',
+    type: 'DAMAGES_AND_LOSSES',
+    status: 'INITIATED',
+    userId: '1',
+  },
+]
+
 const actions = [
-  { label: 'Inicio', value: 'inicio', icon: <DoneIcon sx={{ width: 25 }} /> },
+  {
+    label: 'Inicio',
+    value: 'inicio',
+    icon: <DoneIcon sx={{ width: 25 }} />,
+  },
   { label: 'Prueba', value: 'prueba', icon: <ErrorIcon sx={{ width: 25 }} /> },
   {
     label: 'Sentencia',
@@ -28,13 +97,21 @@ const actions = [
 ]
 
 const CasesListPage: React.FC = () => {
+  const [filter, setFilter] = useState()
+  const [cases, setCases] = useState([])
+
+  useEffect(() => {
+    casesService.getCasesList().then((res) => setCases(res.data))
+    console.log(cases)
+  }, [cases])
+
   return (
     <Box
       sx={{
         bgcolor: 'primary.dark',
         minHeight: '100vh',
-        px:1,
-        pt: '10vh'
+        px: 1,
+        pt: '15vh',
       }}
     >
       <Box
@@ -48,8 +125,8 @@ const CasesListPage: React.FC = () => {
         <Typography variant='h5' color='primary.contrastText'>
           Mis casos:
         </Typography>
-        <CasesFilterBar actions={actions} />
-        <CasesList />
+        <CasesFilterBar actions={actions} setFilter={setFilter} />
+        <CasesList items={Cases} filter={filter} />
       </Box>
     </Box>
   )
