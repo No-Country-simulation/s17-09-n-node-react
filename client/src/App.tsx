@@ -11,7 +11,6 @@ import { useSession, useThemeSwitcher } from './hooks'
 import { LoginPage, RegisterPage } from './modules/auth'
 import { CasesListPage } from './modules/cases'
 
-
 import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
 import ProfilePage from './modules/auth/pages/ProfilePage'
@@ -59,7 +58,7 @@ const router = createBrowserRouter([
         element: <ProfilePage />,
       },
       {
-        path: '/cases',
+        path: 'cases',
         element: <CasesListPage />,
       },
       {

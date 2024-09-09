@@ -38,7 +38,7 @@ const Login = () => {
     try {
       const res = await lawCaseApi.post('/user/login', { email, password })
 
-      if (res.status !== 201) {
+      if (res.status !== 200) {
         setError('Ocurrió un error. Por favor intente más tarde.')
         return
       }
