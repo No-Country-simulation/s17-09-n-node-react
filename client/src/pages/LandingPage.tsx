@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 // Componente para el carrusel de testimonios
 const TestimonialCarousel: React.FC = () => {
     const testimonials = [
-      { name: "Juan Pérez", quote: "Excelente servicio, ¡lo recomiendo!" },
-      { name: "María González", quote: "Muy satisfecha con la atención." },
+      { name: "Juan Pérez", quote: "Excelente App, ¡lo recomiendo!", photo:"" },
+      { name: "María González", quote: "Muy satisfecha, muy amigable e intuitiva.", photo: ""},
+      { name: "Manuel Filgueira", quote: "El calendario es excelente.", photo:"" },
       // Agrega más testimonios aquí
     ];
   
@@ -22,9 +23,10 @@ const TestimonialCarousel: React.FC = () => {
   
     return (
       <div className="testimonial-carousel">
-        <div className="testimonial">
+        <div className="testimonial text-center">
+          <img src={testimonials[activeIndex].photo} alt={testimonials[activeIndex].name} className="testimonial-photo" />
           <p className="quote">"{testimonials[activeIndex].quote}"</p>
-          <p className="author">- {testimonials[activeIndex].name}</p>
+          
         </div>
         <div className="controls">
           <button onClick={prevTestimonial}>Anterior</button>
@@ -42,7 +44,7 @@ const LandingPage: React.FC = () => {
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Bienvenido a nuestra página</h1>
           <p className="text-lg mb-8">Descubre nuestros increíbles productos y servicios</p>
-          <button className="bg-white text-blue-500 font-bold py-2 px-4 rounded">
+          <button  className="bg-white text-blue-500 font-bold py-2 px-4 rounded"> 
             ¡Comienza ahora!
           </button>
         </div>
@@ -50,23 +52,23 @@ const LandingPage: React.FC = () => {
 
       {/* Sección de beneficios */}
       <section className="benefits py-12">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-center">Nuestros beneficios</h2>
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6 ">Nuestros beneficios</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="benefit">
-              <h3 className="text-xl font-bold mb-2">Calidad garantizada</h3>
+              <h3 className="text-xl  font-bold mb-2">Calidad garantizada</h3>
               <p>
-                Nuestros productos son de la más alta calidad, asegurando tu satisfacción.
+                lleva el control de todos tus casos en un solo lugar.
               </p>
             </div>
             <div className="benefit">
-              <h3 className="text-xl font-bold mb-2">Precios competitivos</h3>
+              <h3 className="text-xl font-bold  mb-2">Precios competitivos</h3>
               <p>
-                Ofrecemos los mejores precios del mercado, sin comprometer la calidad.
+                Organiza Tu agenda y optimiza el tiempo.
               </p>
             </div>
             <div className="benefit">
-              <h3 className="text-xl font-bold mb-2">Excelente servicio al cliente</h3>
+              <h3 className="text-xl text-center font-bold mb-2">Excelente servicio al cliente</h3>
               <p>
                 Nuestro equipo está siempre dispuesto a ayudarte y resolver tus dudas.
               </p>
@@ -76,7 +78,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Sección de testimonios */}
-      <section className="testimonials bg-gray-100 py-12">
+      <section className="testimonials text-center p-4 bg-gray-100 py-12">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold mb-6 text-center">
             Lo que dicen nuestros clientes
@@ -88,7 +90,7 @@ const LandingPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto text-center">
-          <p>&copy; 2023 Tu Empresa. Todos los derechos reservados.</p>
+          <p>&copy; S17-09-n-node-react</p>
         </div>
       </footer>
     </div>
