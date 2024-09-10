@@ -3,6 +3,8 @@ import { Box, Button, Typography } from '@mui/material'
 import CaseCard, { CaseInfoType } from './CaseCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CasesScrollbar from './CasesScrollBar'
+import { Modal } from '../../../components/Modal'
+import { NewCase } from './NewCase'
 
 const CasesList = ({
   items,
@@ -12,6 +14,8 @@ const CasesList = ({
   filter: undefined | null | string
 }) => {
   const [filteredCases, setFilteredCases] = useState<[] | CaseInfoType[]>([])
+  const [openNewCase, setOpenNewCase] = useState<boolean>(false);
+ // const [updateCase, setUpdateCase] = useState<boolean>(false);
 
   useEffect(() => {
     const filtered = (value: string) => {
@@ -55,6 +59,7 @@ const CasesList = ({
 
         <Box display={'flex'} justifyContent={'center'}>
           <Button
+           onClick={()=>{setOpenNewCase(true)}}
             startIcon={<AddCircleOutlineIcon sx={{ color: 'white' }} />}
             sx={{
               color: 'white',
@@ -66,6 +71,19 @@ const CasesList = ({
             <Typography variant='body2'>Nuevo Caso</Typography>
           </Button>
         </Box>
+        { openNewCase && (
+    <div>
+         <div
+            className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
+            onClick={() => setOpenNewCase(false)}
+          />
+        <Modal>
+        <NewCase setOpenModal={setOpenNewCase}/>
+        </Modal>
+      
+    </div>
+)}
+
       </Box>
     </>
   )

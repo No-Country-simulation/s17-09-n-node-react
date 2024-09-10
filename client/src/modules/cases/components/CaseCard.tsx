@@ -17,6 +17,8 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import { Modal } from '../../../components/Modal'
+import { UpdateCase } from './UpdateCase'
 
 const CaseTypes: { [key: string]: string } = {
   SUCCESSION: 'Sucesión',
@@ -60,6 +62,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
   const navigate = useNavigate()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [updateCase, setUpdateCase] = useState<boolean>(false);
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -168,11 +171,11 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
                   },
                 }}
               >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() =>{handleClose(); setUpdateCase(true)} }>
                   <ListItemIcon>
                     <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
-                  <ListItemText>Editar</ListItemText>
+                  <ListItemText  >Editar</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
@@ -183,8 +186,21 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               </Menu>
             </Box>
           </Box>
+         
         </Paper>
       </li>
+      { updateCase && (
+  <div>
+   <div
+   className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
+   onClick={() => setUpdateCase(false)}
+ />
+    <Modal>
+    <UpdateCase setUpdateModal={setUpdateCase} id={caseInfo.id} />
+  </Modal>
+  </div>
+  
+)}
     </>
   )
 }

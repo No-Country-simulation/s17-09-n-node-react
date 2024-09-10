@@ -6,8 +6,8 @@ import { UpdateCase } from '../components/UpdateCase';
 
 
 export const Cases = () => {
-    const [openModal, setOpenModal] = useState<boolean>(false);
-    const [updateModal, setUpdateModal] = useState<boolean>(false);
+    const [openNewCase, setOpenNewCase] = useState<boolean>(false);
+    const [updateCase, setUpdateCase] = useState<boolean>(false);
 
     const id = '66de70c1b40072153d42795d'
 
@@ -17,31 +17,31 @@ export const Cases = () => {
       
 
         <div className='flex justify-center'>
-        <button onClick={()=>{setOpenModal(true)}} className='border-solid border-2 bg-blue-500 '>Nuevo caso</button>
-        <button onClick={()=>{setUpdateModal(true)}}  className='border-solid border-2 bg-green-500 '>Actualizar</button> 
+        <button onClick={()=>{setOpenNewCase(true)}} className='border-solid border-2 bg-blue-500 '>Nuevo caso</button>
+        <button onClick={()=>{setUpdateCase(true)}}  className='border-solid border-2 bg-green-500 '>Actualizar</button> 
         </div>
        
-{ openModal && (
+{ openNewCase && (
     <div>
          <div
             className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
-            onClick={() => setOpenModal(false)}
+            onClick={() => setOpenNewCase(false)}
           />
         <Modal>
-        <NewCase setOpenModal={setOpenModal}/>
+        <NewCase setOpenModal={setOpenNewCase}/>
         </Modal>
       
     </div>
 )}
 
-{ updateModal && (
+{ updateCase && (
   <div>
    <div
    className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
-   onClick={() => setUpdateModal(false)}
+   onClick={() => setUpdateCase(false)}
  />
     <Modal>
-    <UpdateCase setUpdateModal={setUpdateModal} id={id} />
+    <UpdateCase setUpdateModal={setUpdateCase} id={id} />
   </Modal>
   </div>
   

@@ -49,7 +49,6 @@ const Login = () => {
       // const { data: profile } = await lawCaseApi.get('user/profile') // (no existe este endpoint)
       // createSession({ ...profile })
 
-
       createSession({
         id: '123',
         name: 'John',

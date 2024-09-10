@@ -42,8 +42,13 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
     const fetchData = async () =>{
       try {
         const caseData: Case = await getCase(id)
+        if(!caseData.applicant){
+          setAlert({...alert, message: "No se pudo obetener los datos", tipe: 'error' })
+          setShow(true)
+        }
+        
         if(caseData){
-          console.log('data data: ', caseData )
+       //   console.log('data data: ', caseData )
           setDataForm(caseData)
           reset({
             caseName: caseData.caseName,
@@ -58,7 +63,8 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
           console.log('data nuevo estado: ', dataForm )
         }
       } catch (error) {
-          console.error(error)
+        
+          console.error('hubo un: ', error)
 
       }
     }
