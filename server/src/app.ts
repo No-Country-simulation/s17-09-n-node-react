@@ -3,7 +3,7 @@ import cors from 'cors'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUiExpress from 'swagger-ui-express'
 import AppRoutes from './routes'
-import { envs } from './config'
+// import { envs } from './config'
 import { options } from './config/swagger'
 
 export default class App {
@@ -14,11 +14,11 @@ export default class App {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))
 
-    const clientUrl = envs.nodeEnv === 'prod' ? (envs.clientUrl as string) : '*'
+    // const clientUrl = envs.nodeEnv === 'prod' ? (envs.clientUrl as string) : '*'
 
     this.app.use(
       cors({
-        origin: clientUrl,
+        origin: '*',
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
