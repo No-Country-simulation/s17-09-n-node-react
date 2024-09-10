@@ -10,8 +10,8 @@ import {
 import axios from 'axios'
 
 // Configura Cloudinary
-const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL;
-const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET
 
 const style = {
   position: 'absolute',

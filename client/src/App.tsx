@@ -21,24 +21,6 @@ import './App.css'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <p>Aquí debería ir la landing page</p>,
-    errorElement: <p>Not found</p>,
-    children: [],
-  },
-  {
-    path: '/help',
-    element: <HelpPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/',
     element: <Layout />,
     children: [
       {
@@ -62,10 +44,22 @@ const router = createBrowserRouter([
         element: <CasesListPage />,
       },
       {
-        path: 'cases/[caseId]',
+        path: 'cases/:caseId',
         element: <CaseDetailsPage />,
       },
     ],
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
 ])
 
