@@ -30,7 +30,7 @@ export default async function refreshHandler(req: Request, res: Response, next: 
     })
 
     if (!foundUser) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
       jwt.verify(refreshToken, refreshSecret, async (err: any, decoded: any) => {
         if (err) throw new HttpError(403, HTTP_STATUS.FORBIDDEN, 'error on decoding!')
         await prisma.user.update({

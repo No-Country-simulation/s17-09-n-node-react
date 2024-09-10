@@ -1,6 +1,7 @@
 import App from './app'
 import { PrismaClient } from '@prisma/client'
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function main() {
   const prisma = new PrismaClient()
 
