@@ -30,7 +30,7 @@ export class UpdateMovementDTO {
     }
 
     if (date !== undefined && !Validators.isValidISODate(date)) {
-      errors.push(`'date' should be a Date object`)
+      errors.push(`'date' should be a valid ISO 8601 date string`)
     }
     if (title !== undefined && typeof title !== 'string') {
       errors.push(`'title' should be a string`)

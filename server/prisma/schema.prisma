@@ -15,6 +15,7 @@ model User {
   password String
   role     Role   @default(USER)
   refreshToken String[] @default([])
+  imageUrl String @default("image")
   cases    Case[]
 }
 

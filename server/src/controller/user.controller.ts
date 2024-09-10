@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from 'express'
 import { UserService } from '../services/user.service'
 import HttpError from '../config/errors'
-import { HTTP_STATUS, ROLE } from '../enums/enum'
+import { HTTP_STATUS } from '../enums/enum'
 import {
   LoginUserDTO,
   RegisterUserDTO,
@@ -23,15 +23,25 @@ export class UserController {
       .catch((error: unknown) => next(error))
   }
 
-  getUserById = (req: Request, res: Response, next: NextFunction) => {
-    const { id: userId } = req.params
+  getUser = (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id
+    if (!userId) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'Unauthorized')
 
-    // TODO: update
-    if (req.user?.role !== ROLE.ADMIN) {
-      if (userId !== req.user?.id) {
-        throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
-      }
-    }
+    this.userService
+      .getUserById(userId)
+      .then((user) => {
+        if (user) {
+          res.status(201).json(UserDTO.create(user))
+          return
+        }
+        res.status(201).json(user)
+      })
+      .catch((error: unknown) => next(error))
+  }
+
+  getUserInfo = (req: Request, res: Response, next: NextFunction) => {
+    const { id: userId } = req.params
+    if (!userId) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'Unauthorized')
 
     this.userService
       .getUserById(userId)
@@ -110,12 +120,9 @@ export class UserController {
   }
 
   updateUser = (req: Request, res: Response, next: NextFunction) => {
-    const { id: userId } = req.params
-    const updateUserDto = UpdateUserDTO.create(req.body)
-
-    if (userId !== req.user?.id) {
-      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
-    }
+    const userId = req.user?.id
+    const [error, updateUserDto] = UpdateUserDTO.create(req.body)
+    if (error || !userId || !updateUserDto) throw new HttpError(401, HTTP_STATUS.BAD_REQUEST, error)
 
     this.userService
       .updateUser(userId, updateUserDto)
