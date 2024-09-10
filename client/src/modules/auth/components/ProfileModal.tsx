@@ -1,115 +1,145 @@
-import Box from '@mui/material/Box'
-import { LiaEdit } from 'react-icons/lia'
-import Modal from '@mui/material/Modal'
-import { TextField } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Avatar,
+  CircularProgress,
+} from '@mui/material'
+import axios from 'axios'
+
+// Configura Cloudinary
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: '#2D3250',
   boxShadow: 24,
+  p: 4,
 }
 
-interface BasicModalProps {
-  handleClose: () => void
+type ProfileModalProps = {
   open: boolean
-}
-interface DataProps {
-  title: string
-  info: string
-  type: string
+  onClose: () => void
+  currentProfilePic: string
+  onProfilePicUpdate: (newUrl: string) => void
 }
 
-const BasicModal: React.FC<BasicModalProps> = ({ handleClose, open }) => {
-  const data: DataProps[] = [
-    { title: 'Apellido', info: 'Gomez', type: 'string' },
-    { title: 'Nombre', info: 'Clara', type: 'string' },
-    { title: 'Email', info: 'C.Gomez@gmail.com', type: 'email' },
-    { title: 'Contraseña', info: '*********', type: 'password' },
-    { title: 'Confirmar contraseña', info: '*********', type: 'password' },
-  ]
+const ProfileModal: React.FC<ProfileModalProps> = ({
+  open,
+  onClose,
+  currentProfilePic,
+  onProfilePicUpdate,
+}) => {
+  const [uploading, setUploading] = useState(false)
+  const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+
+    try {
+      const response = await axios.post(CLOUDINARY_URL, formData)
+      const newImageUrl = response.data.secure_url
+      setNewProfilePic(newImageUrl)
+    } catch (error) {
+      console.error('Error subiendo la imagen a Cloudinary:', error)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (newProfilePic) {
+      onProfilePicUpdate(newProfilePic)
+    }
+  }, [newProfilePic, onProfilePicUpdate])
 
   return (
     <Modal
       open={open}
-      onClose={handleClose}
-      aria-labelledby='modal-modal-title'
-      aria-describedby='modal-modal-description'
+      onClose={onClose}
+      aria-labelledby='profile-modal-title'
+      aria-describedby='profile-modal-description'
     >
-      <Box sx={style} className='p-12 w-full max-w-[1024px] bg-bg rounded-lg'>
-        <div>
-          <h1 className='text-white text-3xl font-bold'>Editar perfil</h1>
-          <div className='flex flex-col gap-8'>
-            <div className='relative self-center'>
-              <button className='absolute top-0 right-0'>
-                <LiaEdit className='w-8 text-white' />
-              </button>
-              <img
-                src='https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg'
-                alt=''
-                className='w-40'
-              />
-            </div>
-            <div className='bg-policeBlue rounded-lg'>
-              <form
-                action=''
-                className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-6'
-              >
-                {data.map((info, index) => (
-                  <div
-                    key={index}
-                    className={`${index === 2 ? 'col-span-2' : ''}`}
-                  >
-                    <TextField
-                      type={info.type}
-                      label={info.title}
-                      variant='outlined'
-                      fullWidth
-                      defaultValue={info.info}
-                      className='py-1'
-                      sx={{
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: 'white',
-                          },
-                          '&:hover fieldset': {
-                            borderColor: 'white',
-                          },
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#F6B17A',
-                          },
-                        },
-                        '& .MuiInputBase-input': {
-                          color: 'white',
-                        },
-                        '& .MuiInputLabel-root': {
-                          color: 'white',
-                          '&.Mui-focused': {
-                            color: '#F6B17A',
-                          },
-                          '&.MuiFormLabel-root:not(.MuiInputLabel-shrink)': {
-                            color: '#7077A1',
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                ))}
-                <div className='col-span-2 mt-4'>
-                  <input
-                    type='submit'
-                    value='Confirmar'
-                    className='cursor-pointer mx-auto py-2 px-8 rounded bg-bg hover:bg-mellowApricot hover:text-black transition-all duration-200'
-                  />
-                </div>
-              </form>
-            </div>
-          </div>
+      <Box sx={style}>
+        <Typography id='profile-modal-title' variant='h6' gutterBottom>
+          Actualiza tu foto de perfil
+        </Typography>
+
+        <div className='flex justify-center items-center mb-4'>
+          {uploading ? (
+            <CircularProgress />
+          ) : (
+            <Avatar
+              alt='Foto de perfil'
+              src={newProfilePic || currentProfilePic}
+              sx={{ width: 100, height: 100 }}
+            />
+          )}
         </div>
+
+        <Button
+          variant='contained'
+          component='label'
+          fullWidth
+          disabled={uploading}
+          sx={{
+            backgroundColor: '#F6B17A',
+            border: '2px solid #2D3250',
+            color: '#2D3250',
+            borderRadius: '0.375rem',
+            padding: '0.375rem 1rem',
+            margin: 0,
+            '&:hover': {
+              backgroundColor: '#7077A1',
+              borderColor: 'white',
+              color: 'white',
+            },
+          }}
+          className='transition-colors duration-300 ease-in-out'
+        >
+          Subir nueva foto
+          <input type='file' hidden onChange={handleFileChange} />
+        </Button>
+
+        <Button
+          variant='contained'
+          color='primary'
+          fullWidth
+          onClick={onClose}
+          sx={{
+            backgroundColor: '#F6B17A',
+            border: '2px solid #2D3250',
+            color: '#2D3250',
+            borderRadius: '0.375rem',
+            padding: '0.375rem 1rem',
+            margin: 0,
+            marginTop: 2,
+            '&:hover': {
+              backgroundColor: '#7077A1',
+              borderColor: 'white',
+              color: 'white',
+            },
+          }}
+          className='transition-colors duration-300 ease-in-out'
+        >
+          Cerrar
+        </Button>
       </Box>
     </Modal>
   )
 }
 
-export default BasicModal
+export default ProfileModal
