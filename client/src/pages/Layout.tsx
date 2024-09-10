@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
 import { useAuth } from '../hooks'
-import { Loading } from '../components'
+import { Loading, NavBar } from '../components'
 
 const Layout = () => {
   const { status } = useAuth()
@@ -10,7 +10,9 @@ const Layout = () => {
 
   return (
     <>
-      <header className='fixed bg-red-600 w-full text-center'>navbar</header>
+      <header className='fixed bg-policeBlue w-full'>
+        <NavBar />
+      </header>
       <Outlet />
       <footer className='bg-red-600 w-full text-center'>footer</footer>
     </>

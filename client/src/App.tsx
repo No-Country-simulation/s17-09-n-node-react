@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import { useAuth, useThemeSwitcher } from './hooks'
 import { LoginPage, RegisterPage } from './modules/auth'
+import { CasesListPage } from './modules/cases'
 
 import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
@@ -19,24 +20,6 @@ import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
 import './App.css'
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <p>Aquí debería ir la landing page</p>,
-    errorElement: <p>Not found</p>,
-    children: [],
-  },
-  {
-    path: '/help',
-    element: <HelpPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
   {
     path: '/',
     element: <Layout />,
@@ -59,17 +42,25 @@ const router = createBrowserRouter([
       },
       {
         path: 'cases',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá deberían ir los casos
-          </div>
-        ),
+        element: <CasesListPage />,
       },
       {
-        path: 'cases/[caseId]',
+        path: 'cases/:caseId',
         element: <CaseDetailsPage />,
       },
     ],
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
   },
 ])
 
