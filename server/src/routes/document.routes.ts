@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import errorHandler from '../middlewares/error-handler'
 import { DocumentController } from '../controller/document.controller'
+import authHandler from '../middlewares/auth-handler'
+import rolesHandler from '../middlewares/role-handler'
+import { Role } from '@prisma/client'
 
 export default class DocumentRoutes {
   static get routes(): Router {
@@ -8,8 +11,14 @@ export default class DocumentRoutes {
 
     const controller = new DocumentController()
 
-    router.get('/export', controller.getReportPdf, errorHandler)
-    router.get('/users', controller.getUsersListPdf, errorHandler)
+    router.get('/report', authHandler, controller.getReportPdf, errorHandler)
+    router.get(
+      '/users',
+      authHandler,
+      rolesHandler(Role.ADMIN),
+      controller.getUsersListPdf,
+      errorHandler,
+    )
 
     return router
   }
