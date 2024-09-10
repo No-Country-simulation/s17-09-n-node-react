@@ -1,14 +1,14 @@
 import { LiaEdit } from 'react-icons/lia'
 import ProfileModal from '../components/ProfileModal'
 import { useState } from 'react'
-import { useSession } from '../../../hooks'
+import { useAuth } from '../../../hooks'
 
 const ProfilePage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { user } = useSession()
+  const { user } = useAuth()
 
   return (
     <main className='min-h-screen bg-bg flex justify-center items-center'>
@@ -17,8 +17,11 @@ const ProfilePage: React.FC = () => {
         <div className='flex gap-10'>
           <section className='bg-policeBlue px-20 py-14 rounded-lg flex flex-col justify-center items-center'>
             <img
-              src='https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg'
-              alt=''
+              src={
+                user?.imageUrl ??
+                'https://aui.atlassian.com/aui/8.8/docs/images/avatar-person.svg'
+              }
+              alt={user?.name}
               className='w-40'
             />
             <h3 className='text-3xl'>{user?.name}</h3>

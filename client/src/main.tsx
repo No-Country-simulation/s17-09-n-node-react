@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { SessionProvider } from './contexts'
+import { AuthProvider } from './contexts'
 
 import App from './App.tsx'
 
@@ -11,8 +11,8 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <SessionProvider>
+    <AuthProvider>
       <App />
-    </SessionProvider>
+    </AuthProvider>
   </StrictMode>,
 )
