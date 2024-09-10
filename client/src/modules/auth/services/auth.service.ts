@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { lawCaseApi } from '../apis'
+import { lawCaseApi } from '../../../apis'
 
 export const registerUser = async (data: {
   email: string
