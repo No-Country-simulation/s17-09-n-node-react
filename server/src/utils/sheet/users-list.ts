@@ -6,7 +6,7 @@ import footerSection from '../sections/footer-section'
 interface ListOptions {
   title?: string
   subtitle?: string
-  users: Omit<User, 'id'>[]
+  users: Omit<Omit<User, 'id'>, 'imageUrl'>[]
 }
 
 const styles: StyleDictionary = {

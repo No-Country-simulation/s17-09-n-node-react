@@ -158,6 +158,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Case'
+  /cases/user/{userId}:
+    get:
+      summary: Get all cases by user ID
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of cases for the specified user ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Case'
+        404:
+          description: No cases found for the specified user ID.
   /cases/{id}:
     get:
       summary: Get a case by ID

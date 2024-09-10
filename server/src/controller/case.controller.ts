@@ -36,11 +36,30 @@ export class CaseController {
       .catch((error) => next(error))
   }
 
+  async getCasesByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { userId } = req.params
+      const cases = await caseService.getCasesByUserId(userId)
+      if (cases.length === 0) {
+        return res.status(404).json({ message: 'No cases found for the specified user ID.' })
+      }
+      res.status(200).json(cases)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   async updateCase(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
-      const updateCaseDTO: UpdateCaseDTO = req.body
-      const updatedCase = await caseService.updateCase(id, updateCaseDTO)
+      const [errors, updateCaseDto] = UpdateCaseDTO.create(req.body)
+
+      if (errors || !updateCaseDto) {
+        return res.status(400).json({ errors })
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const updatedCase = await caseService.updateCase(id, updateCaseDto)
       res.status(200).json(updatedCase)
     } catch (error) {
       next(error)

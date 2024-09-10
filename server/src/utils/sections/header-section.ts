@@ -23,6 +23,7 @@ interface HeadersOptions {
 }
 
 export default function headerSection(options: HeadersOptions): Content {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { title, subtitle, showLogo = true, showDate = true } = options
 
   const headerLogo: Content = showLogo ? logo : ''
