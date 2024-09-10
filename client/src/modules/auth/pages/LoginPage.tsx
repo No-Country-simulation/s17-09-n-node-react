@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Login from '../components/Sign-in';
 import Layout from '../layout/AuthLayout';
 
+
 const LandingPageContainer = styled.div`
   position: relative;
   background-image: url('/fondologin.svg');
