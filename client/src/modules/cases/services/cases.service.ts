@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { lawCaseApi } from '../../../apis'
 
-interface CaseCreateInfoType {
+interface CaseCreatedInfoType {
   caseName: string
   jury: string
   caseNumber: string
@@ -12,7 +12,17 @@ interface CaseCreateInfoType {
   userId: string
 }
 
-const createCase = async (data: CaseCreateInfoType) => {
+interface CaseUpdatedInfoType {
+  caseName: string
+  jury: string
+  caseNumber: string
+  applicant: string
+  respondent: string
+  type: string
+  status: string
+}
+
+const createCase = async (data: CaseCreatedInfoType) => {
   try {
     const response = await lawCaseApi.post('/cases', data)
     return {
@@ -56,9 +66,31 @@ const getCasesList = async () => {
   }
 }
 
-const updateCase = async (id: string) => {
+const getCasesListByUserId = async (userId: string) => {
   try {
-    const response = await lawCaseApi.put(`/cases/${id}`)
+    const response = await lawCaseApi.get(`/cases/user/${userId}`)
+    return {
+      status: response.status,
+      data: response.data,
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status || 500,
+        message:
+          error.response?.data?.message || 'Error inesperado en el servidor.',
+      }
+    }
+    return {
+      status: 500,
+      message: 'Error en el servidor.',
+    }
+  }
+}
+
+const updateCase = async (id: string, data: CaseUpdatedInfoType) => {
+  try {
+    const response = await lawCaseApi.put(`/cases/${id}`, data)
     return {
       status: response.status,
       data: response.data,
@@ -103,6 +135,7 @@ const deleteCase = async (id: string) => {
 export default {
   createCase,
   getCasesList,
+  getCasesListByUserId,
   updateCase,
   deleteCase,
 }
