@@ -10,10 +10,8 @@ import {
 import axios from 'axios'
 
 // Configura Cloudinary
-// const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dx0htqhaq/image/upload'
-// const CLOUDINARY_UPLOAD_PRESET = 'zwtk1tj5'
-const CLOUDINARY_URL = import.meta.env.CLOUDINARY_API_URL
-const CLOUDINARY_UPLOAD_PRESET = import.meta.env.CLOUDINARY_PRESET
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
 
 const style = {
   position: 'absolute',
