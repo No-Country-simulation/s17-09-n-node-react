@@ -30,7 +30,7 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
 
 const onSubmit =  handleSubmit( async(data) => {
  
-  console.log('hola hook')
+
   // data.userId = '66da27b3bed71ced1c4917e3'
    data.userId = '66de6f26b40072153d42795c'
    data.status = 'INITIATED'

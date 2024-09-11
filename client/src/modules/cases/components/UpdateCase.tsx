@@ -4,7 +4,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io"
 import { INPUTS_FORM_UPD, MODEL_STATUS, MODEL_TYPE } from "../libs/utils"
 import { useForm } from "react-hook-form"
 import { Case, getCase, typeStatus, typeTipo, updateCase } from "../libs/caseActions"
-
+import caseService from "../services/cases.service"
 interface AlertState {
   message: string;
   tipe: 'success' | 'error';
@@ -36,14 +36,18 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
         status:     'INITIATED',
       
     })
- 
+  id='66de70c1b40072153d42795d'
 
   useEffect (()=>{
+   
     const fetchData = async () =>{
       try {
+        const axioData = await caseService.getCasesList()
+        console.log("llamada axios:", axioData)
+        console.log(import.meta.env.VITE_API_URL)
         const caseData: Case = await getCase(id)
         if(!caseData.applicant){
-          setAlert({...alert, message: "No se pudo obetener los datos", tipe: 'error' })
+          setAlert({...alert, message: "No se pudo obtener los datos", tipe: 'error' })
           setShow(true)
         }
         
@@ -85,7 +89,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
    
 
     const onSubmit =  handleSubmit( async(data) =>{
-        console.log('form acutaluzar: ', data)
+        console.log('form acutalizar: ', data)
 
            const res = await updateCase(data, id);
      
@@ -97,9 +101,10 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
              throw new Error('No se pudo actualizarrr el caso');
            
            } else {
+           // reset()
             setAlert({...alert, message: "El caso fue actualizado", tipe: 'success' })
              setShow(true)
-             reset()
+             
            }
 
     })

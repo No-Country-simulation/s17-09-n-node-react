@@ -1,4 +1,4 @@
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI1ODU5MTQzLCJleHAiOjE3MjU4NjAwNDN9.ZxBmny4V5yhKfaAx4JczAm0I8C6Fn4sjiyX18inHLLU'
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI2MDc4MzUzLCJleHAiOjE3MjYwNzkyNTN9.M7avqCZfoqcghpeIE_G7Hj613108r35YukQYcmLCfUY'
 const API_BACK = 'https://s17-09-n-node-react.onrender.com/api/v1'
 export interface Case {
     caseName:   string
@@ -7,12 +7,12 @@ export interface Case {
     applicant:  string
     respondent: string
     type:       typeTipo 
-    status:     typeStatus // TO DO añadir  valor por defecto 
+    status:     typeStatus 
     userId:     string   
   } 
 
-  export type typeStatus = 'INITIATED' | 'EVIDENCE' | 'JUDGMENT' | 'CLOSED';
-  export type typeTipo = 'SUCCESSION' | 'EXECUTION' | 'TERMINATION'| 'DAMAGES_AND_LOSSES' |'CONTRACT_DISPUTE' |'FAMILY_LAW'| 'CRIMINAL'| 'PROPERTY_DISPUTE' |'PERSONAL_INJURY' |'INTELLECTUAL_PROPERTY'
+export type typeStatus = 'INITIATED' | 'EVIDENCE' | 'JUDGMENT' | 'CLOSED';
+export type typeTipo = 'SUCCESSION' | 'EXECUTION' | 'TERMINATION'| 'DAMAGES_AND_LOSSES' |'CONTRACT_DISPUTE' |'FAMILY_LAW'| 'CRIMINAL'| 'PROPERTY_DISPUTE' |'PERSONAL_INJURY' |'INTELLECTUAL_PROPERTY'
 
 export const newCase = async(data: Case) => {
 

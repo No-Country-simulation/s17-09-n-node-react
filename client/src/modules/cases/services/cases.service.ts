@@ -1,18 +1,23 @@
 import axios from 'axios'
 import { lawCaseApi } from '../../../apis'
 
-interface CaseCreateInfoType {
-  caseName: string
-  jury: string
+export interface Case {
+  caseName:   string
+  jury:       string
   caseNumber: string
-  applicant: string
+  applicant:  string
   respondent: string
-  type: string
-  status: string
-  userId: string
-}
+  type:       typeTipo 
+  status:     typeStatus 
+  userId:     string   
+} 
 
-const createCase = async (data: CaseCreateInfoType) => {
+export type typeStatus = 'INITIATED' | 'EVIDENCE' | 'JUDGMENT' | 'CLOSED';
+export type typeTipo = 'SUCCESSION' | 'EXECUTION' | 'TERMINATION'| 'DAMAGES_AND_LOSSES' |'CONTRACT_DISPUTE' |'FAMILY_LAW'| 'CRIMINAL'| 'PROPERTY_DISPUTE' |'PERSONAL_INJURY' |'INTELLECTUAL_PROPERTY'
+
+
+
+const createCase = async (data: Case) => {
   try {
     const response = await lawCaseApi.post('/cases', data)
     return {
