@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     dispatch({ type: 'setLoading' })
 
     try {
-      await lawCaseApi.get('user/logout')
+      await lawCaseApi.get('/user/logout')
       dispatch({ type: 'logout', payload: null })
     } catch (error) {
       dispatch({ type: 'logout', payload: null })
@@ -176,7 +176,11 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       async (error) => {
         const prevRequest = error?.config
 
-        if (error?.response?.status === 403) {
+        if (
+          error?.response?.status === 403 &&
+          error?.response?.data?.error?.description === 'jwt expired' &&
+          !prevRequest?._retry
+        ) {
           try {
             const token = await startRefreshToken()
 

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
@@ -20,7 +21,7 @@ type Inputs = {
 
 const Login = () => {
   const navigate = useNavigate()
-  const { startLogin, errorMessage } = useAuth()
+  const { startLogin, errorMessage, status } = useAuth()
 
   const {
     register,
@@ -30,8 +31,12 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await startLogin({ ...data })
-    navigate('/profile')
   }
+
+  // Temporal
+  useEffect(() => {
+    if (status === 'authenticated') navigate('/')
+  }, [status])
 
   return (
     <Container maxWidth='sm'>
