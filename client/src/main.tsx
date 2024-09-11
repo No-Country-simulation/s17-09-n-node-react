@@ -11,12 +11,15 @@ import './index.css'
 
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme/theme.ts'
+import { SnackbarProvider } from 'notistack'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <ThemeProvider theme={theme}>
-        <App />
+        <SnackbarProvider maxSnack={3}>
+          <App />
+        </SnackbarProvider>
       </ThemeProvider>
     </AuthProvider>
   </StrictMode>,
