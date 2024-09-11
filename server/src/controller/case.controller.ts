@@ -62,12 +62,21 @@ export class CaseController {
       throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
     }
 
-    // if (req.user?.role !== ROLE.ADMIN) {
-    // }
-
     caseService
       .getCaseById(id)
-      .then((data) => res.status(200).json(data))
+      .then((data) => {
+        if (req.user?.role !== ROLE.ADMIN) {
+          if (data.userId !== userId) {
+            throw new HttpError(
+              401,
+              HTTP_STATUS.UNAUTHORIZED,
+              'Only an admin can get a case created by a different user',
+            )
+          }
+        }
+
+        return res.status(200).json(data)
+      })
       .catch((error) => next(error))
   }
 
@@ -97,17 +106,6 @@ export class CaseController {
   async updateCase(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
-      const userId = req.user?.id
-
-      if (req.user?.role !== ROLE.ADMIN) {
-        if (req.user?.id !== userId) {
-          throw new HttpError(
-            401,
-            HTTP_STATUS.UNAUTHORIZED,
-            'Only an admin can get cases created by a different user',
-          )
-        }
-      }
 
       const [errors, updateCaseDto] = UpdateCaseDTO.create(req.body)
 
@@ -115,9 +113,21 @@ export class CaseController {
         return res.status(400).json({ errors })
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const updatedCase = await caseService.updateCase(id, updateCaseDto)
-      res.status(200).json(updatedCase)
+      if (req.user?.role === ROLE.ADMIN) {
+        const updatedCase = await caseService.updateCase(id, updateCaseDto)
+        res.status(200).json(updatedCase)
+      } else {
+        const userId = req.user?.id
+
+        if (!userId) {
+          throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
+        }
+
+        caseService
+          .checkUserIdAndUpdateCase(id, userId, updateCaseDto)
+          .then((data) => res.status(200).json(data))
+          .catch((error) => next(error))
+      }
     } catch (error) {
       next(error)
     }
@@ -126,19 +136,20 @@ export class CaseController {
   async deleteCase(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params
-      const userId = req.user?.id
 
-      if (req.user?.role !== ROLE.ADMIN) {
-        if (req.user?.id !== userId) {
-          throw new HttpError(
-            401,
-            HTTP_STATUS.UNAUTHORIZED,
-            'Only an admin can get cases created by a different user',
-          )
+      if (req.user?.role === ROLE.ADMIN) {
+        await caseService.deleteCase(id)
+        res.status(200).json({ message: 'Case deleted successfully' })
+      } else {
+        const userId = req.user?.id
+
+        if (!userId) {
+          throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
         }
+
+        await caseService.checkUserIdAndDeleteCase(id, userId)
+        res.status(200).json({ message: 'Case deleted successfully' })
       }
-      await caseService.deleteCase(id)
-      res.status(200).json({ message: 'Case deleted successfully' })
     } catch (error) {
       next(error)
     }

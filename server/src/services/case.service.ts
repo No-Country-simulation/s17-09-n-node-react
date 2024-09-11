@@ -16,7 +16,12 @@ export class CaseService {
   }
 
   async getCaseById(id: string) {
-    const caseFound = await prisma.case.findUnique({ where: { id } })
+    const caseFound = await prisma.case.findUnique({
+      where: { id },
+      include: {
+        movements: true,
+      },
+    })
     if (!caseFound) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Case not found!')
     return caseFound
   }
@@ -34,7 +39,49 @@ export class CaseService {
     })
   }
 
+  async checkUserIdAndUpdateCase(caseId: string, userId: string, updateCaseDto: UpdateCaseDTO) {
+    const caseFound = await prisma.case.findUnique({
+      where: { id: caseId },
+    })
+
+    if (!caseFound) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Case not found!')
+
+    if (caseFound.userId !== userId) {
+      throw new HttpError(
+        401,
+        HTTP_STATUS.UNAUTHORIZED,
+        'Only an admin can update a case created by a different user',
+      )
+    }
+
+    return await this.updateCase(caseId, updateCaseDto)
+  }
+
   async deleteCase(id: string) {
+    await prisma.movement.deleteMany({
+      where: {
+        caseId: id,
+      },
+    })
+
     return await prisma.case.delete({ where: { id } })
+  }
+
+  async checkUserIdAndDeleteCase(caseId: string, userId: string) {
+    const caseFound = await prisma.case.findUnique({
+      where: { id: caseId },
+    })
+
+    if (!caseFound) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'Case not found!')
+
+    if (caseFound.userId !== userId) {
+      throw new HttpError(
+        401,
+        HTTP_STATUS.UNAUTHORIZED,
+        'Only an admin can delete a case created by a different user',
+      )
+    }
+
+    return await this.deleteCase(caseId)
   }
 }
