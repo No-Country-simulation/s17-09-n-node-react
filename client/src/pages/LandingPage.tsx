@@ -90,7 +90,7 @@ const LandingPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto text-center">
-          <p>&copy; S17-09-n-node-react</p>
+          <p>&copy; S17-09-N-NODE-REACT</p>
         </div>
       </footer>
     </div>
