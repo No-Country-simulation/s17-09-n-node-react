@@ -1,12 +1,18 @@
 import { createContext } from 'react'
 
-import type { IAuth, IUser, ILoginData, IRegisterData } from '../../interfaces'
+import type {
+  IAuth,
+  IUser,
+  ILoginData,
+  IRegisterData,
+  StatusRespMsg,
+} from '../../interfaces'
 
 interface IAuthContext extends IAuth {
   startLogin: (data: ILoginData) => Promise<void>
-  startRegister: (data: IRegisterData) => Promise<void>
+  startRegister: (data: IRegisterData) => Promise<StatusRespMsg>
   startLogout: () => Promise<void>
-  startRefreshToken: () => Promise<void>
+  startRefreshToken: () => Promise<string | undefined>
   setUser: (user: IUser) => void
 }
 

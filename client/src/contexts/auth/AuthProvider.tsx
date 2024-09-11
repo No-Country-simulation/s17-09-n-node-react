@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useReducer, useEffect } from 'react'
 
 import { AxiosError } from 'axios'
@@ -7,7 +8,13 @@ import { AuthContext } from './AuthContext'
 import { authReducer } from './authReducer'
 
 import { lawCaseApi } from '../../apis'
-import { IAuth, IUser, ILoginData, IRegisterData } from '../../interfaces'
+import type {
+  IAuth,
+  IUser,
+  ILoginData,
+  IRegisterData,
+  StatusRespMsg,
+} from '../../interfaces'
 
 interface IAuthProviderProps {
   children: React.ReactNode
@@ -70,7 +77,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   }
 
-  const startRegister = async (credentials: IRegisterData) => {
+  const startRegister = async (
+    credentials: IRegisterData,
+  ): Promise<StatusRespMsg> => {
     dispatch({ type: 'clearErrorMessage' })
 
     try {
@@ -79,19 +88,40 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       })
 
       if (response.status !== 201) {
-        dispatch({
-          type: 'logout',
-          payload: 'Ocurrió un error. Por favor intente más tarde.',
-        })
-        return
+        return {
+          ok: false,
+          msg: 'Ocurrió un error. Por favor intente más tarde.',
+        }
       }
 
-      await startLogin({
-        email: credentials.email,
-        password: credentials.password,
-      })
+      return {
+        ok: true,
+        msg: 'Registro exitoso. Por favor, inicia sesión.',
+      }
     } catch (error) {
-      dispatch({ type: 'logout', payload: null })
+      if (error instanceof AxiosError) {
+        if (error.response && error.response.status === 409) {
+          return {
+            ok: false,
+            msg: 'El email ya está registrado.',
+          }
+        } else {
+          return {
+            ok: false,
+            msg: 'Error inesperado en el servidor.',
+          }
+        }
+      } else if (error instanceof Error) {
+        return {
+          ok: false,
+          msg: 'Error: ' + error.message,
+        }
+      } else {
+        return {
+          ok: false,
+          msg: 'Error desconocido: ' + error,
+        }
+      }
     }
   }
 
@@ -106,7 +136,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   }
 
-  const startRefreshToken = async () => {
+  const startRefreshToken = async (): Promise<string | undefined> => {
     dispatch({ type: 'setLoading' })
 
     try {
@@ -115,6 +145,8 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       const user = await getUser(data.accessToken)
 
       dispatch({ type: 'login', payload: { token: data.accessToken, user } })
+
+      return data.accessToken as string
     } catch (error) {
       dispatch({ type: 'logout', payload: null })
     }
@@ -146,16 +178,20 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
         if (error?.response?.status === 403) {
           try {
-            const { data } = await lawCaseApi.get('user/refresh')
+            const token = await startRefreshToken()
 
-            dispatch({ type: 'login', payload: data.accessToken })
+            if (!token) throw new Error('Token could not be obtained')
 
-            prevRequest.headers.Authorization = `Bearer ${data.accessToken}`
+            prevRequest.headers.Authorization = `Bearer ${token}`
             prevRequest._retry = true
 
             return lawCaseApi(prevRequest)
           } catch (error) {
-            dispatch({ type: 'logout', payload: null })
+            dispatch({
+              type: 'logout',
+              payload:
+                'Su sesión ha expirado. Por favor, vuelva a iniciar sesión.',
+            })
           }
         }
 

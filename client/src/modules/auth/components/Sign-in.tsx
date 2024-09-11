@@ -29,7 +29,6 @@ const Login = () => {
   } = useForm<Inputs>({ mode: 'onChange' })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
     await startLogin({ ...data })
     navigate('/profile')
   }
@@ -106,12 +105,15 @@ const Login = () => {
               },
             }}
           />
+
           {errorMessage && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
               {errorMessage}
             </Alert>
           )}
+
           <Button
+            fullWidth
             type='submit'
             variant='contained'
             color='primary'
@@ -121,10 +123,24 @@ const Login = () => {
               color: 'white',
               width: '80%',
               margin: '0 10%',
+              '&.Mui-disabled': {
+                color: 'white',
+              },
             }}
-            fullWidth
           >
-            Ingresar
+            {isSubmitting && (
+              <Box
+                sx={{
+                  backgroundImage: { xs: `url(loader.svg)` },
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 16,
+                  width: 16,
+                  height: 16,
+                  marginRight: '0.5rem',
+                }}
+              />
+            )}
+            {isSubmitting ? 'Ingresando...' : 'Ingresar'}
           </Button>
         </form>
         <Typography

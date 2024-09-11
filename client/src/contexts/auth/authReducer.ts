@@ -1,4 +1,4 @@
-import { IAuth, IUser } from '../../interfaces'
+import type { IAuth, IUser } from '../../interfaces'
 
 type TAuthAction =
   | {
