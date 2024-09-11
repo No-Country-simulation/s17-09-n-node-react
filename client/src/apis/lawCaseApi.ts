@@ -1,16 +1,10 @@
-import axios, { type AxiosRequestHeaders } from 'axios'
+import axios from 'axios'
 
-const lawCaseApi = axios.create({
+export const lawCaseApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': true,
+  },
 })
-
-lawCaseApi.interceptors.request.use((config) => {
-  config.headers = {
-    ...config.headers,
-    Authorization: localStorage.getItem('token'),
-  } as AxiosRequestHeaders
-
-  return config
-})
-
-export default lawCaseApi

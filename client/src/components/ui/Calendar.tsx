@@ -11,13 +11,13 @@ import type { Dayjs } from 'dayjs'
 const FONT_COLOR = 'white'
 const BG_SELECTED = 'rgba(255, 255, 255, 0.2)'
 
-interface CalendarProps {
+interface ICalendarProps {
   className?: string
   sx?: SxProps<Theme>
   onDateChange?: (date: Dayjs) => void
 }
 
-const Calendar = ({ className, sx, onDateChange }: CalendarProps) => {
+export const Calendar = ({ className, sx, onDateChange }: ICalendarProps) => {
   const [value, setValue] = useState<Dayjs | null>(null)
 
   const dayOfWeekFormatter = (date: Dayjs) =>
@@ -84,5 +84,3 @@ const Calendar = ({ className, sx, onDateChange }: CalendarProps) => {
     </Box>
   )
 }
-
-export default Calendar

@@ -1,7 +1,13 @@
 import { Outlet } from 'react-router-dom'
-import NavBar from '../components/NavBar'
+
+import { useAuth } from '../hooks'
+import { Loading, NavBar } from '../components'
 
 const Layout = () => {
+  const { status } = useAuth()
+
+  if (status === 'loading') return <Loading />
+
   return (
     <>
       <header className='fixed bg-policeBlue w-full'>

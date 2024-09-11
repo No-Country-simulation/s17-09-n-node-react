@@ -1,2 +1,2 @@
 export { default as useThemeSwitcher } from './useThemeSwitcher'
-export { useSession } from './useSession'
+export { useAuth } from './useAuth'
