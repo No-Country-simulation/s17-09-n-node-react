@@ -13,12 +13,14 @@ import ContactsIcon from '@mui/icons-material/Contacts'
 import WorkIcon from '@mui/icons-material/Work'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../../hooks'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const { startLogout } = useAuth();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -167,7 +169,7 @@ export default function NavBar() {
         Mi perfil
       </MenuItem>
       <MenuItem
-        onClick={handleClose}
+        onClick={startLogout}
         color='inherit'
         className='hover:!text-red-600 hover:!bg-policeBlue'
       >
