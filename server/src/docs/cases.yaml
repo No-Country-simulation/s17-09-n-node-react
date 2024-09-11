@@ -4,11 +4,6 @@ info:
   version: 1.0.0
   description: API Documentation
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   schemas:
     CreateCaseDTO:
       type: object
@@ -19,7 +14,6 @@ components:
         - applicant
         - respondent
         - type
-        - userId
       properties:
         caseName:
           type: string
@@ -51,8 +45,6 @@ components:
             - EVIDENCE
             - JUDGMENT
             - CLOSED
-        userId:
-          type: string
     UpdateCaseDTO:
       type: object
       properties:
@@ -127,11 +119,13 @@ components:
         userId:
           type: string
 paths:
-  /cases:
+  /api/v1/cases:
     post:
       summary: Create a new case
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       requestBody:
         required: true
         content:
@@ -147,8 +141,10 @@ paths:
                 $ref: '#/components/schemas/Case'
     get:
       summary: Get all cases
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       responses:
         200:
           description: A list of cases.
@@ -158,11 +154,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Case'
-  /cases/user/{userId}:
+  /api/v1/cases/user:
+    get:
+      summary: Get all cases created by logged in user
+      security:
+        - bearerAuth: []
+      tags:
+        - cases
+      responses:
+        200:
+          description: A list of cases for the specified user ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Case'
+        404:
+          description: No cases found for the specified user ID.
+  /api/v1/cases/user/{userId}:
     get:
       summary: Get all cases by user ID
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       parameters:
         - in: path
           name: userId
@@ -180,11 +196,13 @@ paths:
                   $ref: '#/components/schemas/Case'
         404:
           description: No cases found for the specified user ID.
-  /cases/{id}:
+  /api/v1/cases/{id}:
     get:
       summary: Get a case by ID
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       parameters:
         - in: path
           name: id
@@ -202,8 +220,10 @@ paths:
           description: Case not found.
     put:
       summary: Update a case by ID
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       parameters:
         - in: path
           name: id
@@ -227,8 +247,10 @@ paths:
           description: Failed to update case.
     delete:
       summary: Delete a case by ID
+      security:
+        - bearerAuth: []
       tags:
-        - Cases
+        - cases
       parameters:
         - in: path
           name: id
