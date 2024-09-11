@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import {
   Box,
   Paper,
@@ -10,34 +10,54 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material'
-
+import DoneIcon from '@mui/icons-material/Done'
+import ErrorIcon from '@mui/icons-material/Error'
+import GroupsIcon from '@mui/icons-material/Groups'
+import ArchiveIcon from '@mui/icons-material/Archive'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import TodayIcon from '@mui/icons-material/Today'
-import BookmarkIcon from '@mui/icons-material/Bookmark'
-import EventAvailableIcon from '@mui/icons-material/EventAvailable'
-import DoneAllIcon from '@mui/icons-material/DoneAll'
-import RemoveDoneIcon from '@mui/icons-material/RemoveDone'
-import _default from '@emotion/styled'
+
+const CaseTypes: { [key: string]: string } = {
+  SUCCESSION: 'Sucesión',
+  EXECUTION: 'Ejecución',
+  TERMINATION: 'Despido',
+  DAMAGES_AND_LOSSES: 'Daños y perjuicios',
+  CONTRACT_DISPUTE: 'Disputa contractual',
+  FAMILY_LAW: 'Derecho de familia',
+  CRIMINAL: 'Penal',
+  PROPERTY_DISPUTE: 'Disputa de propiedad',
+  PERSONAL_INJURY: 'Lesiones personales',
+  INTELLECTUAL_PROPERTY: 'Propiedad intelectual',
+}
+
+const CasesStatus: { [key: string]: string } = {
+  INITIATED: 'Inicio',
+  EVIDENCE: 'Prueba',
+  JUDGMENT: 'Sentencia',
+  CLOSED: 'Archivado',
+}
 
 // Type de Caso
-export interface MovementInfoType {
+export interface CaseInfoType {
   id: string
   createdAt: string
-  date: string
-  title: string
+  caseName: string
+  jury: string
+  caseNumber: string
+  applicant: string
+  respondent: string
   type: string
-  done: boolean
-  content: string
-  caseId: string
+  status: string
+  userId: string
 }
 
-interface MovementCardProp {
-  movementInfo: MovementInfoType
+interface CaseCardProp {
+  caseInfo: CaseInfoType
 }
 
-const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
+const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
+  const navigate = useNavigate()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -49,23 +69,17 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
     setAnchorEl(null)
   }
 
-  const paperColor = (() => {
-    if (movementInfo.done === true && movementInfo.type === 'agenda') {
-      return '#424769'
-    } else if (movementInfo.type === 'procedural') {
-      return '#7077A1'
-    } else if (movementInfo.done === false && movementInfo.type === 'agenda') {
-      return '#F6B17A'
-    }
-    return 'primary.light'
-  })()
+  const handleOpenCase = () => {
+    navigate(`/cases/details/${caseInfo.id}`)
+  }
+
   return (
     <>
       <li>
         <Paper
           sx={{
             marginBottom: '10px',
-            backgroundColor: paperColor,
+            backgroundColor: 'primary.light',
             borderRadius: '15px',
             transition: 'transform 0.1s ease, box-shadow 0.3s ease',
             '&:hover': {
@@ -83,6 +97,7 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
             gap={1}
             flexDirection={{ xs: 'column', sm: 'row', lg: 'row' }}
           >
+            {/* Estado del caso - Tipo de caso */}
             <Box
               display={'flex'}
               alignItems={'center'}
@@ -90,27 +105,32 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
               px={0}
               color={'white'}
             >
-              {movementInfo.type === 'agenda' &&
-                movementInfo.done === false && <TodayIcon sx={{ width: 50 }} />}
-              {movementInfo.type === 'agenda' && movementInfo.done === true && (
-                <EventAvailableIcon sx={{ width: 50 }} />
+              {caseInfo.status == 'INITIATED' && (
+                <DoneIcon sx={{ width: 50 }} />
               )}
-              {movementInfo.type === 'procedural' && (
-                <BookmarkIcon sx={{ width: 50 }} />
+              {caseInfo.status == 'EVIDENCE' && (
+                <ErrorIcon sx={{ width: 50 }} />
               )}
-
-              <Typography variant='caption'>{movementInfo.date}</Typography>
+              {caseInfo.status == 'JUDGMENT' && (
+                <GroupsIcon sx={{ width: 50 }} />
+              )}
+              {caseInfo.status == 'CLOSED' && (
+                <ArchiveIcon sx={{ width: 50 }} />
+              )}
+              <Typography variant='caption'>
+                {`${CasesStatus[caseInfo.status]} - ${CaseTypes[caseInfo.type]}`}
+              </Typography>
             </Box>
 
             {/* Nombre del caso */}
             <Box display={'flex'} justifyContent={'center'}>
-              <Button onClick={_default}>
+              <Button onClick={handleOpenCase}>
                 <Typography
                   variant='body1'
                   color={'white'}
                   sx={{ textTransform: 'none' }}
                 >
-                  {movementInfo.title}
+                  {caseInfo.caseName}
                 </Typography>
               </Button>
             </Box>
@@ -148,28 +168,6 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                   },
                 }}
               >
-                {movementInfo.type === 'agenda' &&
-                  movementInfo.done === false && (
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <DoneAllIcon
-                          sx={{ color: 'white', fontSize: 'medium' }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText>Marcar como hecho</ListItemText>
-                    </MenuItem>
-                  )}
-                {movementInfo.type === 'agenda' &&
-                  movementInfo.done === true && (
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <RemoveDoneIcon
-                          sx={{ color: 'white', fontSize: 'medium' }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText>Marcar como pendiente</ListItemText>
-                    </MenuItem>
-                  )}
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
                     <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
@@ -191,4 +189,4 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
   )
 }
 
-export default MovementCard
+export default CaseCard
