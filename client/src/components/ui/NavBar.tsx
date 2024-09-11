@@ -20,7 +20,7 @@ export default function NavBar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const { startLogout } = useAuth();
+  const { startLogout } = useAuth()
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
