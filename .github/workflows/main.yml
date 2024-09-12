@@ -67,14 +67,6 @@ jobs:
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
           JWT_REFRESH_EXPIRATION: 14d
 
-      - name: Run migrations
-        run: npm run migrate
-        working-directory: ./server
-
-      - name: Run seeds
-        run: npm run seed
-        working-directory: ./server
-
       - name: Lint
         run: npm run back:lint
 
