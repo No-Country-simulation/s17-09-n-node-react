@@ -61,6 +61,8 @@ jobs:
 
       - name: Testing
         run: npm run back:test
+        env:
+          NODE_ENV: test
 
   frontend:
     if: needs.detect-changes.outputs.frontend_changed == 'true'
