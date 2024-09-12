@@ -14,11 +14,9 @@ export default class App {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))
 
-    const clientUrl = envs.nodeEnv === 'prod' ? (envs.clientUrl as string) : '*'
-
     this.app.use(
       cors({
-        origin: clientUrl,
+        origin: envs.clientUrl as string,
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,
