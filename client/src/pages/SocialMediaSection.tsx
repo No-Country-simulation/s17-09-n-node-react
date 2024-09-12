@@ -1,6 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faTwitter, faWhatsapp } from '@fortawesome/free-brands-svg-icons';   
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import TwitterIcon from '@mui/icons-material/Twitter';  // 'X' anteriormente conocido como Twitter
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+
 
 
 function SocialMediaSection() {
@@ -11,16 +14,16 @@ function SocialMediaSection() {
   return (
     <div className="social-media-section">
       <button onClick={() => handleSocialMediaClick('enlace_a_facebook')}>
-        <FontAwesomeIcon icon={faFacebook} />
+        <FacebookIcon /> 
       </button>
       <button onClick={() => handleSocialMediaClick('enlace_a_instagram')}>
-        <FontAwesomeIcon icon={faInstagram} />
+        <InstagramIcon /> 
       </button>
       <button onClick={() => handleSocialMediaClick('enlace_a_x')}> {/* 'X' anteriormente conocido como Twitter */}
-        <FontAwesomeIcon icon={faTwitter} /> 
+        <TwitterIcon />  
       </button>
       <button onClick={() => handleSocialMediaClick('enlace_a_whatsapp')}>
-        <FontAwesomeIcon icon={faWhatsapp} />
+        <WhatsAppIcon /> 
       </button>
     </div>
   );

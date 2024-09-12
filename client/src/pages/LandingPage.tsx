@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 
 // Componente para el carrusel de testimonios
 const TestimonialCarousel: React.FC = () => {
@@ -36,7 +38,12 @@ const TestimonialCarousel: React.FC = () => {
     );
   };
 
-const LandingPage: React.FC = () => {
+ 
+
+
+
+const LandingPage: React.FC = () => { const navigate = useNavigate()
+  const redirigir=()=> { navigate ("./register") }
   return (
     <div className="landing-page">
       {/* Sección de presentación */}
@@ -44,7 +51,7 @@ const LandingPage: React.FC = () => {
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold mb-4">Bienvenido a nuestra página</h1>
           <p className="text-lg mb-8">Descubre nuestros increíbles productos y servicios</p>
-          <button  className="bg-white text-blue-500 font-bold py-2 px-4 rounded"> 
+          <button onClick={redirigir} className="bg-white text-blue-500 font-bold py-2 px-4 rounded"> 
             ¡Comienza ahora!
           </button>
         </div>
@@ -84,8 +91,10 @@ const LandingPage: React.FC = () => {
             Lo que dicen nuestros clientes
           </h2>
           <TestimonialCarousel />
+          
         </div>
       </section>
+
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
