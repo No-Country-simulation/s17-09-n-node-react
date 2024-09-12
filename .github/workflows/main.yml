@@ -63,6 +63,12 @@ jobs:
         run: npm run back:test
         env:
           NODE_ENV: test
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PORT: 8080
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_ACCESS_EXPIRATION: 14d
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          JWT_REFRESH_EXPIRATION: 14d
 
   frontend:
     if: needs.detect-changes.outputs.frontend_changed == 'true'
