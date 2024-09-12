@@ -1,0 +1,267 @@
+openapi: 3.0.0
+info:
+  title: Contact API
+  description: API for managing contacts
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+paths:
+  /contacts:
+    get:
+      summary: Get all contacts
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      responses:
+        '200':
+          description: A list of contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      summary: Create a new contact
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContact'
+      responses:
+        '201':
+          description: Contact created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /contacts/{id}:
+    get:
+      summary: Get a contact by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      summary: Update a contact by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContact'
+      responses:
+        '200':
+          description: Contact updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    delete:
+      summary: Delete a contact by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Contact deleted successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /contacts/case/{caseId}:
+    get:
+      summary: Get contacts by case ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Contacts
+      parameters:
+        - name: caseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of contacts for the specified case ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+components:
+  schemas:
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        relation:
+          type: string
+          enum:
+            - WITNESS
+            - EXPERT
+            - CLIENT
+            - DEFENDANT
+        caseId:
+          type: string
+    CreateContact:
+      type: object
+      required:
+        - name
+        - lastName
+        - phone
+        - email
+        - address
+        - relation
+        - caseId
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        relation:
+          type: string
+          enum:
+            - WITNESS
+            - EXPERT
+            - CLIENT
+            - DEFENDANT
+        caseId:
+          type: string
+    UpdateContact:
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        relation:
+          type: string
+          enum:
+            - WITNESS
+            - EXPERT
+            - CLIENT
+            - DEFENDANT
+        caseId:
+          type: string
+
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    BadRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
