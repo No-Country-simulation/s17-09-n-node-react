@@ -114,7 +114,7 @@ const CasesListPage: React.FC = () => {
         }
       })
     }
-  }, [cases, token])
+  }, [token])
 
   return (
     <Box
