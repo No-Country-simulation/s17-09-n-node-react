@@ -155,7 +155,7 @@ const deleteCase = async (id: string) => {
 
 
 /////// CODIGO MOMENTANEO  ELIMINAR  /////
-const tokeen = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI2MDk3NjM5LCJleHAiOjE3MjYwOTg1Mzl9.6jbPCtm-0w8MJatcl2Pk8r8P0eLE8Z5BDN-uT2Gp-MA'
+const tokeen = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI2MTA5NzYwLCJleHAiOjE3MjYxMTA2NjB9.-n1DXLKMfLyEVr_1AtynUA9t5MzHVDy8y9VNiyEaRyY'
 
 const updateCase = async (id: string, data: Case) => {
   try {

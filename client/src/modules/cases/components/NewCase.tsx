@@ -1,5 +1,5 @@
 
-import {Typography, Box, Button, Container, TextField, Select, MenuItem, InputLabel, FormControl, Alert} from '@mui/material'
+import {Typography, Box, Button, Container, TextField, Select, MenuItem, InputLabel, FormControl, Alert, styled} from '@mui/material'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -10,6 +10,27 @@ interface AlertState {
   message: string;
   tipe: 'success' | 'error' | 'info';
 }
+
+const CustomTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInputLabel-shrink': {
+    backgroundColor: '#424769', 
+    padding: '0 5px',    
+    color: 'white',      
+  }
+});
+const CustomFormControl = styled(FormControl)({
+  '& label.Mui-focused': {
+    color: 'white', 
+  },
+  '& .MuiInputLabel-shrink': {
+    backgroundColor: '#424769', 
+    padding: '0 5px',       
+    color: 'white',           
+  }
+});
 
 export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<boolean>>}) =>  {
 
@@ -37,7 +58,6 @@ const onSubmit =  handleSubmit( async(data) => {
       if (res.status !== 201) {
         setAlert({...alert, message: "No se pudo crear el caso", tipe: 'error' })
         setShow(true)
-        console.log('hola hola',alert)
         throw new Error('No se pudo crear el caso');
       
     } else {
@@ -61,7 +81,7 @@ const onSubmit =  handleSubmit( async(data) => {
       <form onSubmit={onSubmit}>
         {
             INPUTS_FORM.map((item) =>(
-                <TextField
+                <CustomTextField
                 label={item.label}
                 variant="outlined"
                 fullWidth
@@ -77,7 +97,7 @@ const onSubmit =  handleSubmit( async(data) => {
               />
             ))
         }
- <FormControl  required      sx={{ my:2,  minWidth: '100%'}}> 
+ <CustomFormControl  required      sx={{ my:2,  minWidth: '100%'}}> 
         <InputLabel id="demo-simple">Tipo</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black',}}
          
@@ -94,9 +114,8 @@ const onSubmit =  handleSubmit( async(data) => {
             ))
           }
         </Select>
-   
-     
-        </FormControl>
+        </CustomFormControl>
+
         <Button sx={{my: 2}} color="secondary" type="submit" variant="contained"  fullWidth >
         Crear
           </Button>

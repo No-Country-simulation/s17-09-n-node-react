@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Container, FormControl, InputLabel, MenuItem, Select, styled, TextField, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { IoMdCloseCircleOutline } from "react-icons/io"
 import { INPUTS_FORM_UPD, MODEL_STATUS, MODEL_TYPE } from "../libs/utils"
@@ -9,6 +9,28 @@ interface AlertState {
   message: string;
   tipe: 'success' | 'error';
 }
+
+const CustomTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'white',
+  },
+  '& .MuiInputLabel-shrink': {
+    backgroundColor: '#424769', 
+    padding: '0 5px',    
+    color: 'white',      
+  }
+});
+const CustomFormControl = styled(FormControl)({
+  '& label.Mui-focused': {
+    color: 'white', 
+  },
+  '& .MuiInputLabel-shrink': {
+    backgroundColor: '#424769', 
+    padding: '0 5px',       
+    color: 'white',           
+  }
+});
+
 export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetStateAction<boolean>>, id:string}) => {
  
  
@@ -125,7 +147,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
           
             INPUTS_FORM_UPD.map((item) =>(
 
-                <TextField
+                <CustomTextField
                 label={item.label}
                 variant="outlined"
                 {...register(item.name)}  
@@ -146,7 +168,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
         }
 
     <div className="flex gap-6 justify-between">
-    <FormControl required sx={{ my:1,  minWidth: '45%'}}>
+    <CustomFormControl required sx={{ my:1,  minWidth: '45%'}}>
     <InputLabel id="demo">Tipo</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black',}}
           labelId="demo"
@@ -169,9 +191,9 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
             ))
           }
         </Select>
-        </FormControl>
+        </CustomFormControl>
       
-        <FormControl required sx={{ my:1,  minWidth: '45%'}}>  
+        <CustomFormControl required sx={{ my:1,  minWidth: '45%'}}>  
        
         <InputLabel id="select-estado" >Estado</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black'}}
@@ -194,7 +216,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
           }
       
         </Select>
-        </FormControl> 
+        </CustomFormControl> 
       
     </div>
        
