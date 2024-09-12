@@ -32,6 +32,7 @@ model Case {
   User       User       @relation(fields: [userId], references: [id])
   userId     String     @db.ObjectId
   movements  Movement[]
+  contacts   Contact[]
 }
 
 model Movement {
@@ -44,6 +45,18 @@ model Movement {
   content   String
   Case      Case         @relation(fields: [caseId], references: [id])
   caseId    String       @db.ObjectId
+}
+
+model Contact {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  lastName  String
+  phone     String
+  email     String
+  address   String
+  relation  ContactRelation
+  caseId    String       @db.ObjectId
+  Case      Case         @relation(fields: [caseId], references: [id])
 }
 
 enum Role {
@@ -74,4 +87,11 @@ enum CaseStatus {
 enum MovementType {
   APPOINTMENT
   PROCEDURAL_ACTION
+}
+
+enum ContactRelation {
+  WITNESS
+  EXPERT
+  CLIENT
+  DEFENDANT
 }
