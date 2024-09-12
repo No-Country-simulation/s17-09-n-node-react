@@ -41,7 +41,7 @@ model Case {
 model Movement {
   id        String       @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime     @default(now())
-  updatedAt DateTime   @default(now())
+  updatedAt DateTime     @default(now())
   date      DateTime
   title     String
   type      MovementType
@@ -49,14 +49,6 @@ model Movement {
   content   String
   Case      Case         @relation(fields: [caseId], references: [id])
   caseId    String       @db.ObjectId
-}
-
-model Document {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  date      DateTime    @default(now())
-  header    String
-  body      String
-  footer    String
 }
 
 enum Role {
