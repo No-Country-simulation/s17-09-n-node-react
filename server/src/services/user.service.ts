@@ -85,7 +85,12 @@ export class UserService {
   }
 
   async getUserById(id: string) {
-    return await prisma.user.findUnique({ where: { id } })
+    return await prisma.user.findUnique({
+      where: { id },
+      include: {
+        cases: true,
+      },
+    })
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDTO) {

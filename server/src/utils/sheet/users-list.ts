@@ -52,21 +52,25 @@ export default function getUsersListPdf(options: ListOptions): TDocumentDefiniti
         fontSize: 12,
         table: {
           headerRows: 1,
-          widths: ['auto', '*', 50, 50],
+          widths: [100, 'auto', '*', 100, 50, 50, 50],
           body: [
             // HEADER
             [
+              { text: 'Última actualización', color: '#ffffff', bold: true },
               { text: 'Apellido, Nombre', color: '#ffffff', bold: true },
               { text: 'Correo', color: '#ffffff', bold: true },
+              { text: 'Fecha de creación', color: '#ffffff', bold: true },
               { text: 'Rol', color: '#ffffff', bold: true },
               { text: 'Activo', color: '#ffffff', bold: true },
+              { text: 'Casos', color: '#ffffff', bold: true },
             ],
             // USERS
             ...users.map((user) => [
               { text: `${user.lastName}, ${user.name}`, bold: true },
               user.email,
               user.role,
-              { text: 'Sí', bold: true },
+              { text: `${user.isActive ? 'Sí' : 'No'}`, bold: true },
+              { text: `${!user.cases?.length ? 0 : user.cases.length}`, bold: true },
             ]),
           ],
         },

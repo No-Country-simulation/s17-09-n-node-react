@@ -10,20 +10,13 @@ const caseService = new CaseService()
 export class CaseController {
   createCase(req: Request, res: Response, next: NextFunction) {
     const userId = req.user?.id
-    const { body } = req
-
-    if (!userId) {
-      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
-    }
-
-    const caseWithUserId = { ...body, userId }
-
-    const [error, createCaseDto] = CreateCaseDTO.create(caseWithUserId)
+    if (!userId) throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
+    const [error, createCaseDto] = CreateCaseDTO.create(req.body)
 
     if (error || !createCaseDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
 
     caseService
-      .createCase(createCaseDto)
+      .createCase(userId, createCaseDto)
       .then((data) => res.status(201).json(data))
       .catch((error) => next(error))
   }

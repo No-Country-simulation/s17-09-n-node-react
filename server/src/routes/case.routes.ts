@@ -18,8 +18,10 @@ export default class CaseRoutes {
     router.get('/:id', authHandler, controller.getCaseById, errorHandler)
     // POST routes
     router.post('/', authHandler, controller.createCase, errorHandler)
+
     // PUT routes
     router.put('/:id', authHandler, controller.updateCase, errorHandler)
+
     // DELETE routes
     router.delete('/:id', authHandler, controller.deleteCase, errorHandler)
 

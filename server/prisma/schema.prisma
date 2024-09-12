@@ -8,20 +8,24 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  name     String
-  lastName String
-  password String
-  role     Role   @default(USER)
-  refreshToken String[] @default([])
-  imageUrl String @default("image")
-  cases    Case[]
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  email         String    @unique
+  name          String
+  lastName      String
+  password      String
+  role          Role      @default(USER)
+  refreshToken  String[]  @default([])
+  isActive      Boolean   @default(true)
+  imageUrl      String    @default("image")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  cases         Case[]
 }
 
 model Case {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now())
   caseName   String
   jury       String
   caseNumber String
@@ -37,6 +41,7 @@ model Case {
 model Movement {
   id        String       @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime     @default(now())
+  updatedAt DateTime   @default(now())
   date      DateTime
   title     String
   type      MovementType

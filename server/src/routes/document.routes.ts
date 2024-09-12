@@ -14,8 +14,6 @@ export default class DocumentRoutes {
     router.get('/report', authHandler, controller.getReportPdf, errorHandler)
     router.get(
       '/users',
-      authHandler,
-      rolesHandler(Role.ADMIN),
       controller.getUsersListPdf,
       errorHandler,
     )

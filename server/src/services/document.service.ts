@@ -21,9 +21,13 @@ export class DocumentService {
         name: true,
         lastName: true,
         role: true,
+        isActive: true,
+        cases: true,
+        createdAt: true,
+        updatedAt: true,
       },
       orderBy: {
-        lastName: 'asc',
+        updatedAt: 'asc',
       },
     })
     const docDefinition: TDocumentDefinitions = getUsersListPdf({ users: users })
