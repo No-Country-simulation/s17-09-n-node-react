@@ -19,6 +19,7 @@ import ProfilePage from './modules/auth/pages/ProfilePage'
 import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
 
 import './App.css'
+//import { Cases } from './modules/cases/pages/Cases'
 
 
 const router = createBrowserRouter([
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       {
         path: 'cases',
         element: <CasesListPage />,
+      //  element: <Cases />,
       },
       {
         path: 'cases/:caseId',

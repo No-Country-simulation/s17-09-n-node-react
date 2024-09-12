@@ -16,7 +16,7 @@ export const Cases = () => {
         <h1>Página para vista de casos</h1>
       
 
-        <div className='flex justify-center'>
+        <div className='flex justify-center mt-56'>
         <button onClick={()=>{setOpenNewCase(true)}} className='border-solid border-2 bg-blue-500 '>Nuevo caso</button>
         <button onClick={()=>{setUpdateCase(true)}}  className='border-solid border-2 bg-green-500 '>Actualizar</button> 
         </div>

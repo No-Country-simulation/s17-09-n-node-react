@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { IoMdCloseCircleOutline } from "react-icons/io"
 import { INPUTS_FORM_UPD, MODEL_STATUS, MODEL_TYPE } from "../libs/utils"
 import { useForm } from "react-hook-form"
-import { Case, getCase, typeStatus, typeTipo, updateCase } from "../libs/caseActions"
-import caseService from "../services/cases.service"
+//import { Case, typeStatus, typeTipo } from "../libs/caseActions"
+import caseService, { Case, typeStatus, typeTipo } from "../services/cases.service"
 interface AlertState {
   message: string;
   tipe: 'success' | 'error';
@@ -42,10 +42,9 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
    
     const fetchData = async () =>{
       try {
-        const axioData = await caseService.getCasesList()
-        console.log("llamada axios:", axioData)
-        console.log(import.meta.env.VITE_API_URL)
-        const caseData: Case = await getCase(id)
+        const axioData = await caseService.getCaseById(id)
+        console.log("llamada axios: ", axioData)
+         const caseData: Case =  axioData.data
         if(!caseData.applicant){
           setAlert({...alert, message: "No se pudo obtener los datos", tipe: 'error' })
           setShow(true)
@@ -91,9 +90,10 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
     const onSubmit =  handleSubmit( async(data) =>{
         console.log('form acutalizar: ', data)
 
-           const res = await updateCase(data, id);
+          // const res = await updateCase(data, id);
+          const res = await caseService.updateCase(id, data);
      
-           if (!res?.ok) {
+           if (res.status !== 200) {
             setAlert({...alert, message: "No se pudo actualizar el caso", tipe: 'error' })
              setShow(true)
              console.log('hola hola',alert)
@@ -198,7 +198,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
       
     </div>
        
-        <Button sx={{my: 3}} type="submit" variant="contained" color="primary" fullWidth >
+        <Button sx={{my: 3}} type="submit" variant="contained" color="secondary" fullWidth >
         Actualizar
         </Button>   
       </form>

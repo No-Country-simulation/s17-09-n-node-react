@@ -4,8 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { INPUTS_FORM, MODEL_TYPE } from '../libs/utils';
-import { Case, newCase } from '../libs/caseActions';
-
+import caseService, { Case } from "../services/cases.service"
 
 interface AlertState {
   message: string;
@@ -30,15 +29,12 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
 
 const onSubmit =  handleSubmit( async(data) => {
  
-
-  // data.userId = '66da27b3bed71ced1c4917e3'
-   data.userId = '66de6f26b40072153d42795c'
    data.status = 'INITIATED'
+      const axioData = await caseService.createCase(data)
 
-
-      const res = await newCase(data);
-      console.log('hola hook 2', alert, 'la res', res)
-      if (!res?.ok) {
+      const res = axioData
+      console.log( 'la res', res)
+      if (res.status !== 201) {
         setAlert({...alert, message: "No se pudo crear el caso", tipe: 'error' })
         setShow(true)
         console.log('hola hola',alert)
@@ -81,7 +77,7 @@ const onSubmit =  handleSubmit( async(data) => {
               />
             ))
         }
- <FormControl  required      sx={{ my:1,  minWidth: '100%'}}> 
+ <FormControl  required      sx={{ my:2,  minWidth: '100%'}}> 
         <InputLabel id="demo-simple">Tipo</InputLabel>
         <Select sx={{minWidth: '100%',  backgroundColor: 'white',  color: 'black',}}
          
@@ -101,9 +97,7 @@ const onSubmit =  handleSubmit( async(data) => {
    
      
         </FormControl>
-     
-   
-        <Button sx={{my: 3}} type="submit" variant="contained" color="primary" fullWidth >
+        <Button sx={{my: 2}} color="secondary" type="submit" variant="contained"  fullWidth >
         Crear
           </Button>
       </form>

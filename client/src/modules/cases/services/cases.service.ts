@@ -17,7 +17,7 @@ export type typeTipo = 'SUCCESSION' | 'EXECUTION' | 'TERMINATION'| 'DAMAGES_AND_
 
 
 
-const createCase = async (data: Case) => {
+/*const createCase = async (data: Case) => {
   try {
     const response = await lawCaseApi.post('/cases', data)
     return {
@@ -37,10 +37,11 @@ const createCase = async (data: Case) => {
       message: 'Error en el servidor.',
     }
   }
-}
+}*/
 
 const getCasesList = async () => {
   try {
+ 
     const response = await lawCaseApi.get('/cases')
     return {
       status: response.status,
@@ -83,7 +84,7 @@ const getCasesListByUserId = async (userId: string) => {
   }
 }
 
-const updateCase = async (id: string, data: Case) => {
+/*const updateCase = async (id: string, data: Case) => {
   try {
     const response = await lawCaseApi.put(`/cases/${id}`, data)
     return {
@@ -103,7 +104,7 @@ const updateCase = async (id: string, data: Case) => {
       message: 'Error en el servidor.',
     }
   }
-}
+}*/
 
 const deleteCase = async (id: string) => {
   try {
@@ -127,10 +128,119 @@ const deleteCase = async (id: string) => {
   }
 }
 
+/*const getCaseById = async (id: string) => {
+  let response 
+ try {
+  response = await lawCaseApi.get(`/cases/${id}`)
+  return {
+    status: response.status,
+    data: response.data,
+  }
+ } catch (error) {
+  console.log('axios error: ', response)
+  if (axios.isAxiosError(error)) {
+   
+    return {
+      status: error.response?.status || 500,
+      message:
+        error.response?.data?.message || 'Error inesperado en el servidor.',
+    }
+  }
+  return {
+    status: 500,
+    message: 'Error en el servidor.',
+  }
+ }
+}*/
+
+
+/////// CODIGO MOMENTANEO  ELIMINAR  /////
+const tokeen = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZGU2ZjI2YjQwMDcyMTUzZDQyNzk1YyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI2MDk3NjM5LCJleHAiOjE3MjYwOTg1Mzl9.6jbPCtm-0w8MJatcl2Pk8r8P0eLE8Z5BDN-uT2Gp-MA'
+
+const updateCase = async (id: string, data: Case) => {
+  try {
+ //   const response = await lawCaseApi.put(`/cases/${id}`, data)
+    const response = await axios.put(`https://s17-09-n-node-react.onrender.com/api/v1/cases/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${tokeen}`,
+      },
+    });
+    return {
+      status: response.status,
+      data: response.data,
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status || 500,
+        message:
+          error.response?.data?.message || 'Error inesperado en el servidor.',
+      }
+    }
+    return {
+      status: 500,
+      message: 'Error en el servidor.',
+    }
+  }
+}
+
+const getCaseById = async (id: string) => {
+  try {
+    const response = await axios.get(`https://s17-09-n-node-react.onrender.com/api/v1/cases/${id}`, {
+      headers: {
+        Authorization: `Bearer ${tokeen}`,
+      },
+    });
+    return {
+      status: response.status,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status || 500,
+        message: error.response?.data?.message || 'Error inesperado en el servidor.',
+      };
+    }
+    return {
+      status: 500,
+      message: 'Error en el servidor.',
+    };
+  }
+}
+
+const createCase = async (data: Case) => {
+  try {
+    const response = await axios.post(`https://s17-09-n-node-react.onrender.com/api/v1/cases`, data,{
+      headers: {
+        Authorization: `Bearer ${tokeen}`,
+      },
+    });
+    return {
+      status: response.status,
+      data: response.data,
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status || 500,
+        message:
+          error.response?.data?.message || 'Error inesperado en el servidor.',
+      }
+    }
+    return {
+      status: 500,
+      message: 'Error en el servidor.',
+    }
+  }
+}
+/////////
+
 export default {
   createCase,
   getCasesList,
   getCasesListByUserId,
   updateCase,
   deleteCase,
+  getCaseById
 }

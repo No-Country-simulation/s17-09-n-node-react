@@ -103,7 +103,7 @@ const CasesListPage: React.FC = () => {
 
   useEffect(() => {
     //FALTA IMPLEMENTAR ID DE USUARIO
-    casesService.getCasesListByUserId('1').then((res) => {
+    casesService.getCasesListByUserId('').then((res) => {
       if (Array.isArray(res.data)) {
         setCases(res.data)
       } else {
