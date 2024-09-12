@@ -56,6 +56,25 @@ jobs:
         run: npm ci
         working-directory: ./server
 
+      - name: Print environment variables
+        run: printenv
+        env:
+          NODE_ENV: test
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PORT: 8080
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_ACCESS_EXPIRATION: 14d
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          JWT_REFRESH_EXPIRATION: 14d
+
+      - name: Run migrations
+        run: npm run migrate
+        working-directory: ./server
+
+      - name: Run seeds
+        run: npm run seed
+        working-directory: ./server
+
       - name: Lint
         run: npm run back:lint
 
