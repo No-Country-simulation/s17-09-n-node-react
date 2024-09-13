@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import movementsService from '../services/movements.service'
+import { useState } from 'react'
+// import movementsService from '../services/movements.service'
 import { Box, Typography } from '@mui/material'
 import MovementFilterBar from '../components/MovementFilterBar'
 import TodayIcon from '@mui/icons-material/Today'
@@ -72,12 +72,6 @@ const actions = [
 
 const CaseMovementDetails: React.FC = () => {
   const [filter, setFilter] = useState('all')
-  const [movements, setMovements] = useState([])
-
-  useEffect(() => {
-    movementsService.getMovementsList().then((res) => setMovements(res.data))
-    console.log(movements)
-  })
 
   return (
     <Box
