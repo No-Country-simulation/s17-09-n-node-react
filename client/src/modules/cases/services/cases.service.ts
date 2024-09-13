@@ -62,9 +62,11 @@ const getCasesList = async () => {
   }
 }
 
-const getCasesListByUserId = async (userId: string) => {
+const getCasesListByUser = async (token: string) => {
   try {
-    const response = await lawCaseApi.get(`/cases/user/${userId}`)
+    const response = await lawCaseApi.get(`/cases/user`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
     return {
       status: response.status,
       data: response.data,
@@ -239,7 +241,7 @@ const createCase = async (data: Case) => {
 export default {
   createCase,
   getCasesList,
-  getCasesListByUserId,
+  getCasesListByUser,
   updateCase,
   deleteCase,
   getCaseById
