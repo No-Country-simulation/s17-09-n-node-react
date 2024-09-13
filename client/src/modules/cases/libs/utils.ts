@@ -1,4 +1,4 @@
-import { Case } from "./caseActions";
+import { Case } from "../services/cases.service";
 
 
   export const INPUTS_FORM_UPD = 

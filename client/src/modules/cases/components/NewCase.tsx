@@ -45,17 +45,12 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
     }, 3000)
     return () => clearTimeout(timeId)
   }, [alert]);
-
-  console.log(import.meta.env);
-  console.log(import.meta.env.VITE_API_URL);
-
 const onSubmit =  handleSubmit( async(data) => {
  
    data.status = 'INITIATED'
       const axioData = await caseService.createCase(data)
 
       const res = axioData
-      console.log( 'la res', res)
       if (res.status !== 201) {
         setAlert({...alert, message: "No se pudo crear el caso", tipe: 'error' })
         setShow(true)

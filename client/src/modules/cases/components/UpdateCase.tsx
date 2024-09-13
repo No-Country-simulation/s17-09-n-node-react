@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { IoMdCloseCircleOutline } from "react-icons/io"
 import { INPUTS_FORM_UPD, MODEL_STATUS, MODEL_TYPE } from "../libs/utils"
 import { useForm } from "react-hook-form"
-//import { Case, typeStatus, typeTipo } from "../libs/caseActions"
 import caseService, { Case, typeStatus, typeTipo } from "../services/cases.service"
 interface AlertState {
   message: string;
@@ -30,42 +29,31 @@ const CustomFormControl = styled(FormControl)({
     color: 'white',           
   }
 });
+const caseDefault: Case = {
+        caseName: '',
+        jury:       '',
+        caseNumber: '',
+        applicant:  '',
+        respondent: '',
+        type:       'SUCCESSION' as typeTipo,
+        status:     'INITIATED' as typeStatus
+}
 
 export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetStateAction<boolean>>, id:string}) => {
  
  
     const {register, handleSubmit, reset } = useForm<Case>({
-      defaultValues: {
-        caseName: '',
-        jury:       '',
-        caseNumber: '',
-        applicant:  '',
-        respondent: '',
-        type:       'SUCCESSION' ,
-        status:     'INITIATED',
-      }
+      defaultValues: caseDefault
     })
     const [alert, setAlert] = useState<AlertState>({message: '', tipe: 'error' })
     const [show, setShow] = useState(false)
-    const [dataForm, setDataForm] = useState<Case>({
-        userId: '',
-        caseName: '',
-        jury:       '',
-        caseNumber: '',
-        applicant:  '',
-        respondent: '',
-        type:       'SUCCESSION' ,
-        status:     'INITIATED',
-      
-    })
-  id='66de70c1b40072153d42795d'
+    const [dataForm, setDataForm] = useState<Case>( caseDefault )
 
   useEffect (()=>{
    
     const fetchData = async () =>{
       try {
         const axioData = await caseService.getCaseById(id)
-        console.log("llamada axios: ", axioData)
          const caseData: Case =  axioData.data
         if(!caseData.applicant){
           setAlert({...alert, message: "No se pudo obtener los datos", tipe: 'error' })
@@ -73,7 +61,6 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
         }
         
         if(caseData){
-       //   console.log('data data: ', caseData )
           setDataForm(caseData)
           reset({
             caseName: caseData.caseName,
@@ -85,10 +72,10 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
             status:     caseData.status , // TO DO añadir  valor por defecto        
          
           })
-          console.log('data nuevo estado: ', dataForm )
+         
         }
       } catch (error) {
-        
+  
           console.error('hubo un: ', error)
 
       }
@@ -110,9 +97,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
    
 
     const onSubmit =  handleSubmit( async(data) =>{
-        console.log('form acutalizar: ', data)
-
-          // const res = await updateCase(data, id);
+      
           const res = await caseService.updateCase(id, data);
      
            if (res.status !== 200) {
@@ -123,7 +108,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
              throw new Error('No se pudo actualizarrr el caso');
            
            } else {
-           // reset()
+            reset(caseDefault)
             setAlert({...alert, message: "El caso fue actualizado", tipe: 'success' })
              setShow(true)
              
