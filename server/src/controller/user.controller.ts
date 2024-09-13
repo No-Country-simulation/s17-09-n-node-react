@@ -129,7 +129,7 @@ export class UserController {
       .updateUser(userId, updateUserDto)
       .then((user) => {
         if (user) {
-          res.status(201).json(UserDTO.create(user))
+          res.status(201).json({ message: 'User updaeted successfully!' })
           return
         }
         res.status(201).json(user)

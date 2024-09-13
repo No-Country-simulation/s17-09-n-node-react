@@ -1,0 +1,46 @@
+paths:
+  /api/v1/document/movement:
+    get:
+      summary: Get a pdf document of movement.
+      security:
+        - bearerAuth: []
+      tags:
+        - document
+      responses:
+        '200':
+          description: Movement document
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: 'Unauthorized'
+        '403':
+          description: Jwt expired
+        '404':
+          description: Movement not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/document/users:
+    get:
+      summary: Get a pdf document with the users
+      security:
+        - bearerAuth: []
+      tags:
+        - document
+      responses:
+        '200':
+          description: Users list document
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: 'Unauthorized'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
