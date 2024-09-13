@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-
+import { Link,  useNavigate } from 'react-router-dom'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import {
   Box,
   Alert,
@@ -9,10 +8,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-
-import { useForm, SubmitHandler } from 'react-hook-form'
-
 import { useAuth } from '../../../hooks'
+import { useEffect } from 'react'
 
 type Inputs = {
   email: string
@@ -20,9 +17,8 @@ type Inputs = {
 }
 
 const Login = () => {
-  const navigate = useNavigate()
   const { startLogin, errorMessage, status } = useAuth()
-
+ const navigate = useNavigate()
   const {
     register,
     handleSubmit,
