@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
@@ -7,7 +8,7 @@ import { esES } from '@mui/x-date-pickers/locales'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import { useSession, useThemeSwitcher } from './hooks'
+import { useAuth, useThemeSwitcher } from './hooks'
 import { LoginPage, RegisterPage } from './modules/auth'
 import { CasesListPage } from './modules/cases'
 
@@ -61,20 +62,15 @@ const router = createBrowserRouter([
 ])
 
 const App: React.FC = () => {
-  const { loading } = useSession()
+  const { startRefreshToken } = useAuth()
   const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
 
   const calendarLocaleText =
     esES.components.MuiLocalizationProvider.defaultProps.localeText
 
   useEffect(() => {
-    // Cada vez que se recarga navegador
-    // Verificar si el token existe, es válido y no ha expirado (llamar endpoint refresh)
-    // Si todo sale bien, crear la sesión y obtener el perfil del usuario
-    // Si algo sale mal, eliminar la sesión y sacar al usuario
+    startRefreshToken()
   }, [])
-
-  if (loading) return <p>Loading...</p>
 
   return (
     <CustomThemeProvider theme={themeMode}>

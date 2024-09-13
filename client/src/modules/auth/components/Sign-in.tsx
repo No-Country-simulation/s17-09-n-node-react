@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import {
@@ -12,9 +12,7 @@ import {
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { AxiosError } from 'axios'
-import { lawCaseApi } from '../../../apis'
-import { useSession } from '../../../hooks'
+import { useAuth } from '../../../hooks'
 
 type Inputs = {
   email: string
@@ -23,60 +21,22 @@ type Inputs = {
 
 const Login = () => {
   const navigate = useNavigate()
-  const { createSession } = useSession()
-  const [error, setError] = useState<null | string>(null)
+  const { startLogin, errorMessage, status } = useAuth()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({ mode: 'onChange' }) // Asegura validación en tiempo real
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>({ mode: 'onChange' })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const { email, password } = data
-
-    try {
-      const res = await lawCaseApi.post('/user/login', { email, password })
-
-      if (res.status !== 200) {
-        setError('Ocurrió un error. Por favor intente más tarde.')
-        return
-      }
-
-      // TODO Obtener el perfil del usuario
-      // para que cuando se inicie sesión, el usuario ya tega cargado su perfil.
-
-      // const { data: profile } = await lawCaseApi.get('user/profile') // (no existe este endpoint)
-      // createSession({ ...profile })
-
-      createSession({
-        id: '123',
-        name: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        role: 'USER',
-      })
-
-      localStorage.setItem('token', res.data.accessToken)
-
-      navigate('/profile')
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 404)
-        ) {
-          setError('Credenciales Inválidas')
-        } else {
-          setError('Error en el servidor.')
-        }
-      } else if (error instanceof Error) {
-        setError('Error: ' + error.message)
-      } else {
-        setError('Error desconocido:' + error)
-      }
-    }
+    await startLogin({ ...data })
   }
+
+  // Temporal
+  useEffect(() => {
+    if (status === 'authenticated') navigate('/')
+  }, [status, navigate])
 
   return (
     <Container maxWidth='sm'>
@@ -150,24 +110,42 @@ const Login = () => {
               },
             }}
           />
-          {error && (
+
+          {errorMessage && (
             <Alert severity='error' style={{ marginBottom: '1rem' }}>
-              {error}
+              {errorMessage}
             </Alert>
           )}
+
           <Button
+            fullWidth
             type='submit'
             variant='contained'
             color='primary'
+            disabled={isSubmitting}
             sx={{
               backgroundColor: '#424769',
               color: 'white',
               width: '80%',
               margin: '0 10%',
+              '&.Mui-disabled': {
+                color: 'white',
+              },
             }}
-            fullWidth
           >
-            Ingresar
+            {isSubmitting && (
+              <Box
+                sx={{
+                  backgroundImage: { xs: `url(loader.svg)` },
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 16,
+                  width: 16,
+                  height: 16,
+                  marginRight: '0.5rem',
+                }}
+              />
+            )}
+            {isSubmitting ? 'Ingresando...' : 'Ingresar'}
           </Button>
         </form>
         <Typography
