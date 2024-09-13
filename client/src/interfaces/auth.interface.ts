@@ -5,6 +5,8 @@ export interface IAuth {
   user: IUser | null
   status: TAuthStatus
   errorMessage: string | null
+  
+  
 }
 
 export type TAuthStatus = 'loading' | 'authenticated' | 'not-authenticated'

@@ -33,10 +33,9 @@ const Login = () => {
     await startLogin({ ...data })
   }
 
-  // Temporal
-  useEffect(() => {
-    if (status === 'authenticated') navigate('/')
-  }, [status, navigate])
+ useEffect(() => {
+   if (status === 'authenticated') navigate('/home')
+ }, [status, navigate])
 
   return (
     <Container maxWidth='sm'>
