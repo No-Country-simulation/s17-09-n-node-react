@@ -116,6 +116,7 @@ const CasesListPage: React.FC = () => {
     }
   }, [token])
 
+
   return (
     <Box
       sx={{

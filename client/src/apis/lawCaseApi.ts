@@ -8,3 +8,4 @@ export const lawCaseApi = axios.create({
   },
   withCredentials: true,
 })
+console.log(import.meta.env.VITE_API_URL)

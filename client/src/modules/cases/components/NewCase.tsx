@@ -46,7 +46,8 @@ export const NewCase = ({setOpenModal}:{setOpenModal: Dispatch<SetStateAction<bo
     return () => clearTimeout(timeId)
   }, [alert]);
 
-
+  console.log(import.meta.env);
+  console.log(import.meta.env.VITE_API_URL);
 
 const onSubmit =  handleSubmit( async(data) => {
  
