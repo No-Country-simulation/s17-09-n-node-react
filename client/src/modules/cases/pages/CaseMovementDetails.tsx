@@ -136,7 +136,7 @@ const actions = [
 const CaseMovementDetails: React.FC = () => {
   const [filter, setFilter] = useState('all')
   const [movements, setMovements] = useState([])
-  //-----------------------------------
+
   const [caseData, setCaseData] = useState<any>(null)
   const { caseId } = useParams()
 
@@ -156,7 +156,7 @@ const CaseMovementDetails: React.FC = () => {
     // Obtener movimientos (puedes adaptar este servicio según sea necesario)
     movementsService.getMovementsList().then((res) => setMovements(res.data))
   }, [caseId])
-  //-------------------------------------
+
   useEffect(() => {
     movementsService.getMovementsList().then((res) => setMovements(res.data))
     console.log(movements)
@@ -182,22 +182,17 @@ const CaseMovementDetails: React.FC = () => {
         <Typography variant='h5' color='primary.contrastText'>
           Mis Movimientos:
         </Typography>
-        {/* Solo renderiza si caseData no es null */}
-        {caseData ? (
-          <CaseProfileCard
-            caseState={caseData.status}
-            caseName={caseData.caseName}
-            jury={caseData.jury}
-            caseNumber={caseData.caseNumber}
-            applicant={caseData.applicant}
-            respondent={caseData.respondent}
-            caseType={caseData.type}
-          />
-        ) : (
-          <Typography variant='h6' color='primary.contrastText'>
-            Cargando caso...
-          </Typography>
-        )}
+
+        <CaseProfileCard
+          caseState={''}
+          caseName={''}
+          jury={''}
+          caseNumber={''}
+          applicant={''}
+          respondent={''}
+          caseType={''}
+        />
+
         <MovementFilterBar actions={actions} setFilter={setFilter} />
         <MovementList items={Movements} filter={filter} />
       </Box>

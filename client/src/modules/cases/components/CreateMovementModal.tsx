@@ -82,7 +82,7 @@ const CreateMovementModal = ({
                         color: '#F6B17A',
                       },
                       '&.MuiFormLabel-root:not(.MuiInputLabel-shrink)': {
-                        color: '#7077A1',
+                        color: 'white',
                       },
                     },
                   }}
@@ -112,7 +112,7 @@ const CreateMovementModal = ({
                         color: '#F6B17A',
                       },
                       '&.MuiFormLabel-root:not(.MuiInputLabel-shrink)': {
-                        color: '#7077A1',
+                        color: 'white',
                       },
                     },
                     '& .MuiSvgIcon-root': {
@@ -185,7 +185,7 @@ const CreateMovementModal = ({
                       color: '#F6B17A',
                     },
                     '&.MuiFormLabel-root:not(.MuiInputLabel-shrink)': {
-                      color: '#7077A1',
+                      color: 'white',
                     },
                   },
                 }}

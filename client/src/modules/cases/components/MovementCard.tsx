@@ -22,6 +22,7 @@ import RemoveDoneIcon from '@mui/icons-material/RemoveDone'
 import _default from '@emotion/styled'
 import DeleteMovementModal from './DeleteMovementModal'
 import EditMovementModal from './EditMovementModal'
+import MovementDetailsModal from './MovementDetailsModal'
 
 // Type de Caso
 export interface MovementInfoType {
@@ -70,6 +71,12 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
   const OpenDeleteModal = () => {
     setOpenDeleteMovement(true)
   }
+
+  const [openMovementDetail, setOpenMovementDetail] = useState(false)
+  const OpenMovementDetail = () => {
+    setOpenMovementDetail(true)
+  }
+
   return (
     <>
       <li>
@@ -115,7 +122,7 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
 
             {/* Nombre del caso */}
             <Box display={'flex'} justifyContent={'center'}>
-              <Button onClick={_default}>
+              <Button onClick={OpenMovementDetail}>
                 <Typography
                   variant='body1'
                   color={'white'}
@@ -216,6 +223,11 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
       <EditMovementModal
         openEditMovement={openEditMovement}
         setOpenEditMovement={setOpenEditMovement}
+        movementInfo={movementInfo}
+      />
+      <MovementDetailsModal
+        openMovementDetail={openMovementDetail}
+        setOpenMovementDetail={setOpenMovementDetail}
         movementInfo={movementInfo}
       />
     </>

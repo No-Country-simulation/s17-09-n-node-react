@@ -4,6 +4,7 @@ import MovementCard, { MovementInfoType } from './MovementCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CasesScrollbar from './CasesScrollBar'
 import CreateMovementModal from './CreateMovementModal'
+
 const MovementList = ({
   items,
   filter,
