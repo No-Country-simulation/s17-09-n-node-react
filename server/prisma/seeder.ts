@@ -8,7 +8,7 @@ export async function seeder() {
   const user = await prisma.user.create({
     data: {
       email: 'admin@email.com',
-      password: 'admin#12345',
+      password: '$2b$10$46UQE.q11fjy3tKe6yJnl.BcAXnvycDxWCfYhPH6FRuePR1Kr7.u.',
       name: 'Admin',
       lastName: 'Admin',
       role: 'ADMIN',
