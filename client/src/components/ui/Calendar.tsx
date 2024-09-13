@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { DateCalendar, type DateCalendarSlotProps } from '@mui/x-date-pickers/DateCalendar'
+import {
+  DateCalendar,
+  type DateCalendarSlotProps,
+} from '@mui/x-date-pickers/DateCalendar'
 import { Box, type SxProps, type Theme } from '@mui/material'
 import type { Dayjs } from 'dayjs'
 
@@ -89,9 +92,9 @@ export const Calendar = ({ className, sx, onDateChange }: ICalendarProps) => {
             fontSize: { sm: '1rem', md: '1.2rem', lg: '1.4rem' },
           },
           '& .MuiYearCalendar-root': {
-            width:{ xs: '322px', sm: '396px', md: '462px', lg: '532px' },
+            width: { xs: '322px', sm: '396px', md: '462px', lg: '532px' },
             padding: '0',
-            justifyContent:'center',
+            justifyContent: 'center',
           },
           '& .MuiPickersYear-root': {
             marginX: { xs: '5px', sm: '10px', md: '15px', lg: '20px' },
