@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@mui/material'
 import MovementCard, { MovementInfoType } from './MovementCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CasesScrollbar from './CasesScrollBar'
-
+import CreateMovementModal from './CreateMovementModal'
 const MovementList = ({
   items,
   filter,
@@ -25,6 +25,8 @@ const MovementList = ({
     }
     setFilteredMovements(filterMovements())
   }, [items, filter])
+
+  const [openCreateMovement, setOpenCreateMovement] = useState(false)
 
   return (
     <>
@@ -58,9 +60,14 @@ const MovementList = ({
                 color: 'white',
               },
             }}
+            onClick={() => setOpenCreateMovement(true)}
           >
             <Typography variant='body2'>Nuevo Movimiento</Typography>
           </Button>
+          <CreateMovementModal
+            openCreateMovement={openCreateMovement}
+            setOpenCreateMovement={setOpenCreateMovement}
+          />
         </Box>
       </Box>
     </>

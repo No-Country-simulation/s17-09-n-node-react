@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   Typography,
   Paper,
@@ -20,7 +21,7 @@ import {
 
 interface CaseProfileProps {
   caseState: string
-  setCaseState: React.Dispatch<React.SetStateAction<string>>
+  // setCaseState: React.Dispatch<React.SetStateAction<string>>
   caseName: string
   jury: string
   caseNumber: string
@@ -31,7 +32,7 @@ interface CaseProfileProps {
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
   caseState,
-  setCaseState,
+  // setCaseState,
   caseName,
   jury,
   caseNumber,
@@ -49,7 +50,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
     setAnchorEl(null)
   }
   const handleMenuItemClick = (newState: string) => {
-    setCaseState(newState)
+    // setCaseState(newState)
     handleClose()
   }
 
@@ -69,7 +70,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
   }
 
   return (
-    <Box display={'flex'} justifyContent={'center'}>
+    <Box display={'flex'} justifyContent={'center'} py={3}>
       <Paper
         sx={{
           width: '400px',

@@ -20,6 +20,8 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable'
 import DoneAllIcon from '@mui/icons-material/DoneAll'
 import RemoveDoneIcon from '@mui/icons-material/RemoveDone'
 import _default from '@emotion/styled'
+import DeleteMovementModal from './DeleteMovementModal'
+import EditMovementModal from './EditMovementModal'
 
 // Type de Caso
 export interface MovementInfoType {
@@ -59,6 +61,15 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
     }
     return 'primary.light'
   })()
+
+  const [openEditMovement, setOpenEditMovement] = useState(false)
+  const OpenEditModal = () => {
+    setOpenEditMovement(true)
+  }
+  const [openDeleteMovement, setOpenDeleteMovement] = useState(false)
+  const OpenDeleteModal = () => {
+    setOpenDeleteMovement(true)
+  }
   return (
     <>
       <li>
@@ -170,13 +181,23 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                       <ListItemText>Marcar como pendiente</ListItemText>
                     </MenuItem>
                   )}
-                <MenuItem onClick={handleClose}>
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    OpenEditModal()
+                  }}
+                >
                   <ListItemIcon>
                     <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
                   <ListItemText>Editar</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    OpenDeleteModal()
+                  }}
+                >
                   <ListItemIcon>
                     <DeleteIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
@@ -187,6 +208,16 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
           </Box>
         </Paper>
       </li>
+      <DeleteMovementModal
+        openDeleteMovement={openDeleteMovement}
+        setOpenDeleteMovement={setOpenDeleteMovement}
+        movementInfo={movementInfo}
+      />
+      <EditMovementModal
+        openEditMovement={openEditMovement}
+        setOpenEditMovement={setOpenEditMovement}
+        movementInfo={movementInfo}
+      />
     </>
   )
 }
