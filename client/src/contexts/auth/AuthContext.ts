@@ -14,7 +14,7 @@ interface IAuthContext extends IAuth {
   startLogout: () => Promise<void>
   startRefreshToken: () => Promise<string | undefined>
   setUser: (user: IUser) => void
-  changePassword: (currentPassword: string, newPassword: string) => Promise<any>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<any>
 }
 
 export const AuthContext = createContext<IAuthContext | null>(null)

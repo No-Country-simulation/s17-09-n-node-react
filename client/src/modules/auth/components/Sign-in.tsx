@@ -1,4 +1,4 @@
-import { Link,  useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import {
   Box,
@@ -18,7 +18,7 @@ type Inputs = {
 
 const Login = () => {
   const { startLogin, errorMessage, status } = useAuth()
- const navigate = useNavigate()
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -29,9 +29,9 @@ const Login = () => {
     await startLogin({ ...data })
   }
 
- useEffect(() => {
-   if (status === 'authenticated') navigate('/home')
- }, [status, navigate])
+  useEffect(() => {
+    if (status === 'authenticated') navigate('/home')
+  }, [status, navigate])
 
   return (
     <Container maxWidth='sm'>

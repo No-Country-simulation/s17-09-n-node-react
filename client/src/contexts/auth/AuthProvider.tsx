@@ -135,7 +135,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   }
 
-  const startRefreshToken = useCallback(async (): Promise<string | undefined> => {
+  const startRefreshToken = useCallback(async (): Promise<
+    string | undefined
+  > => {
     dispatch({ type: 'setLoading' })
 
     try {
