@@ -14,9 +14,22 @@ export default class App {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: false }))
 
+    const allowedOrigin = [
+      'https://s17-09-n-node-react-2.onrender.com',
+      'https://s17-09-n-node-react.onrender.com',
+      'http://localhost:5173',
+      envs.clientUrl as string,
+    ]
+
     this.app.use(
       cors({
-        origin: envs.clientUrl as string,
+        origin: (origin, callback) => {
+          if (!origin || allowedOrigin.includes(origin)) {
+            callback(null, true)
+          } else {
+            callback(new Error('Not allowed by CORS'))
+          }
+        },
         methods: 'GET,POST,PUT,DELETE',
         preflightContinue: false,
         optionsSuccessStatus: 204,

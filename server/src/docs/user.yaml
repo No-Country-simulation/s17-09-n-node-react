@@ -211,6 +211,35 @@ paths:
         '500':
           description: Unexpected error
 
+  /api/v1/user/change-password:
+    put:
+      summary: Change the password
+      security:
+        - bearerAuth: []
+      tags:
+        - change password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/ChangePassword'
+      responses:
+        '200':
+          description: password successfully changed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
 components:
   schemas:
     Register:
@@ -252,4 +281,11 @@ components:
         lastName:
           type: string
         imageUrl:
+          type: string
+    ChangePassword:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
           type: string

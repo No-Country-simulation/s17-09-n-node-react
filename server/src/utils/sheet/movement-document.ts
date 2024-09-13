@@ -21,7 +21,7 @@ const styles: StyleDictionary = {
   },
 }
 
-export default function getReport(): TDocumentDefinitions {
+export default function getMovementPdf(): TDocumentDefinitions {
   const docDefinitions: TDocumentDefinitions = {
     styles: styles,
     pageMargins: [40, 60, 40, 60],

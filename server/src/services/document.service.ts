@@ -1,15 +1,23 @@
 import type { TDocumentDefinitions } from 'pdfmake/interfaces'
 import { PrismaClient } from '@prisma/client'
 import PrinterUtil from '../utils/pdf-printer.util'
-import getReport from '../utils/sheet/report'
+import getMovementPdf from '../utils/sheet/movement-document'
 import getUsersListPdf from '../utils/sheet/users-list'
 
 const prisma = new PrismaClient()
 const printer = new PrinterUtil()
 
 export class DocumentService {
-  async getReportPdf(id: string): Promise<PDFKit.PDFDocument> {
-    const docDefinition: TDocumentDefinitions = getReport()
+  async getMovementPdf(id: string): Promise<PDFKit.PDFDocument> {
+    const movementFound = await prisma.movement.findUnique({
+      where: { id: id },
+      select: {
+        title: true,
+        date: true,
+        content: true,
+      },
+    })
+    const docDefinition: TDocumentDefinitions = getMovementPdf()
     const doc = printer.createPdf(docDefinition)
     return doc
   }

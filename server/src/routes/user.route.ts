@@ -27,6 +27,7 @@ export default class UserRoutes {
 
     // PUT
     router.put('/', authHandler, controller.updateUser, errorHandler)
+    router.put('/change-password', authHandler, controller.updatePassword, errorHandler)
 
     // DELETE
     router.delete(
