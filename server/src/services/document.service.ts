@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client'
 import PrinterUtil from '../utils/pdf-printer.util'
 import getMovementPdf from '../utils/sheet/movement-document'
 import getUsersListPdf from '../utils/sheet/users-list'
+import HttpError from '../config/errors'
+import { HTTP_STATUS } from '../enums/enum'
 
 const prisma = new PrismaClient()
 const printer = new PrinterUtil()
@@ -17,7 +19,10 @@ export class DocumentService {
         content: true,
       },
     })
-    const docDefinition: TDocumentDefinitions = getMovementPdf()
+
+    if (!movementFound) throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'movement not found')
+
+    const docDefinition: TDocumentDefinitions = getMovementPdf(movementFound)
     const doc = printer.createPdf(docDefinition)
     return doc
   }

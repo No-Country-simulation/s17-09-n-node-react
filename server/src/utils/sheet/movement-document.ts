@@ -21,13 +21,19 @@ const styles: StyleDictionary = {
   },
 }
 
-export default function getMovementPdf(): TDocumentDefinitions {
+interface MovementDocument {
+  title: string
+  date: Date
+  content: string
+}
+
+export default function getMovementPdf(data: MovementDocument): TDocumentDefinitions {
   const docDefinitions: TDocumentDefinitions = {
     styles: styles,
     pageMargins: [40, 60, 40, 60],
     pageSize: 'A4',
     header: headerSection({
-      showDate: true,
+      showDate: false,
       showLogo: true,
     }),
     footer: footerSection,

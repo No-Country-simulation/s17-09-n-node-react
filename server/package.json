@@ -6,7 +6,7 @@
     "build": "npx tsc -p",
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --clear ./src/main.ts",
     "generate": "npx prisma generate",
-    "lint": "eslint . --ext .ts && prettier --check src/*.ts",
+    "lint": "eslint . && prettier --check src/*.ts",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "pdfmake": "^0.2.12",
+    "server": "file:",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
