@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
@@ -8,22 +7,27 @@ import { esES } from '@mui/x-date-pickers/locales'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import { useAuth, useThemeSwitcher } from './hooks'
-import { LoginPage, RegisterPage } from './modules/auth'
-import { CasesListPage } from './modules/cases'
+import { Layout, HelpPage } from './pages'
+import { Loading, PublicRoute, PrivateRoute } from './components'
 
-import Layout from './pages/Layout'
-import HelpPage from './modules/auth/pages/Help'
+import { CasesListPage } from './modules/cases'
+import { LoginPage, RegisterPage } from './modules/auth'
 import ProfilePage from './modules/auth/pages/ProfilePage'
 import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
 import Home from './pages/Home'
+
+import { useAuth } from './hooks'
 
 import './App.css'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <PrivateRoute>
+        <Layout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: '*',
@@ -48,40 +52,47 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: '/help',
-    element: <HelpPage />,
-  },
-  {
     path: '/login',
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '/register',
-    element: <RegisterPage />,
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
   },
 ])
 
-const App: React.FC = () => {
-  const { startRefreshToken } = useAuth()
-  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
+function App() {
+  const { startRefreshToken, status } = useAuth()
 
   const calendarLocaleText =
     esES.components.MuiLocalizationProvider.defaultProps.localeText
 
   useEffect(() => {
     startRefreshToken()
-  }, [])
+  }, [startRefreshToken])
+
+  if (status === 'loading') return <Loading />
 
   return (
-    <CustomThemeProvider theme={themeMode}>
-      <LocalizationProvider
-        dateAdapter={AdapterDayjs}
-        localeText={calendarLocaleText}
-        adapterLocale='es'
-      >
-        <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
-      </LocalizationProvider>
-    </CustomThemeProvider>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      localeText={calendarLocaleText}
+      adapterLocale='es'
+    >
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </LocalizationProvider>
   )
 }
 

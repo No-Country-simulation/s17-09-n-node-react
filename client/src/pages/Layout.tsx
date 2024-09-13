@@ -1,13 +1,8 @@
 import { Outlet } from 'react-router-dom'
 
-import { useAuth } from '../hooks'
-import { Loading, NavBar } from '../components'
+import { NavBar } from '../components'
 
-const Layout = () => {
-  const { status } = useAuth()
-
-  if (status === 'loading') return <Loading />
-
+export default function Layout() {
   return (
     <>
       <header className='fixed bg-policeBlue w-full'>
@@ -18,5 +13,3 @@ const Layout = () => {
     </>
   )
 }
-
-export default Layout

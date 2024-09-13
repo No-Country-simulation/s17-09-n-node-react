@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import {
-  Container,
-  Typography,
-  Button,
-  Collapse,
-  Paper,
-  Box,
-} from '@mui/material'
-import { ExpandMore, ExpandLess } from '@mui/icons-material'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const helpContent = [
+import {
+  Box,
+  Paper,
+  Button,
+  Collapse,
+  Container,
+  Typography,
+} from '@mui/material'
+import { ExpandMore, ExpandLess } from '@mui/icons-material'
+
+const HELP_CONTENT = [
   {
     question: '¿Cómo iniciar sesión?',
     answer:
@@ -48,7 +49,7 @@ const helpContent = [
   },
 ]
 
-const HelpPage: React.FC = () => {
+export default function HelpPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const handleToggle = (index: number) => {
@@ -75,7 +76,7 @@ const HelpPage: React.FC = () => {
         Página de Ayuda
       </Typography>
       <Box my={4}>
-        {helpContent.map((item, index) => (
+        {HELP_CONTENT.map((item, index) => (
           <Paper
             key={index}
             elevation={3}
@@ -128,5 +129,3 @@ const HelpPage: React.FC = () => {
     </Container>
   )
 }
-
-export default HelpPage
