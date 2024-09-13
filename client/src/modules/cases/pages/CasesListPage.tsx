@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import casesService from '../services/cases.service'
+import { useAuth } from '../../../hooks'
 import { Box, Typography } from '@mui/material'
 import CasesFilterBar from '../components/CasesFilterBar'
 import DoneIcon from '@mui/icons-material/Done'
@@ -101,16 +102,19 @@ const CasesListPage: React.FC = () => {
   const [filter, setFilter] = useState()
   const [cases, setCases] = useState<CaseInfoType[]>([])
 
+  const { token } = useAuth()
+
   useEffect(() => {
-    //FALTA IMPLEMENTAR ID DE USUARIO
-    casesService.getCasesListByUserId('1').then((res) => {
-      if (Array.isArray(res.data)) {
-        setCases(res.data)
-      } else {
-        console.log('Error al obtener los casos')
-      }
-    })
-  }, [cases])
+    if (token) {
+      casesService.getCasesListByUser(token).then((res) => {
+        if (Array.isArray(res.data)) {
+          setCases(res.data)
+        } else {
+          console.log('Error al obtener los casos')
+        }
+      })
+    }
+  }, [token])
 
   return (
     <Box

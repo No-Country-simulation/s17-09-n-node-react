@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import NavBar from '../components/ui/NavBar'
+import { NavBar } from '../components'
 
-const Layout = () => {
+export default function Layout() {
   return (
     <>
       <header className='fixed bg-policeBlue w-full'>
@@ -12,5 +13,3 @@ const Layout = () => {
     </>
   )
 }
-
-export default Layout

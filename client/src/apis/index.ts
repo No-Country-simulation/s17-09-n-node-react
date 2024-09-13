@@ -1,1 +1,1 @@
-export { default as lawCaseApi } from './lawCaseApi'
+export { lawCaseApi } from './lawCaseApi'
