@@ -1,11 +1,17 @@
 paths:
-  /api/v1/document/movement:
+  /api/v1/document/movement/{id}:
     get:
       summary: Get a pdf document of movement.
       security:
         - bearerAuth: []
       tags:
         - document
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Movement document

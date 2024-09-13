@@ -10,13 +10,18 @@ const prisma = new PrismaClient()
 const printer = new PrinterUtil()
 
 export class DocumentService {
-  async getMovementPdf(id: string): Promise<PDFKit.PDFDocument> {
+  async getMovementPdf(id: string): Promise<{ doc: PDFKit.PDFDocument; caseNumber: string }> {
     const movementFound = await prisma.movement.findUnique({
       where: { id: id },
       select: {
         title: true,
         date: true,
         content: true,
+        Case: {
+          select: {
+            caseNumber: true,
+          },
+        },
       },
     })
 
@@ -24,7 +29,7 @@ export class DocumentService {
 
     const docDefinition: TDocumentDefinitions = getMovementPdf(movementFound)
     const doc = printer.createPdf(docDefinition)
-    return doc
+    return { doc, caseNumber: movementFound.Case.caseNumber }
   }
 
   async getUsersListPdf(): Promise<PDFKit.PDFDocument> {

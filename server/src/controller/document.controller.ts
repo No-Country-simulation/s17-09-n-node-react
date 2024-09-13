@@ -9,11 +9,11 @@ export class DocumentController {
     const pdfDoc = documentService.getMovementPdf(id)
 
     pdfDoc
-      .then((data) => {
+      .then(({ doc, caseNumber }) => {
         res.setHeader('Content-Type', 'application/pdf')
-        data.info.Title = 'Hola Mundo'
-        data.pipe(res)
-        data.end()
+        doc.info.Title = `case-${caseNumber}`
+        doc.pipe(res)
+        doc.end()
       })
       .catch((error) => next(error))
   }
