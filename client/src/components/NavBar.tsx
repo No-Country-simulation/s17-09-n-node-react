@@ -97,7 +97,7 @@ export default function NavBar() {
             {
               title: 'Inicio',
               icon: <HomeIcon />,
-              path: '/',
+              path: '/home',
             },
             {
               title: 'Casos',

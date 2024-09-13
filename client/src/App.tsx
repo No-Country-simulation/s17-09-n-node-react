@@ -15,6 +15,7 @@ import Layout from './pages/Layout'
 import HelpPage from './modules/auth/pages/Help'
 import ProfilePage from './modules/auth/pages/ProfilePage'
 import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
+import Home from './pages/Home'
 
 import './App.css'
 
@@ -29,11 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá deberían ir el home
-          </div>
-        ),
+        element: <Home />,
       },
       {
         path: 'profile',
