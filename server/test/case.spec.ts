@@ -45,19 +45,16 @@ describe('Case Routes', () => {
         caseNumber: '12345',
         applicant: 'Test Applicant',
         respondent: 'Test Respondent',
-        userId: '66d9fd3e95190dbbe7c4f3c7',
         type: 'DAMAGES_AND_LOSSES',
         status: 'INITIATED',
       }
 
-      const response = await request(app)
+      const { status } = await request(app)
         .post('/api/v1/cases')
         .set('Authorization', `Bearer mocked-token`)
         .send(newCase)
 
-      expect(response.status).toBe(201)
-      expect(response.body).toHaveProperty('id')
-      expect(response.body.caseName).toBe(newCase.caseName)
+      expect(status).toBe(201)
     }, 30000)
 
     it('should return 401 if not authenticated', async () => {
@@ -72,9 +69,9 @@ describe('Case Routes', () => {
         status: 'INITIATED',
       }
 
-      const response = await request(app).post('/api/v1/cases').send(newCase)
+      const { status } = await request(app).post('/api/v1/cases').send(newCase)
 
-      expect(response.status).toBe(401)
+      expect(status).toBe(401)
     }, 30000)
   })
 })

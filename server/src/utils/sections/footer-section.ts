@@ -3,7 +3,8 @@ import { Content, ContextPageSize } from 'pdfmake/interfaces'
 export default function footerSection(
   currentPage: number,
   pageCount: number,
-  pageSize: ContextPageSize,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _pageSize: ContextPageSize,
 ): Content {
   return {
     text: `Página ${currentPage} de ${pageCount}`,

@@ -1,6 +1,7 @@
 import { TDocumentDefinitions, StyleDictionary } from 'pdfmake/interfaces'
 import headerSection from '../sections/header-section'
 import footerSection from '../sections/footer-section'
+import { formatter } from '../date-formatter'
 
 const styles: StyleDictionary = {
   header: {
@@ -8,6 +9,11 @@ const styles: StyleDictionary = {
     bold: true,
     alignment: 'center',
     margin: [0, 50, 0, 20],
+  },
+  subHeader: {
+    fontSize: 16,
+    italics: true,
+    alignment: 'right',
   },
   body: {
     fontSize: 12,
@@ -66,24 +72,16 @@ export default function getMovementPdf(data: MovementDocument): TDocumentDefinit
         ],
       },
       {
-        text: 'PROTOTIPO DE DOCUMENTO',
+        text: `${data.title}`,
         style: 'header',
       },
       {
-        text: `Me dirijo a ustedes para presentar el prototipo del documento de reporte para la aplicación. Como prodrá ver, el mismo tiene una estructura basica: el icono de la aplicación, el cuerpo de texto y la firma de sus respectivo autor.\n\nEstoy abierto a sugerencias para la mejora del mismo y que se adapte a las formalidades requeridas. Y como simepre, quisiera expresar mi agradecimiento por el desarrollo del proyecto en el cual forma parte este documento.\n`,
+        text: `${formatter.format(data.date)}`,
+        style: 'subHeader',
+      },
+      {
+        text: `${data.content}`,
         style: 'body',
-      },
-      {
-        text: 'Atentamente',
-        style: 'signature',
-      },
-      {
-        text: 'Facundo Castro',
-        style: 'signature',
-      },
-      {
-        text: 'Desarrollador Backend',
-        style: 'signature',
       },
     ],
   }

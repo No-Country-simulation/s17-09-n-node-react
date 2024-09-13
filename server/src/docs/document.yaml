@@ -1,14 +1,14 @@
 paths:
-  /api/v1/report:
+  /api/v1/document/movement:
     get:
-      summary: Should get a pdf report.
+      summary: Get a pdf document of movement.
       security:
         - bearerAuth: []
       tags:
-        - user
+        - document
       responses:
         '200':
-          description: Report
+          description: Movement document
           content:
             application/pdf:
               schema:
@@ -18,19 +18,21 @@ paths:
           description: 'Unauthorized'
         '403':
           description: Jwt expired
+        '404':
+          description: Movement not found
         '500':
           description: Unexpected error
 
-  /api/v1/user:
+  /api/v1/document/users:
     get:
-      summary: Get logged in user's details.
+      summary: Get a pdf document with the users
       security:
         - bearerAuth: []
       tags:
-        - user
+        - document
       responses:
         '200':
-          description: User details
+          description: Users list document
           content:
             application/pdf:
               schema:

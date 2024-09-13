@@ -110,7 +110,7 @@ export class UserController {
 
   updatePassword = (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id
-    if (!userId) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'user id not found!')
+    if (!userId) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'user id nor found!')
     const [error, updatePasswordDto] = UpdatePasswordDTO.create(req.body)
     if (error || !updatePasswordDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
 

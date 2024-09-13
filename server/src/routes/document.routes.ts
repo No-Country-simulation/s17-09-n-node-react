@@ -11,8 +11,14 @@ export default class DocumentRoutes {
 
     const controller = new DocumentController()
 
-    router.get('/report', authHandler, controller.getReportPdf, errorHandler)
-    router.get('/users', controller.getUsersListPdf, errorHandler)
+    router.get('/movement', authHandler, controller.getMovementPdf, errorHandler)
+    router.get(
+      '/users',
+      authHandler,
+      rolesHandler(Role.ADMIN),
+      controller.getUsersListPdf,
+      errorHandler,
+    )
 
     return router
   }

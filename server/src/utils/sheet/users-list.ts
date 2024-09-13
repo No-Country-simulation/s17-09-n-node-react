@@ -66,8 +66,10 @@ export default function getUsersListPdf(options: ListOptions): TDocumentDefiniti
             ],
             // USERS
             ...users.map((user) => [
+              user.updatedAt.toString(),
               { text: `${user.lastName}, ${user.name}`, bold: true },
               user.email,
+              user.createdAt.toString(),
               user.role,
               { text: `${user.isActive ? 'Sí' : 'No'}`, bold: true },
               { text: `${!user.cases?.length ? 0 : user.cases.length}`, bold: true },

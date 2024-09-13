@@ -4,9 +4,9 @@ import { DocumentService } from '../services/document.service'
 const documentService = new DocumentService()
 
 export class DocumentController {
-  getReportPdf(req: Request, res: Response, next: NextFunction) {
+  getMovementPdf(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params
-    const pdfDoc = documentService.getReportPdf(id)
+    const pdfDoc = documentService.getMovementPdf(id)
 
     pdfDoc
       .then((data) => {

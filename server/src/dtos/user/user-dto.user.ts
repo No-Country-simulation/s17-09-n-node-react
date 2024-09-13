@@ -19,12 +19,14 @@ export class UserDTO {
     public lastName: string,
     public role: string,
     public imageUrl: string,
+    public createdAt: Date,
+    public updatedAt: Date,
     public cases: Pick<Case, 'id' | 'caseName'>[] | null,
   ) {}
 
   static create(object: User): UserDTO {
-    const { email, name, lastName, role, imageUrl, cases } = object
+    const { email, name, lastName, role, imageUrl, createdAt, updatedAt, cases } = object
 
-    return new UserDTO(email, name, lastName, role, imageUrl, cases)
+    return new UserDTO(email, name, lastName, role, imageUrl, createdAt, updatedAt, cases)
   }
 }
