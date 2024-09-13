@@ -9,4 +9,5 @@ export const envs = {
   jwtAccessExpiration: env.get('JWT_ACCESS_EXPIRATION').asString(),
   jwtRefreshSecret: env.get('JWT_REFRESH_SECRET').asString(),
   jwtRefreshExpiration: env.get('JWT_REFRESH_EXPIRATION').asString(),
+  openAIApiKey: env.get('OPENAI_API_KEY').asString(),
 }
