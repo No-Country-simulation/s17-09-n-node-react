@@ -21,6 +21,8 @@ export class MovementRoutes {
       errorHandler,
     )
 
+    router.get('/:id', authHandler, movementController.getMovementById, errorHandler)
+
     router.post('/', authHandler, movementController.createMovement, errorHandler)
 
     router.put('/:id', authHandler, movementController.updateMovement, errorHandler)

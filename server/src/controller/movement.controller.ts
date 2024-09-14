@@ -38,8 +38,8 @@ export class MovementController {
 
     this.movementService
       .createMovement(userId, createMovementDto)
-      .then((data) => {
-        res.status(201).json(data)
+      .then(() => {
+        res.status(201).json({ message: 'case successfully created!' })
       })
       .catch((error: unknown) => next(error))
   }
@@ -54,8 +54,8 @@ export class MovementController {
 
     this.movementService
       .updateMovement(movementId, updateMovementDto)
-      .then((movement) => {
-        res.status(201).json(movement)
+      .then(() => {
+        res.status(201).json({ message: 'case successfully updated!' })
       })
       .catch((error: unknown) => next(error))
   }
@@ -65,8 +65,8 @@ export class MovementController {
 
     this.movementService
       .deleteMovement(movementId)
-      .then((movement) => {
-        res.status(201).json(movement)
+      .then(() => {
+        res.status(201).json({ message: 'case successfully deleted!' })
       })
       .catch((error: unknown) => next(error))
   }

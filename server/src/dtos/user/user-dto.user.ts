@@ -7,7 +7,7 @@ export interface User {
   role: string
   imageUrl: string
   isActive: boolean
-  cases: Pick<Case, 'id' | 'caseName'>[] | null
+  cases: Pick<Case, 'id' | 'caseNumber'>[] | null
   createdAt: Date
   updatedAt: Date
 }
@@ -21,7 +21,7 @@ export class UserDTO {
     public imageUrl: string,
     public createdAt: Date,
     public updatedAt: Date,
-    public cases: Pick<Case, 'id' | 'caseName'>[] | null,
+    public cases: Pick<Case, 'id' | 'caseNumber'>[] | null,
   ) {}
 
   static create(object: User): UserDTO {

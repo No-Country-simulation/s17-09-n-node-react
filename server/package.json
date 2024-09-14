@@ -6,6 +6,8 @@
     "build": "npx tsc -p",
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --clear ./src/main.ts",
     "generate": "npx prisma generate",
+    "seed": "cross-env NODE_ENV=dev ts-node-dev prisma/seeder.ts",
+    "drop": "cross-env NODE_ENV=dev ts-node-dev prisma/eraser.ts",
     "lint": "eslint . && prettier --check src/*.ts",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit"
   },

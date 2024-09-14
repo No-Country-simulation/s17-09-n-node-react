@@ -16,6 +16,7 @@ export default class CaseRoutes {
     router.get('/user', authHandler, controller.getUserCases, errorHandler)
     router.get('/user/:userId', authHandler, controller.getCasesByUserId, errorHandler)
     router.get('/:id', authHandler, controller.getCaseById, errorHandler)
+
     // POST routes
     router.post('/', authHandler, controller.createCase, errorHandler)
 

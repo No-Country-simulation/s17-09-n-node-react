@@ -1,12 +1,3 @@
-openapi: 3.0.0
-info:
-  title: Contact API
-  description: API for managing contacts
-  version: 1.0.0
-servers:
-  - url: http://localhost:3000
-    description: Local server
-
 paths:
   /contacts:
     get:
@@ -37,7 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateContact'
+              $ref: '#/components/schemas/CreateContactDto'
       responses:
         '201':
           description: Contact created successfully
@@ -91,7 +82,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateContact'
+              $ref: '#/components/schemas/UpdateContactDto'
       responses:
         '200':
           description: Contact updated successfully
@@ -178,7 +169,7 @@ components:
             - DEFENDANT
         caseId:
           type: string
-    CreateContact:
+    CreateContactDto:
       type: object
       required:
         - name
@@ -208,7 +199,7 @@ components:
             - DEFENDANT
         caseId:
           type: string
-    UpdateContact:
+    UpdateContactDto:
       type: object
       properties:
         name:
