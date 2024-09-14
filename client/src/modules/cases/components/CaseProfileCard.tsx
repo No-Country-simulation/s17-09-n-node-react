@@ -1,5 +1,8 @@
 import React from 'react'
-
+import DoneIcon from '@mui/icons-material/Done'
+import ErrorIcon from '@mui/icons-material/Error'
+import GroupsIcon from '@mui/icons-material/Groups'
+import ArchiveIcon from '@mui/icons-material/Archive'
 import {
   Typography,
   Paper,
@@ -12,16 +15,9 @@ import {
   Divider,
 } from '@mui/material'
 
-import {
-  InitialStateIcon,
-  ProofStateIcon,
-  VeredictStateIcon,
-  ArchiveIcon,
-} from '../assets'
-
 interface CaseProfileProps {
   caseState: string
-  // setCaseState: React.Dispatch<React.SetStateAction<string>>
+  setCaseState: React.Dispatch<React.SetStateAction<string>>
   caseName: string
   jury: string
   caseNumber: string
@@ -32,7 +28,7 @@ interface CaseProfileProps {
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
   caseState,
-  // setCaseState,
+  setCaseState,
   caseName,
   jury,
   caseNumber,
@@ -50,22 +46,22 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
     setAnchorEl(null)
   }
   const handleMenuItemClick = (newState: string) => {
-    // setCaseState(newState)
+    setCaseState(newState)
     handleClose()
   }
 
   const renderIconForState = () => {
     switch (caseState) {
       case 'initial':
-        return <InitialStateIcon size={'30px'} color={'white'} />
+        return <DoneIcon sx={{ width: 50, color: 'white' }} />
       case 'proof':
-        return <ProofStateIcon size={'30px'} color={'white'} />
+        return <ErrorIcon sx={{ width: 50, color: 'white' }} />
       case 'veredict':
-        return <VeredictStateIcon size={'30px'} color={'white'} />
+        return <GroupsIcon sx={{ width: 50, color: 'white' }} />
       case 'archive':
-        return <ArchiveIcon size={'30px'} color={'white'} />
+        return <ArchiveIcon sx={{ width: 50, color: 'white' }} />
       default:
-        return <InitialStateIcon size={'30px'} color={'white'} />
+        return <DoneIcon sx={{ width: 50, color: 'white' }} />
     }
   }
 
@@ -88,7 +84,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
           >
             <Box>
               <Typography variant='body1' color='white'>
-                {caseName}
+                NOMBRE DEL CASO: {caseName}
               </Typography>
             </Box>
 
@@ -114,48 +110,40 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
                 }}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: '#7077A1',
+                    backgroundColor: 'primary.dark',
+                    border: '1px solid white',
                     color: 'white',
-                    paddingX: '10px',
+                    padding: '10px',
+                  },
+                  '.MuiMenu-list': {
+                    color: 'white',
                   },
                 }}
               >
                 <MenuItem onClick={() => handleMenuItemClick('initial')}>
                   <ListItemIcon>
-                    <InitialStateIcon size={'25px'} color={'white'} />
+                    <DoneIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Inicio</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
+
                 <MenuItem onClick={() => handleMenuItemClick('proof')}>
                   <ListItemIcon>
-                    <ProofStateIcon size={'25px'} color={'white'} />
+                    <ErrorIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Prueba</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
+
                 <MenuItem onClick={() => handleMenuItemClick('veredict')}>
                   <ListItemIcon>
-                    <VeredictStateIcon size={'25px'} color={'white'} />
+                    <GroupsIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Sentencia</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
+
                 <MenuItem onClick={() => handleMenuItemClick('archive')}>
                   <ListItemIcon>
-                    <ArchiveIcon size={'25px'} color={'white'} />
+                    <ArchiveIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Archivo</ListItemText>
                 </MenuItem>

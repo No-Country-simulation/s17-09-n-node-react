@@ -24,7 +24,7 @@ import DeleteMovementModal from './DeleteMovementModal'
 import EditMovementModal from './EditMovementModal'
 import MovementDetailsModal from './MovementDetailsModal'
 
-// Type de Caso
+// Type de Movimiento
 export interface MovementInfoType {
   id: string
   createdAt: string

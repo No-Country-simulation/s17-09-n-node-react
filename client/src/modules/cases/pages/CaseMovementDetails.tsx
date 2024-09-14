@@ -72,14 +72,14 @@ const actions = [
 
 const CaseMovementDetails: React.FC = () => {
   const [filter, setFilter] = useState('all')
-
+  const [caseState, setCaseState] = useState('initial')
   return (
     <Box
       sx={{
         bgcolor: 'primary.dark',
         minHeight: '100vh',
         px: 1,
-        pt: '15vh',
+        pt: '25vh',
       }}
     >
       <Box
@@ -95,7 +95,8 @@ const CaseMovementDetails: React.FC = () => {
         </Typography>
 
         <CaseProfileCard
-          caseState={''}
+          caseState={caseState}
+          setCaseState={setCaseState}
           caseName={''}
           jury={''}
           caseNumber={''}
