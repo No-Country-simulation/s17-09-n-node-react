@@ -61,7 +61,7 @@ export class UpdateContactDTO {
 
   private static checkEnumValues(object: { [key: string]: string }, errors: string[]) {
     if (object.relation && !Validators.enums(object.relation, ContactRelation))
-      errors.push('relation is not valid')
+      errors.push(`relation should be ${Object.values(ContactRelation).join(', ')}`)
   }
 
   private static checkExtraFields(

@@ -36,7 +36,7 @@ export class UpdateMovementDTO {
       errors.push(`'title' should be a string`)
     }
     if (type !== undefined && !Validators.enums(type, MovementType)) {
-      errors.push(`'type' should be a valid MovementType`)
+      errors.push(`'type' should be ${Object.values(MovementType).join(', ')}`)
     }
     if (content !== undefined && typeof content !== 'string') {
       errors.push(`'content' should be a string`)
