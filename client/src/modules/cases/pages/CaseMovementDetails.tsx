@@ -79,7 +79,7 @@ const CaseMovementDetails: React.FC = () => {
         bgcolor: 'primary.dark',
         minHeight: '100vh',
         px: 1,
-        pt: '25vh',
+        pt: '20vh',
       }}
     >
       <Box
