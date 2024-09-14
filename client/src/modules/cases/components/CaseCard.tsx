@@ -91,6 +91,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
               gap={1}
               px={0}
               color={'white'}
+              minWidth={{ sm: '150px' }}
             >
               {caseInfo.status == 'INITIATED' && (
                 <DoneIcon sx={{ width: 50 }} />
@@ -104,7 +105,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
               {caseInfo.status == 'CLOSED' && (
                 <ArchiveIcon sx={{ width: 50 }} />
               )}
-              <Typography variant='caption'>
+              <Typography variant='caption' sx={{ textWrap: 'nowrap' }}>
                 {`${Case.CasesStatus[caseInfo.status]} - ${Case.CaseTypes[caseInfo.type]}`}
               </Typography>
             </Box>
