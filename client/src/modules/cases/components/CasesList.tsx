@@ -33,7 +33,9 @@ const CasesList = ({
 
   const handleDeleteCase = (id: string, index: number) => {
     casesService.deleteCase(id)
-    setFilteredCases(filteredCases.splice(index, 1))
+    const filteredCaesCopy = [...filteredCases]
+    filteredCaesCopy.splice(index, 1)
+    setFilteredCases(filteredCaesCopy)
   }
 
   return (
