@@ -1,5 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import { useForm, type SubmitHandler } from 'react-hook-form'
+
 import {
   Box,
   Alert,
@@ -8,8 +10,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+
 import { useAuth } from '../../../hooks'
-import { useEffect } from 'react'
 
 type Inputs = {
   email: string
@@ -17,8 +19,8 @@ type Inputs = {
 }
 
 const Login = () => {
-  const { startLogin, errorMessage, status } = useAuth()
-  const navigate = useNavigate()
+  const { startLogin, errorMessage } = useAuth()
+
   const {
     register,
     handleSubmit,
@@ -28,10 +30,6 @@ const Login = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await startLogin({ ...data })
   }
-
-  useEffect(() => {
-    if (status === 'authenticated') navigate('/home')
-  }, [status, navigate])
 
   return (
     <Container maxWidth='sm'>
