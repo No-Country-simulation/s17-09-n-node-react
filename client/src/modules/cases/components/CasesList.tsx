@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material'
 import CaseCard, { CaseInfoType } from './CaseCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import CasesScrollbar from './CasesScrollBar'
+import casesService from '../services/cases.service'
 
 const CasesList = ({
   items,
@@ -30,6 +31,11 @@ const CasesList = ({
     }
   }, [items, filter])
 
+  const handleDeleteCase = (id: string, index: number) => {
+    casesService.deleteCase(id)
+    filteredCases.splice(index, 1)
+  }
+
   return (
     <>
       <Box
@@ -48,7 +54,11 @@ const CasesList = ({
             }}
           >
             {filteredCases.map((caseInfo, index) => (
-              <CaseCard key={index} caseInfo={caseInfo} />
+              <CaseCard
+                key={index}
+                caseInfo={caseInfo}
+                handleDelete={() => handleDeleteCase(caseInfo.id, index)}
+              />
             ))}
           </ul>
         </CasesScrollbar>
