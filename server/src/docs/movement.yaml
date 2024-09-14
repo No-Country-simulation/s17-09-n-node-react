@@ -5,7 +5,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       responses:
         '200':
           description: List of movements
@@ -27,19 +27,22 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#components/schemas/Create'
+              $ref: '#components/schemas/CreateMovementDto'
       responses:
         '201':
           description: Successfully created movement
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/Movement'
+                type: object
+                properties:
+                  message:
+                    type: string
         '400':
           description: Missing/incorrect fields
         '401':
@@ -57,7 +60,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       parameters:
         - in: path
           name: id
@@ -96,14 +99,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#components/schemas/Update'
+              $ref: '#components/schemas/UpdateMovementDto'
       responses:
         '201':
           description: Successfully updated movement
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/MovementWithCase'
+                type: object
+                properties:
+                  message:
+                    type: string
         '401':
           description: Unauthorized
         '403':
@@ -118,7 +124,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       parameters:
         - in: path
           name: id
@@ -131,7 +137,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/Movement'
+                type: object
+                properties:
+                  message:
+                    type: string
+                
         '401':
           description: Unauthorized
         '403':
@@ -147,7 +157,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       parameters:
         - in: query
           name: date
@@ -175,7 +185,7 @@ paths:
 
 components:
   schemas:
-    Create:
+    CreateMovementDto:
       type: object
       required: 
         - date
@@ -197,7 +207,7 @@ components:
           type: string
         caseId:
           type: string
-    Update:
+    UpdateMovementDto:
       type: object
       properties:
         date:
