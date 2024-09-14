@@ -23,7 +23,7 @@ paths:
           description: Unexpected error
 
     post:
-      summary: Create movement for any case created by the same user. Only admin can create movements for any case
+      summary: Create movement for a case.
       security:
         - bearerAuth: []
       tags:
@@ -53,7 +53,7 @@ paths:
 
   /api/v1/movement/{id}:
     get:
-      summary: Get user's movement by id. Must be logged in as admin to obtain any movement
+      summary: Get movement by id. 
       security:
         - bearerAuth: []
       tags:
@@ -81,7 +81,7 @@ paths:
           description: Unexpected error
 
     put:
-      summary: Update logged in user's name and/or last name. Must be logged in as admin to update any user
+      summary: Update movement
       security:
         - bearerAuth: []
       tags:
@@ -114,7 +114,7 @@ paths:
           description: Unexpected error
 
     delete:
-      summary: Delete movement created by same user. Must be logged in as admin to delete any movement
+      summary: Delete movement
       security:
         - bearerAuth: []
       tags:
@@ -143,49 +143,12 @@ paths:
 
   /api/v1/movement/user:
     get:
-      summary: Get logged in user's movement by date.
+      summary: Get logged by user id
       security:
         - bearerAuth: []
       tags:
         - movement
       parameters:
-        - in: query
-          name: date
-          required: true
-          schema:
-            type: string
-            example: '2024-10-13'
-      responses:
-        '201':
-          description: Movements by date
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#components/schemas/MovementWithCase'
-        '400':
-          description: Missing/incorrect fields
-        '401':
-          description: Unauthorized
-        '404':
-          description: User not found
-        '500':
-          description: Unexpected error
-
-  /api/v1/movement/user/{userId}:
-    get:
-      summary: Get user's movement by date. Must be logged in as admin to obtain movement data from any user
-      security:
-        - bearerAuth: []
-      tags:
-        - movement
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
         - in: query
           name: date
           required: true
@@ -214,6 +177,12 @@ components:
   schemas:
     Create:
       type: object
+      required: 
+        - date
+        - title
+        - type
+        - content
+        - caseId
       properties:
         date:
           type: string
@@ -221,6 +190,9 @@ components:
           type: string
         type:
           type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
         content:
           type: string
         caseId:
@@ -234,6 +206,9 @@ components:
           type: string
         type:
           type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
         content:
           type: string
         done:
@@ -264,12 +239,17 @@ components:
           type: string
         createdAt:
           type: string
+        updatedAt:
+          type: string
         date:
           type: string
         title:
           type: string
         type:
           type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
         done:
           type: boolean
         content:
@@ -283,11 +263,13 @@ components:
               type: string
             createdAt:
               type: string
+            updatedAt:
+              type: string
             caseName:
               type: string
-            jury:
-              type: string
             caseNumber:
+              type: string
+            jury:
               type: string
             applicant:
               type: string

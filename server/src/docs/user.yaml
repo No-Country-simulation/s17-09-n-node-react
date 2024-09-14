@@ -244,6 +244,11 @@ components:
   schemas:
     Register:
       type: object
+      required:
+        - email
+        - name
+        - lastName
+        - password
       properties:
         email:
           type: string
@@ -255,6 +260,9 @@ components:
           type: string
     Login:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           type: string
@@ -284,6 +292,9 @@ components:
           type: string
     ChangePassword:
       type: object
+      required:
+        - currentPassword
+        - newPassword
       properties:
         currentPassword:
           type: string
