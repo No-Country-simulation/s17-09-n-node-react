@@ -33,7 +33,7 @@ const CasesList = ({
 
   const handleDeleteCase = (id: string, index: number) => {
     casesService.deleteCase(id)
-    filteredCases.splice(index, 1)
+    setFilteredCases(filteredCases.splice(index, 1))
   }
 
   return (
