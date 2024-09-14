@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { lawCaseApi } from '../../../apis'
+import { axiosErrorReturn } from '../utils/axios.error.return'
 
-interface CaseCreateInfoType {
+interface ICaseCreatedInfo {
   caseName: string
   jury: string
   caseNumber: string
@@ -12,7 +12,17 @@ interface CaseCreateInfoType {
   userId: string
 }
 
-const createCase = async (data: CaseCreateInfoType) => {
+interface ICaseUpdatedInfo {
+  caseName: string
+  jury: string
+  caseNumber: string
+  applicant: string
+  respondent: string
+  type: string
+  status: string
+}
+
+const createCase = async (data: ICaseCreatedInfo) => {
   try {
     const response = await lawCaseApi.post('/cases', data)
     return {
@@ -20,17 +30,7 @@ const createCase = async (data: CaseCreateInfoType) => {
       data: response.data,
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return {
-        status: error.response?.status || 500,
-        message:
-          error.response?.data?.message || 'Error inesperado en el servidor.',
-      }
-    }
-    return {
-      status: 500,
-      message: 'Error en el servidor.',
-    }
+    axiosErrorReturn(error)
   }
 }
 
@@ -42,39 +42,31 @@ const getCasesList = async () => {
       data: response.data,
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return {
-        status: error.response?.status || 500,
-        message:
-          error.response?.data?.message || 'Error inesperado en el servidor.',
-      }
-    }
-    return {
-      status: 500,
-      message: 'Error en el servidor.',
-    }
+    axiosErrorReturn(error)
   }
 }
 
-const updateCase = async (id: string) => {
+const getCasesListByUser = async () => {
   try {
-    const response = await lawCaseApi.put(`/cases/${id}`)
+    const response = await lawCaseApi.get(`/cases/user`)
     return {
       status: response.status,
       data: response.data,
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return {
-        status: error.response?.status || 500,
-        message:
-          error.response?.data?.message || 'Error inesperado en el servidor.',
-      }
-    }
+    axiosErrorReturn(error)
+  }
+}
+
+const updateCase = async (id: string, data: ICaseUpdatedInfo) => {
+  try {
+    const response = await lawCaseApi.put(`/cases/${id}`, data)
     return {
-      status: 500,
-      message: 'Error en el servidor.',
+      status: response.status,
+      data: response.data,
     }
+  } catch (error) {
+    axiosErrorReturn(error)
   }
 }
 
@@ -86,23 +78,14 @@ const deleteCase = async (id: string) => {
       data: response.data,
     }
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return {
-        status: error.response?.status || 500,
-        message:
-          error.response?.data?.message || 'Error inesperado en el servidor.',
-      }
-    }
-    return {
-      status: 500,
-      message: 'Error en el servidor.',
-    }
+    axiosErrorReturn(error)
   }
 }
 
 export default {
   createCase,
   getCasesList,
+  getCasesListByUser,
   updateCase,
   deleteCase,
 }

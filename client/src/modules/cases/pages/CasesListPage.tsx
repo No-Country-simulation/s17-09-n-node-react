@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import casesService from '../services/cases.service'
+import { useAuth } from '../../../hooks'
 import { Box, Typography } from '@mui/material'
 import CasesFilterBar from '../components/CasesFilterBar'
 import DoneIcon from '@mui/icons-material/Done'
@@ -8,8 +9,9 @@ import GroupsIcon from '@mui/icons-material/Groups'
 import ArchiveIcon from '@mui/icons-material/Archive'
 import TodayIcon from '@mui/icons-material/Today'
 import CasesList from '../components/CasesList'
+import { CaseInfoType } from '../components/CaseCard'
 
-const Cases = [
+/* const Cases = [
   {
     id: '1',
     createdAt: '2024-09-08T05:42:20.568Z',
@@ -70,7 +72,7 @@ const Cases = [
     status: 'INITIATED',
     userId: '1',
   },
-]
+] */
 
 const actions = [
   {
@@ -98,12 +100,21 @@ const actions = [
 
 const CasesListPage: React.FC = () => {
   const [filter, setFilter] = useState()
-  const [cases, setCases] = useState([])
+  const [cases, setCases] = useState<CaseInfoType[]>([])
+
+  const { token } = useAuth()
 
   useEffect(() => {
-    casesService.getCasesList().then((res) => setCases(res.data))
-    console.log(cases)
-  }, [cases])
+    if (token) {
+      casesService.getCasesListByUser().then((res) => {
+        if (Array.isArray(res?.data)) {
+          setCases(res.data)
+        } else {
+          console.log('Error al obtener los casos')
+        }
+      })
+    }
+  }, [token])
 
   return (
     <Box
@@ -126,7 +137,7 @@ const CasesListPage: React.FC = () => {
           Mis casos:
         </Typography>
         <CasesFilterBar actions={actions} setFilter={setFilter} />
-        <CasesList items={Cases} filter={filter} />
+        <CasesList items={cases} filter={filter} />
       </Box>
     </Box>
   )

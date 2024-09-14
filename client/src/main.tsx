@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
-import { SessionProvider } from './contexts'
+import { AuthProvider } from './contexts'
 
 import App from './App.tsx'
 
@@ -11,13 +11,16 @@ import './index.css'
 
 import { ThemeProvider } from '@mui/material/styles'
 import theme from './theme/theme.ts'
+import { SnackbarProvider } from 'notistack'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <SessionProvider>
+    <AuthProvider>
       <ThemeProvider theme={theme}>
-        <App />
+        <SnackbarProvider maxSnack={3}>
+          <App />
+        </SnackbarProvider>
       </ThemeProvider>
-    </SessionProvider>
+    </AuthProvider>
   </StrictMode>,
 )

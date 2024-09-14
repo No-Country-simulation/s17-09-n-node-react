@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
@@ -7,39 +7,29 @@ import { esES } from '@mui/x-date-pickers/locales'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import { useSession, useThemeSwitcher } from './hooks'
-import { LoginPage, RegisterPage } from './modules/auth'
-import { CasesListPage } from './modules/cases'
+import { Layout, HelpPage } from './pages'
+import { Loading, PublicRoute, PrivateRoute } from './components'
 
-import Layout from './pages/Layout'
-import HelpPage from './modules/auth/pages/Help'
+import { CasesListPage } from './modules/cases'
+import { LoginPage, RegisterPage } from './modules/auth'
 import ProfilePage from './modules/auth/pages/ProfilePage'
+
 import CaseMovementDetails from './modules/cases/pages/CaseMovementDetails'
+
+import Home from './pages/Home'
+
+import { useAuth } from './hooks'
 
 import './App.css'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <p>Aquí debería ir la landing page</p>,
-    errorElement: <p>Not found</p>,
-    children: [],
-  },
-  {
-    path: '/help',
-    element: <HelpPage />,
-  },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/',
-    element: <Layout />,
+    element: (
+      <PrivateRoute>
+        <Layout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: '*',
@@ -47,11 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá deberían ir el home
-          </div>
-        ),
+        element: <Home />,
       },
       {
         path: 'profile',
@@ -62,40 +48,53 @@ const router = createBrowserRouter([
         element: <CasesListPage />,
       },
       {
-        path: 'cases/details/:id',
-        // path: 'cases/[caseId]',
+        path: 'cases/details',
         element: <CaseMovementDetails />,
       },
     ],
   },
+  {
+    path: '/login',
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/register',
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
+  },
 ])
 
-const App: React.FC = () => {
-  const { loading } = useSession()
-  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
+function App() {
+  const { startRefreshToken, status } = useAuth()
 
   const calendarLocaleText =
     esES.components.MuiLocalizationProvider.defaultProps.localeText
 
   useEffect(() => {
-    // Cada vez que se recarga navegador
-    // Verificar si el token existe, es válido y no ha expirado (llamar endpoint refresh)
-    // Si todo sale bien, crear la sesión y obtener el perfil del usuario
-    // Si algo sale mal, eliminar la sesión y sacar al usuario
-  }, [])
+    startRefreshToken()
+  }, [startRefreshToken])
 
-  if (loading) return <p>Loading...</p>
+  if (status === 'loading') return <Loading />
 
   return (
-    <CustomThemeProvider theme={themeMode}>
-      <LocalizationProvider
-        dateAdapter={AdapterDayjs}
-        localeText={calendarLocaleText}
-        adapterLocale='es'
-      >
-        <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
-      </LocalizationProvider>
-    </CustomThemeProvider>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      localeText={calendarLocaleText}
+      adapterLocale='es'
+    >
+      <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    </LocalizationProvider>
   )
 }
 

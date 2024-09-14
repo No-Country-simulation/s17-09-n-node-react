@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Case from '../utils/case.status'
 import {
   Box,
   Paper,
@@ -17,26 +18,6 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-
-const CaseTypes: { [key: string]: string } = {
-  SUCCESSION: 'Sucesión',
-  EXECUTION: 'Ejecución',
-  TERMINATION: 'Despido',
-  DAMAGES_AND_LOSSES: 'Daños y perjuicios',
-  CONTRACT_DISPUTE: 'Disputa contractual',
-  FAMILY_LAW: 'Derecho de familia',
-  CRIMINAL: 'Penal',
-  PROPERTY_DISPUTE: 'Disputa de propiedad',
-  PERSONAL_INJURY: 'Lesiones personales',
-  INTELLECTUAL_PROPERTY: 'Propiedad intelectual',
-}
-
-const CasesStatus: { [key: string]: string } = {
-  INITIATED: 'Inicio',
-  EVIDENCE: 'Prueba',
-  JUDGMENT: 'Sentencia',
-  CLOSED: 'Archivado',
-}
 
 // Type de Caso
 export interface CaseInfoType {
@@ -118,7 +99,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
                 <ArchiveIcon sx={{ width: 50 }} />
               )}
               <Typography variant='caption'>
-                {`${CasesStatus[caseInfo.status]} - ${CaseTypes[caseInfo.type]}`}
+                {`${Case.CasesStatus[caseInfo.status]} - ${Case.CaseTypes[caseInfo.type]}`}
               </Typography>
             </Box>
 
