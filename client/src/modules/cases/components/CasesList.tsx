@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import CaseCard, { CaseInfoType } from './CaseCard'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -9,12 +9,16 @@ import { NewCase } from './NewCase'
 const CasesList = ({
   items,
   filter,
+  openNewCase,
+  setOpenNewCase
 }: {
   items: CaseInfoType[]
   filter: undefined | null | string
+  openNewCase: boolean
+  setOpenNewCase: Dispatch<SetStateAction<boolean>>
 }) => {
   const [filteredCases, setFilteredCases] = useState<[] | CaseInfoType[]>([])
-  const [openNewCase, setOpenNewCase] = useState<boolean>(false);
+ // const [openNewCase, setOpenNewCase] = useState<boolean>(false);
  // const [updateCase, setUpdateCase] = useState<boolean>(false);
 
   useEffect(() => {

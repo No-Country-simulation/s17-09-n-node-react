@@ -25,11 +25,12 @@ const createCase = async (data: Case) => {
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
+      console.log(error)
       return {
         status: error.response?.status || 500,
         message:
           error.response?.data?.message || 'Error inesperado en el servidor.',
-      }
+        }
     }
     return {
       status: 500,

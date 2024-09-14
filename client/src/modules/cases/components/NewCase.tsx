@@ -52,6 +52,7 @@ const onSubmit =  handleSubmit( async(data) => {
 
       const res = axioData
       if (res.status !== 201) {
+        console.log(res)
         setAlert({...alert, message: "No se pudo crear el caso", tipe: 'error' })
         setShow(true)
         throw new Error('No se pudo crear el caso');
