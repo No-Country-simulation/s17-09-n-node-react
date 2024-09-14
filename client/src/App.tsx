@@ -14,6 +14,7 @@ import { CasesListPage } from './modules/cases'
 import { LoginPage, RegisterPage } from './modules/auth'
 import ProfilePage from './modules/auth/pages/ProfilePage'
 import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
+import Home from './pages/Home'
 
 import { useAuth } from './hooks'
 
@@ -34,11 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: (
-          <div className='bg-black min-h-screen flex justify-center items-center'>
-            Acá deberían ir el home
-          </div>
-        ),
+        element: <Home />,
       },
       {
         path: 'profile',

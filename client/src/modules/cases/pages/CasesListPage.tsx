@@ -106,8 +106,8 @@ const CasesListPage: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      casesService.getCasesListByUser(token).then((res) => {
-        if (Array.isArray(res.data)) {
+      casesService.getCasesListByUser().then((res) => {
+        if (Array.isArray(res?.data)) {
           setCases(res.data)
         } else {
           console.log('Error al obtener los casos')
