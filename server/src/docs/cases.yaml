@@ -45,6 +45,12 @@ components:
             - EVIDENCE
             - JUDGMENT
             - CLOSED
+        movement:
+          type: array
+          items:
+            type: object
+            properties:
+              type: string
     UpdateCaseDTO:
       type: object
       properties:

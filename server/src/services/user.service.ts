@@ -88,7 +88,12 @@ export class UserService {
     return await prisma.user.findUnique({
       where: { id: id },
       include: {
-        cases: true,
+        cases: {
+          select: {
+            id: true,
+            caseNumber: true,
+          },
+        },
       },
     })
   }
