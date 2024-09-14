@@ -22,7 +22,11 @@ import './App.css'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/landing',
+    element: <p>Landing</p>,
+  },
+  {
+    path: '/*',
     element: (
       <PrivateRoute>
         <Layout />
@@ -31,7 +35,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '*',
-        element: <Navigate to='/' />,
+        element: <Navigate to='home' replace />,
       },
       {
         path: 'home',
