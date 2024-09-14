@@ -17,6 +17,7 @@
     "test:e2e": "cd client && npm run e2e",
     "back:generate": "cd server && npm run generate",
     "back:seed": "cd server && npm run seed",
+    "back:drop": "cd server && npm run drop",
     "prepare": "husky"
   },
   "keywords": [],

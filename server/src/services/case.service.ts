@@ -26,11 +26,7 @@ export class CaseService {
     return await prisma.case.findMany({
       where: { userId },
       include: {
-        movements: {
-          select: {
-            id: true,
-          },
-        },
+        movements: true,
       },
     })
   }

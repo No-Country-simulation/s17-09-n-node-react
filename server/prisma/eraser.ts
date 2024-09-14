@@ -4,10 +4,6 @@ export async function eraser() {
   const prisma = new PrismaClient()
   await prisma.$connect()
 
-  await prisma.user.delete({
-    where: { email: 'admin@email.com' },
-  })
-
   await prisma.case.deleteMany({
     where: {
       User: {
@@ -24,12 +20,16 @@ export async function eraser() {
     },
   })
 
-  await prisma.contact.deleteMany({
+  prisma.contact.deleteMany({
     where: {
       Case: {
         caseNumber: '#5632189' && '#2106546',
       },
     },
+  })
+
+  await prisma.user.delete({
+    where: { email: 'admin@email.com' },
   })
 }
 
