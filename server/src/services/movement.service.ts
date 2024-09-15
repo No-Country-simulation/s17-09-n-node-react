@@ -54,7 +54,7 @@ export class MovementService {
   async updateMovement(id: string, updateMovementDto: UpdateMovementDTO) {
     return await prisma.movement.update({
       where: { id },
-      data: { updatedAt: Date.now().toString(), ...updateMovementDto },
+      data: { updatedAt: new Date(), ...updateMovementDto },
     })
   }
 

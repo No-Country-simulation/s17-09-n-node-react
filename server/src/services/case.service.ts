@@ -35,7 +35,7 @@ export class CaseService {
   async updateCase(caseId: string, updateCaseDto: UpdateCaseDTO) {
     return await prisma.case.update({
       where: { id: caseId },
-      data: { updatedAt: Date.now().toString(), ...updateCaseDto },
+      data: { updatedAt: new Date(), ...updateCaseDto },
     })
   }
 
