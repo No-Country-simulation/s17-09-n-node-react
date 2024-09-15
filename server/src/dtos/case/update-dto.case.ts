@@ -71,8 +71,10 @@ export class UpdateCaseDTO {
   }
 
   private static checkEnumValues(object: { [key: string]: string }, errors: string[]) {
-    if (!Validators.enums(object.type, CaseType)) errors.push('type is not valid')
-    if (!Validators.enums(object.status, CaseStatus)) errors.push('status is not valid')
+    if (!Validators.enums(object.type, CaseType))
+      errors.push(`type should be: ${Object.values(CaseType).join(', ')}`)
+    if (!Validators.enums(object.status, CaseStatus))
+      errors.push(`status should be: ${Object.values(CaseStatus).join(', ')} `)
   }
 
   private static checkExtraFields(

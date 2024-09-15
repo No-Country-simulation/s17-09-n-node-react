@@ -1,8 +1,7 @@
 import { Router } from 'express'
 import errorHandler from '../middlewares/error-handler'
-import authHandler from '../middlewares/auth-handler'
-import { OpenAIService } from '../services/openai.service'
 import { OpenAIController } from '../controller/openai.controller'
+import { uploadAudio } from '../utils/upload.config'
 
 export class OpenAIRoutes {
   static get routes(): Router {
@@ -11,6 +10,7 @@ export class OpenAIRoutes {
     const openAIController = new OpenAIController()
 
     router.post('/orthography', openAIController.checkOrthography, errorHandler)
+    router.post('/audio-to-text', uploadAudio.single, errorHandler)
 
     return router
   }

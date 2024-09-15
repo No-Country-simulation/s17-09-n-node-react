@@ -5,7 +5,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - document
+        - Documents
       parameters:
         - in: path
           name: id
@@ -35,7 +35,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - document
+        - Documents
       responses:
         '200':
           description: Users list document
