@@ -7,18 +7,15 @@ import { esES } from '@mui/x-date-pickers/locales'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import { Layout, HelpPage } from './pages'
 import { Loading, PublicRoute, PrivateRoute } from './components'
+import { Layout, HelpPage, HomePage, NotFoundPage } from './pages'
 
 import { CasesListPage } from './modules/cases'
 import { LoginPage, RegisterPage } from './modules/auth'
 import ProfilePage from './modules/auth/pages/ProfilePage'
 import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
-import Home from './pages/Home'
 
 import { useAuth } from './hooks'
-
-import './App.css'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +29,7 @@ const router = createBrowserRouter([
         <Layout />
       </PrivateRoute>
     ),
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: '*',
@@ -39,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'home',
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         path: 'profile',
