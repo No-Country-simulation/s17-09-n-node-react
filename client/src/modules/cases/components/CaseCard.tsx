@@ -35,9 +35,10 @@ export interface CaseInfoType {
 
 interface CaseCardProp {
   caseInfo: CaseInfoType
+  handleDelete: () => void
 }
 
-const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
+const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
   const navigate = useNavigate()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -52,6 +53,11 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
 
   const handleOpenCase = () => {
     navigate(`/cases/details/${caseInfo.id}`)
+  }
+
+  const handleDeleteClose = () => {
+    handleDelete()
+    setAnchorEl(null)
   }
 
   return (
@@ -85,6 +91,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               gap={1}
               px={0}
               color={'white'}
+              maxWidth={{ sm: '150px' }}
             >
               {caseInfo.status == 'INITIATED' && (
                 <DoneIcon sx={{ width: 50 }} />
@@ -98,7 +105,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               {caseInfo.status == 'CLOSED' && (
                 <ArchiveIcon sx={{ width: 50 }} />
               )}
-              <Typography variant='caption'>
+              <Typography variant='caption' sx={{ textWrap: { sm: 'nowrap' } }}>
                 {`${Case.CasesStatus[caseInfo.status]} - ${Case.CaseTypes[caseInfo.type]}`}
               </Typography>
             </Box>
@@ -155,7 +162,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
                   </ListItemIcon>
                   <ListItemText>Editar</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleDeleteClose}>
                   <ListItemIcon>
                     <DeleteIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>

@@ -48,6 +48,16 @@ const CalendarMovements = ({ selectedDate }: MovementsProp) => {
     setIndexFocus(index)
   }
 
+  const handleMovementCheck = (movement: IMovement) => {
+    const { id, done } = movement
+    const updatedMovement = {
+      done: !done,
+    }
+    if (token) {
+      movementsService.updateMovement(id, updatedMovement)
+    }
+  }
+
   useEffect(() => {
     const formattedDate = selectedDate.toISOString().slice(0, 10)
     if (token) {
@@ -64,7 +74,7 @@ const CalendarMovements = ({ selectedDate }: MovementsProp) => {
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
   return (
-    <div className='bg-rhythm sm:w-5/6 flex flex-col rounded-lg px-4 sm:px-12 py-2 sm:py-6 h-[300px]'>
+    <div className='bg-rhythm sm:w-5/6 flex flex-col rounded-lg px-4 min-w-[300px] sm:px-12 py-2 sm:py-6 h-[300px]'>
       <div className='flex justify-between'>
         <h3 className='text-sm max-w-[200px] sm:max-w-full'>
           Caso:{' '}
@@ -116,7 +126,8 @@ const CalendarMovements = ({ selectedDate }: MovementsProp) => {
                 <Checkbox
                   {...label}
                   className='!text-inherit'
-                  checked={item.done}
+                  defaultChecked={item.done}
+                  onChange={() => handleMovementCheck(item)}
                 />
               </li>
             )

@@ -2,14 +2,11 @@ import { lawCaseApi } from '../../../apis'
 import { axiosErrorReturn } from '../utils/axios.error.return'
 
 interface IMovementUpdatedInfo {
-  date: string
-  title: string
-  type: string
-  content: string
-  done: boolean
-  name: string
-  lastName: string
-  imageUrl: string
+  date?: string
+  title?: string
+  type?: string
+  content?: string
+  done?: boolean
 }
 
 interface IMovementCreateInfo {
