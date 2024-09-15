@@ -88,7 +88,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - movement
+        - Movements
       parameters:
         - in: path
           name: id
