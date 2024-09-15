@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
@@ -14,13 +14,31 @@ import WorkIcon from '@mui/icons-material/Work'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../hooks'
+import { lawCaseApi } from '../../apis'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const {user, setUser} = useAuth() 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { startLogout } = useAuth()
+
+  // // Obtener la información del usuario autenticado
+
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await lawCaseApi.get('/user') // Corregir el endpoint
+        const userData = res.data
+        setUser(userData) // Almacenar los datos del usuario
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getUser()
+   }, [setUser])
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -116,7 +134,9 @@ export default function NavBar() {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center hover:scale-125 transition-all duration-100 ${isActive ? 'text-mellowApricot' : 'text-white'}`
+                  `flex items-center hover:scale-125 transition-all duration-100 ${
+                    isActive ? 'text-mellowApricot' : 'text-white'
+                  }`
                 }
               >
                 <ListItemIcon className='!text-inherit !min-w-0 mr-2'>
@@ -183,9 +203,10 @@ export default function NavBar() {
       {isMobile ? <Mobile /> : <Desktop />}
       <div>
         <button onClick={handleMenu}>
-          <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+          {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
+          <Avatar  src={user?.imageUrl || '/profile.png'} />
         </button>
-        {<AvatarMenu />}
+        {<AvatarMenu />}  
       </div>
     </nav>
   )
