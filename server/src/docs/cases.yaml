@@ -5,7 +5,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       requestBody:
         required: true
         content:
@@ -25,11 +25,11 @@ paths:
                     example: case successfully created!
 
     get:
-      summary: Get all cases
+      summary: Get all cases as admin user
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       responses:
         200:
           description: A list of cases.
@@ -38,15 +38,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Case'
+                  $ref: '#/components/schemas/Cases'
 
   /api/v1/cases/user:
     get:
-      summary: Get all cases created by logged in user
+      summary: Get all cases created by logged user
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       responses:
         200:
           description: A list of cases for the specified user ID.
@@ -55,17 +55,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Case'
+                  $ref: '#/components/schemas/Cases'
         404:
           description: No cases found for the specified user ID.
 
   /api/v1/cases/user/{userId}:
     get:
-      summary: Get all cases by user ID
+      summary: As admin get all cases by user ID
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       parameters:
         - in: path
           name: userId
@@ -80,17 +80,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Case'
+                  $ref: '#/components/schemas/Cases'
         404:
           description: No cases found for the specified user ID.
 
   /api/v1/cases/{id}:
     get:
-      summary: Get a case by ID
+      summary: Get a case and its movements by ID
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       parameters:
         - in: path
           name: id
@@ -103,7 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Case'
+                $ref: '#/components/schemas/UniqueCase'
         404:
           description: Case not found.
 
@@ -112,7 +112,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       parameters:
         - in: path
           name: id
@@ -143,7 +143,7 @@ paths:
       security:
         - bearerAuth: []
       tags:
-        - cases
+        - Cases
       parameters:
         - in: path
           name: id
@@ -240,7 +240,7 @@ components:
             - EVIDENCE
             - JUDGMENT
             - CLOSED
-    Case:
+    Cases:
       type: object
       properties:
         id:
@@ -280,3 +280,11 @@ components:
             - CLOSED
         userId:
           type: string
+    UniqueCase:
+      allOf:
+        - $ref: '#/components/schemas/Cases'
+      properties:
+        movements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movement'
