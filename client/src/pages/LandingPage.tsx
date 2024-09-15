@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+ 
 
 
 // Componente para el carrusel de testimonios
@@ -49,8 +50,9 @@ const LandingPage: React.FC = () => { const navigate = useNavigate()
       {/* Sección de presentación */}
       <section className="hero bg-blue-500 text-white py-20">
         <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold mb-4">Bienvenido a nuestra página</h1>
-          <p className="text-lg mb-8">Descubre nuestros increíbles productos y servicios</p>
+        <img src="" className="testimonial-photo" />
+          <h1 className="text-6xl font-bold mb-4">LAW CASE</h1>
+          <h1 className="text-4xl font-bold mb-8">Organiza y agiliza tus casos con nuestra app. Centraliza información, automatiza tareas y colabora en tiempo real para lograr resultados óptimos.</h1>
           <button onClick={redirigir} className="bg-white text-blue-500 font-bold py-2 px-4 rounded"> 
             ¡Comienza ahora!
           </button>
@@ -60,23 +62,23 @@ const LandingPage: React.FC = () => { const navigate = useNavigate()
       {/* Sección de beneficios */}
       <section className="benefits py-12">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 ">Nuestros beneficios</h2>
+          <h2 className="text-4xl font-bold mb-6 ">Nuestros beneficios</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="benefit">
-              <h3 className="text-xl  font-bold mb-2">Calidad garantizada</h3>
+              <h3 className="text-3xl  font-bold mb-2">Calidad garantizada</h3>
               <p>
                 lleva el control de todos tus casos en un solo lugar.
               </p>
             </div>
             <div className="benefit">
-              <h3 className="text-xl font-bold  mb-2">Precios competitivos</h3>
+              <h3 className="text-3xl font-bold  mb-2">Precios competitivos</h3>
               <p>
                 Organiza Tu agenda y optimiza el tiempo.
               </p>
             </div>
             <div className="benefit">
-              <h3 className="text-xl text-center font-bold mb-2">Excelente servicio al cliente</h3>
-              <p>
+              <h3 className="text-3xl text-center font-bold mb-2">Excelente servicio al cliente</h3>
+              <p className='text 2xl font-bold'>
                 Nuestro equipo está siempre dispuesto a ayudarte y resolver tus dudas.
               </p>
             </div>
