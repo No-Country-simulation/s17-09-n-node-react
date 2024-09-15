@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, IconButton, InputBase, Paper } from '@mui/material'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
@@ -12,14 +12,17 @@ interface BottomNavigationActionType {
 
 interface BottomNavComponentProp {
   actions: BottomNavigationActionType[]
-  setFilter: SetStateAction<null | any>
+  setFilter: (value: string) => void
+  searchFilter: (value: string) => void
 }
 
 const MovementFilterBar: React.FC<BottomNavComponentProp> = ({
   actions,
   setFilter,
+  searchFilter,
 }) => {
   const [value, setValue] = useState('all')
+  const [searchText, setSearchText] = useState('')
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     event.preventDefault()
@@ -30,6 +33,12 @@ const MovementFilterBar: React.FC<BottomNavComponentProp> = ({
       setValue(newValue)
       setFilter(newValue)
     }
+  }
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchText = event.target.value
+    setSearchText(newSearchText)
+    searchFilter(newSearchText)
   }
 
   return (
@@ -57,6 +66,8 @@ const MovementFilterBar: React.FC<BottomNavComponentProp> = ({
         <InputBase
           sx={{ ml: 1, flex: 1 }}
           inputProps={{ 'aria-label': 'Search' }}
+          value={searchText}
+          onChange={handleSearchChange}
         />
       </Paper>
 

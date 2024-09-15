@@ -10,7 +10,7 @@ import {
   BottomNavigationAction,
   Button,
 } from '@mui/material'
-import { CloseIcon } from '../assets'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { DatePicker } from '@mui/x-date-pickers'
 import { useState } from 'react'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
@@ -46,7 +46,7 @@ const EditMovementModal = ({
           sx={{ float: 'right' }}
           onClick={() => setOpenEditMovement(false)}
         >
-          <CloseIcon size={'20px'} color={'white'} />
+          <HighlightOffIcon sx={{ width: 25, color: 'white' }} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
@@ -133,7 +133,7 @@ const EditMovementModal = ({
                   >
                     <BottomNavigationAction
                       label='Agenda'
-                      value='agenda'
+                      value='APPOINTMENT'
                       icon={<TodayIcon sx={{ width: 25 }} />}
                       sx={{
                         color: 'white',
@@ -145,7 +145,7 @@ const EditMovementModal = ({
                     />
                     <BottomNavigationAction
                       label='Procesal'
-                      value='procedural'
+                      value='PROCEDURAL_ACTION'
                       icon={<BookmarkIcon sx={{ width: 25 }} />}
                       sx={{
                         color: 'white',

@@ -6,7 +6,7 @@ import {
   Typography,
   Box,
 } from '@mui/material'
-import { CloseIcon } from '../assets'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 
 import TodayIcon from '@mui/icons-material/Today'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
@@ -34,7 +34,7 @@ const MovementDetailsModal = ({
           sx={{ float: 'right' }}
           onClick={() => setOpenMovementDetail(false)}
         >
-          <CloseIcon size={'20px'} color={'white'} />
+          <HighlightOffIcon sx={{ width: 25, color: 'white' }} />
         </IconButton>
       </DialogTitle>
 
@@ -61,9 +61,11 @@ const MovementDetailsModal = ({
           </Typography>
 
           <Box>
-            {movementInfo.type === 'agenda' && <TodayIcon sx={{ width: 25 }} />}
+            {movementInfo.type === 'APPOINTMENT' && (
+              <TodayIcon sx={{ width: 25 }} />
+            )}
 
-            {movementInfo.type === 'procedural' && (
+            {movementInfo.type === 'PROCEDURAL_ACTION' && (
               <BookmarkIcon sx={{ width: 25 }} />
             )}
           </Box>

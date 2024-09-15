@@ -10,23 +10,73 @@ import {
   BottomNavigationAction,
   Button,
 } from '@mui/material'
-import { CloseIcon } from '../assets'
-import { DatePicker } from '@mui/x-date-pickers'
-import { useState } from 'react'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { useState, useEffect } from 'react'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import TodayIcon from '@mui/icons-material/Today'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
+import { useForm } from 'react-hook-form'
+import dayjs, { Dayjs } from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import movementsService from '../services/movements.service'
+import { useAuth } from '../../../hooks'
+
+dayjs.extend(utc)
 
 const CreateMovementModal = ({
   openCreateMovement,
   setOpenCreateMovement,
+  caseId,
 }: any) => {
-  const [value, setValue] = useState('')
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs())
+  const [navValue, setNavValue] = useState('PROCEDURAL_ACTION')
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      title: '',
+      date: dayjs().toISOString(),
+      type: 'PROCEDURAL_ACTION',
+      content: '',
+      caseId: caseId,
+    },
+  })
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-    console.log(value)
+  const { token } = useAuth()
+
+  const handleDateChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      setSelectedDate(newDate)
+      setValue('date', newDate.toISOString())
+    }
   }
+
+  const handleNavigationChange = (
+    _event: React.SyntheticEvent,
+    newValue: string,
+  ) => {
+    setNavValue(newValue)
+    setValue('type', newValue)
+  }
+
+  const onSubmit = (data: any) => {
+    if (token) {
+      movementsService.createMovement(data).then((res) => {
+        if (res?.data) {
+          console.log('usuario creado')
+          setOpenCreateMovement(false)
+        } else {
+          console.log('Error al crear el usuario', Error)
+        }
+      })
+    }
+    console.log(data)
+  }
+
+  useEffect(() => {
+    setValue('date', dayjs().toISOString())
+    setValue('type', 'PROCEDURAL_ACTION')
+  }, [setValue])
+
   return (
     <Dialog
       open={openCreateMovement}
@@ -43,12 +93,12 @@ const CreateMovementModal = ({
           sx={{ float: 'right' }}
           onClick={() => setOpenCreateMovement(false)}
         >
-          <CloseIcon size={'20px'} color={'white'} />
+          <HighlightOffIcon sx={{ width: 25, color: 'white' }} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
         <Box p={3}>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box
               display={'flex'}
               gap={2}
@@ -58,7 +108,7 @@ const CreateMovementModal = ({
             >
               <Box>
                 <TextField
-                  id=''
+                  id='title'
                   label='Titulo'
                   sx={{
                     width: '100%',
@@ -86,37 +136,44 @@ const CreateMovementModal = ({
                       },
                     },
                   }}
+                  {...register('title', { required: true })}
                 />
               </Box>
+
               <Box display={'flex'} justifyContent={'space-between'} gap={4}>
+                {/* DatePicker sin renderInput */}
                 <DatePicker
-                  label={'Fecha'}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: 'white',
+                  label='Fecha'
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      sx: {
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'white',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'white',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#F6B17A',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          color: 'white',
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: 'white',
+                          '&.Mui-focused': {
+                            color: '#F6B17A',
+                          },
+                        },
+                        '& .MuiSvgIcon-root': {
+                          color: 'white',
+                        },
                       },
-                      '&:hover fieldset': {
-                        borderColor: 'white',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#F6B17A',
-                      },
-                    },
-                    '& .MuiInputBase-input': {
-                      color: 'white',
-                    },
-                    '& .MuiInputLabel-root': {
-                      color: 'white',
-                      '&.Mui-focused': {
-                        color: '#F6B17A',
-                      },
-                      '&.MuiFormLabel-root:not(.MuiInputLabel-shrink)': {
-                        color: 'white',
-                      },
-                    },
-                    '& .MuiSvgIcon-root': {
-                      color: 'white',
                     },
                   }}
                 />
@@ -124,12 +181,12 @@ const CreateMovementModal = ({
                 <Box display={'flex'} bgcolor={'none'}>
                   <BottomNavigation
                     sx={{ background: 'none', color: 'white' }}
-                    value={value}
-                    onChange={handleChange}
+                    value={navValue}
+                    onChange={handleNavigationChange}
                   >
                     <BottomNavigationAction
                       label='Agenda'
-                      value='agenda'
+                      value='APPOINTMENT'
                       icon={<TodayIcon sx={{ width: 25 }} />}
                       sx={{
                         color: 'white',
@@ -141,7 +198,7 @@ const CreateMovementModal = ({
                     />
                     <BottomNavigationAction
                       label='Procesal'
-                      value='procedural'
+                      value='PROCEDURAL_ACTION'
                       icon={<BookmarkIcon sx={{ width: 25 }} />}
                       sx={{
                         color: 'white',
@@ -155,13 +212,13 @@ const CreateMovementModal = ({
                 </Box>
               </Box>
             </Box>
+
             <Box display={'flex'} justifyContent={'center'} pb={3}>
-              {' '}
               <TextField
-                id=''
+                id='content'
                 label='Observación'
                 multiline
-                minRows={10} // Define un mínimo de 10 filas
+                minRows={10}
                 sx={{
                   width: '100%',
                   height: '100%',
@@ -189,8 +246,10 @@ const CreateMovementModal = ({
                     },
                   },
                 }}
+                {...register('content', { required: true })}
               />
             </Box>
+
             <Box display={'flex'} justifyContent={'center'}>
               <Button
                 startIcon={<AddCircleOutlineIcon sx={{ color: 'white' }} />}
@@ -200,6 +259,7 @@ const CreateMovementModal = ({
                     color: 'white',
                   },
                 }}
+                type='submit'
               >
                 <Typography variant='body2'>Agregar Tarea</Typography>
               </Button>

@@ -8,24 +8,33 @@ import CreateMovementModal from './CreateMovementModal'
 const MovementList = ({
   items,
   filter,
+  searchFilter, // Añadir searchFilter
+  caseId,
 }: {
   items: MovementInfoType[]
   filter: undefined | null | string
+  searchFilter: string // Añadir searchFilter
+  caseId: undefined | null | string
 }) => {
   const [filteredMovements, setFilteredMovements] = useState<
-    [] | MovementInfoType[]
+    MovementInfoType[]
   >([])
 
   useEffect(() => {
     const filterMovements = () => {
-      if (filter === 'all' || !filter) {
-        return items
-      } else {
-        return items.filter((i) => i.type === filter)
+      let filtered = items
+      if (filter && filter !== 'all') {
+        filtered = filtered.filter((i) => i.type === filter)
       }
+      if (searchFilter) {
+        filtered = filtered.filter((i) =>
+          i.title.toLowerCase().includes(searchFilter.toLowerCase()),
+        )
+      }
+      return filtered
     }
     setFilteredMovements(filterMovements())
-  }, [items, filter])
+  }, [items, filter, searchFilter]) // Añadir searchFilter
 
   const [openCreateMovement, setOpenCreateMovement] = useState(false)
 
@@ -68,6 +77,7 @@ const MovementList = ({
           <CreateMovementModal
             openCreateMovement={openCreateMovement}
             setOpenCreateMovement={setOpenCreateMovement}
+            caseId={caseId}
           />
         </Box>
       </Box>

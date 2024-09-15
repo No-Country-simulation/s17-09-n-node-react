@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <CasesListPage />,
       },
       {
-        path: 'cases/details',
+        path: 'cases/details/:id',
         element: <CaseMovementDetails />,
       },
     ],

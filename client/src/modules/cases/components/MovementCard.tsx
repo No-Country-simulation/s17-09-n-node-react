@@ -52,11 +52,14 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
   }
 
   const paperColor = (() => {
-    if (movementInfo.done === true && movementInfo.type === 'agenda') {
+    if (movementInfo.done === true && movementInfo.type === 'APPOINTMENT') {
       return '#424769'
-    } else if (movementInfo.type === 'procedural') {
+    } else if (movementInfo.type === 'PROCEDURAL_ACTION') {
       return '#7077A1'
-    } else if (movementInfo.done === false && movementInfo.type === 'agenda') {
+    } else if (
+      movementInfo.done === false &&
+      movementInfo.type === 'APPOINTMENT'
+    ) {
       return '#F6B17A'
     }
     return 'primary.light'
@@ -107,12 +110,13 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
               px={0}
               color={'white'}
             >
-              {movementInfo.type === 'agenda' &&
+              {movementInfo.type === 'APPOINTMENT' &&
                 movementInfo.done === false && <TodayIcon sx={{ width: 50 }} />}
-              {movementInfo.type === 'agenda' && movementInfo.done === true && (
-                <EventAvailableIcon sx={{ width: 50 }} />
-              )}
-              {movementInfo.type === 'procedural' && (
+              {movementInfo.type === 'APPOINTMENT' &&
+                movementInfo.done === true && (
+                  <EventAvailableIcon sx={{ width: 50 }} />
+                )}
+              {movementInfo.type === 'PROCEDURAL_ACTION' && (
                 <BookmarkIcon sx={{ width: 50 }} />
               )}
 
@@ -165,7 +169,7 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                   },
                 }}
               >
-                {movementInfo.type === 'agenda' &&
+                {movementInfo.type === 'APPOINTMENT' &&
                   movementInfo.done === false && (
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
@@ -176,7 +180,7 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                       <ListItemText>Marcar como hecho</ListItemText>
                     </MenuItem>
                   )}
-                {movementInfo.type === 'agenda' &&
+                {movementInfo.type === 'APPOINTMENT' &&
                   movementInfo.done === true && (
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>

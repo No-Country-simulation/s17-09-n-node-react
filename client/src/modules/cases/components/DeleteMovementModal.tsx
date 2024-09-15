@@ -7,15 +7,33 @@ import {
   Typography,
   Box,
 } from '@mui/material'
-import { CloseIcon } from '../assets'
+
 import CheckIcon from '@mui/icons-material/Check'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import movementsService from '../services/movements.service'
+import { useAuth } from '../../../hooks'
+import { useNavigate } from 'react-router-dom'
 
 const DeleteMovementModal = ({
   movementInfo,
   openDeleteMovement,
   setOpenDeleteMovement,
 }: any) => {
+  const { token } = useAuth()
+  const navigate = useNavigate()
+  const handleDeleteMovement = (movementInfo: any) => {
+    if (token && movementInfo) {
+      movementsService.deleteMovement(movementInfo.id).then((res) => {
+        if (res?.data) {
+          console.log('Movimiento eliminado')
+          navigate(`/cases/details/${movementInfo.caseId}`)
+        } else {
+          console.log('Error al eliminar el movimiento', Error)
+        }
+      })
+    }
+  }
+
   return (
     <Dialog
       open={openDeleteMovement}
@@ -33,11 +51,11 @@ const DeleteMovementModal = ({
           sx={{ float: 'right' }}
           onClick={() => setOpenDeleteMovement(false)}
         >
-          <CloseIcon size={'20px'} color={'white'} />
+          <HighlightOffIcon sx={{ width: 25, color: 'white' }} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        Estas por eliminar el movimiento: {movementInfo.title}
+        Estas por eliminar el movimiento: {movementInfo?.id}
       </DialogContent>
       <DialogContent>
         <Box>
@@ -49,6 +67,7 @@ const DeleteMovementModal = ({
                 color: 'white',
               },
             }}
+            onClick={() => handleDeleteMovement(movementInfo)} // Pasa `movementInfo` aquí
           >
             <Typography variant='body2'>Confirmar</Typography>
           </Button>
@@ -60,6 +79,7 @@ const DeleteMovementModal = ({
                 color: 'white',
               },
             }}
+            onClick={() => setOpenDeleteMovement(false)}
           >
             <Typography variant='body2'>Cancelar</Typography>
           </Button>
