@@ -132,7 +132,10 @@ const Login = () => {
         />
 
         {errorMessage && (
-          <Alert severity='error' style={{ marginBottom: '1rem' }}>
+          <Alert
+            severity='error'
+            style={{ marginTop: '1rem', marginBottom: '0.5rem' }}
+          >
             {errorMessage}
           </Alert>
         )}
