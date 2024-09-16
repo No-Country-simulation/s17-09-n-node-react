@@ -7,7 +7,7 @@ import { esES } from '@mui/x-date-pickers/locales'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
-import { Layout, HelpPage } from './pages'
+import { Layout, HelpPage, LandingPage } from './pages'
 import { Loading, PublicRoute, PrivateRoute } from './components'
 
 import { CasesListPage } from './modules/cases'
@@ -23,7 +23,7 @@ import './App.css'
 const router = createBrowserRouter([
   {
     path: '/landing',
-    element: <p>Landing</p>,
+    element: <LandingPage/>,
   },
   {
     path: '/*',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SocialMediaSection from './SocialMediaSection';
  
 
 
@@ -87,12 +88,21 @@ const LandingPage: React.FC = () => { const navigate = useNavigate()
       </section>
 
       {/* Sección de testimonios */}
-      <section className="testimonials text-center p-4 bg-gray-100 py-12">
+      <section className="testimonials text-center p-4 bg-gray-100 py-12 display-flex">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold mb-6 text-center">
             Lo que dicen nuestros clientes
           </h2>
-          <TestimonialCarousel />
+          <TestimonialCarousel />      
+          
+        </div>
+      </section>
+      <section className="testimonials text-center p-4 bg-gray-100 py-12">
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            Encuentranos
+          </h2>
+          <SocialMediaSection/>
           
         </div>
       </section>
