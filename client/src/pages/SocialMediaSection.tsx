@@ -12,17 +12,17 @@ function SocialMediaSection() {
   };
 
   return (
-    <div className="social-media-section">
-      <button onClick={() => handleSocialMediaClick('enlace_a_facebook')} title='facebook'>
+    <div className="social-media-section flex justify-center">
+      <button onClick={() => handleSocialMediaClick('enlace_a_facebook')} title='facebook'className="text-2xl px-10 py-2 mx-4">
         <FacebookIcon /> 
       </button>
-      <button onClick={() => handleSocialMediaClick('enlace_a_instagram')} title='instagram'>
+      <button onClick={() => handleSocialMediaClick('enlace_a_instagram')} title='instagram'className="text-2xl px-10 py-2 mx-4">
         <InstagramIcon /> 
       </button>
-      <button onClick={() => handleSocialMediaClick('enlace_a_x')}> {/* 'X' anteriormente conocido como Twitter */}
+      <button onClick={() => handleSocialMediaClick('enlace_a_x')}title='X'className="text-2xl px-10 py-2 mx-4"> 
         <TwitterIcon />  
       </button>
-      <button onClick={() => handleSocialMediaClick('enlace_a_whatsapp')}title='Whatsapp'>
+      <button onClick={() => handleSocialMediaClick('enlace_a_whatsapp')}title='Whatsapp' className="text-2xl px-10 py-2 mx-4 ">
         <WhatsAppIcon /> 
       </button>
     </div>
