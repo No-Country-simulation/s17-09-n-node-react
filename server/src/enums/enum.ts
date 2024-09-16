@@ -11,6 +11,7 @@ export enum HTTP_STATUS {
   UNAUTHORIZED = 'Unauthorized',
   FORBIDDEN = 'Forbidden',
   NOT_FOUND = 'Not Found',
+  NOT_ACCEPTABLE = 'Not Acceptabble',
   CONFLICT = 'Conflict',
   SERVER_ERROR = 'Server Error',
 }

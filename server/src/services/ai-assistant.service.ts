@@ -15,9 +15,11 @@ export class OpenAIService {
   }
 
   async audioTranscription(audioFile: Express.Multer.File, prompt?: string) {
-    return await audioToTextUseCase(this.openai, {
+    const { text } = await audioToTextUseCase(this.openai, {
       prompt,
       audioFile,
     })
+
+    return text
   }
 }

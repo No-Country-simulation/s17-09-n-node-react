@@ -4,7 +4,7 @@ import CaseRoutes from './case.routes'
 import DocumentRoutes from './document.routes'
 import { MovementRoutes } from './movement.route'
 import ContactRoutes from './contact.routes'
-import { OpenAIRoutes } from './openai.route'
+import { OpenAIRoutes } from './ai-assistant.route'
 
 export default class AppRoutes {
   static get routes(): Router {

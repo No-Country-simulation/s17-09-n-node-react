@@ -12,4 +12,6 @@ function uploadAudioConfig(...formats: string[]): Options {
   }
 }
 
-export const uploadAudio = multer(uploadAudioConfig('mp3', 'mp4', 'wma'))
+export const uploadAudio = multer(
+  uploadAudioConfig('audio/mp3', 'audio/mp4', 'audio/wma', 'audio/m4a'),
+)

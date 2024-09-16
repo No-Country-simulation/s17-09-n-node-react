@@ -4,6 +4,7 @@ import { HTTP_STATUS } from '../enums/enum'
 import HttpError from '../config/errors'
 import { CreateMovementDTO } from '../dtos/movement/create-dto.movement'
 import { UpdateMovementDTO } from '../dtos/movement/update-dto.movement'
+import { MulterError } from 'multer'
 
 export class MovementController {
   constructor(private readonly movementService: MovementService) {}
@@ -68,6 +69,11 @@ export class MovementController {
       .then(() => {
         res.status(201).json({ message: 'case successfully deleted!' })
       })
-      .catch((error: unknown) => next(error))
+      .catch((error: unknown) => {
+        if (error instanceof MulterError) {
+          throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'the field should be "audio')
+        }
+        next(error)
+      })
   }
 }
