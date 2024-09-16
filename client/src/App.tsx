@@ -13,7 +13,7 @@ import { Layout, HelpPage, HomePage, NotFoundPage } from './pages'
 import { CasesListPage } from './modules/cases'
 import { LoginPage, RegisterPage } from './modules/auth'
 import ProfilePage from './modules/auth/pages/ProfilePage'
-import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
+import CaseMovementDetails from './modules/cases/pages/CaseMovementDetails'
 
 import { useAuth } from './hooks'
 
@@ -48,8 +48,8 @@ const router = createBrowserRouter([
         element: <CasesListPage />,
       },
       {
-        path: 'cases/:caseId',
-        element: <CaseDetailsPage />,
+        path: 'cases/details/:id',
+        element: <CaseMovementDetails />,
       },
     ],
   },
