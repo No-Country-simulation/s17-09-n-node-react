@@ -65,7 +65,7 @@ const DeleteMovementModal = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        Estas por eliminar el movimiento: {movementInfo?.id}
+        Estas por eliminar el movimiento: {movementInfo?.title}
       </DialogContent>
       <DialogContent>
         <Box>

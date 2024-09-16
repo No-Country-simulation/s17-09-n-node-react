@@ -87,7 +87,7 @@ const EditMovementModal = ({
   useEffect(() => {
     setValue('date', dayjs().toISOString())
     setValue('type', movementInfo.type)
-  }, [setValue])
+  }, [setValue, movementInfo.type])
 
   return (
     <Dialog
