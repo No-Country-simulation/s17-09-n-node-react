@@ -15,6 +15,9 @@
     "back:lint": "cd server && npm run lint",
     "back:test": "cd server && npm run test",
     "test:e2e": "cd client && npm run e2e",
+    "back:generate": "cd server && npm run generate",
+    "back:seed": "cd server && npm run seed",
+    "back:drop": "cd server && npm run drop",
     "prepare": "husky"
   },
   "keywords": [],
@@ -23,5 +26,8 @@
   "description": "",
   "devDependencies": {
     "husky": "^9.1.5"
+  },
+  "dependencies": {
+    "s17-09-n-node-react": "file:"
   }
 }

@@ -1,0 +1,293 @@
+paths:
+  /api/v1/movement:
+    get:
+      summary: Get list of movements. Must be logged in as admin to use
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      responses:
+        '200':
+          description: List of movements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Movement'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    post:
+      summary: Create movement for a case.
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/CreateMovementDto'
+      responses:
+        '201':
+          description: Successfully created movement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Missing/incorrect fields
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Case not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/movement/{id}:
+    get:
+      summary: Get movement by id. 
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Movement details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/MovementWithCase'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Case not found
+        '500':
+          description: Unexpected error
+
+    put:
+      summary: Update movement
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/UpdateMovementDto'
+      responses:
+        '201':
+          description: Successfully updated movement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Case not found
+        '500':
+          description: Unexpected error
+
+    delete:
+      summary: Delete movement
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Successfully deleted movement
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Case not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/movement/user:
+    get:
+      summary: Get logged by user id
+      security:
+        - bearerAuth: []
+      tags:
+        - Movements
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            example: '2024-10-13'
+      responses:
+        '201':
+          description: Movements by date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/MovementWithCase'
+        '400':
+          description: Missing/incorrect fields
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    CreateMovementDto:
+      type: object
+      required: 
+        - date
+        - title
+        - type
+        - content
+        - caseId
+      properties:
+        date:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
+        content:
+          type: string
+        caseId:
+          type: string
+    UpdateMovementDto:
+      type: object
+      properties:
+        date:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
+        content:
+          type: string
+        done:
+          type: boolean
+    Movement:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        date:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        done:
+          type: boolean
+        content:
+          type: string
+        caseId:
+          type: string
+    MovementWithCase:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        date:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+          enum: 
+            - APPOINTMENT
+            - PROCEDURAL_ACTION
+        done:
+          type: boolean
+        content:
+          type: string
+        caseId:
+          type: string
+        Case:
+          type: object
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+            caseName:
+              type: string
+            caseNumber:
+              type: string
+            jury:
+              type: string
+            applicant:
+              type: string
+            respondent:
+              type: string
+            type:
+              type: string
+            status:
+              type: string
+            userId:
+              type: string

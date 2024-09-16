@@ -1,0 +1,306 @@
+paths:
+  /api/v1/user:
+    get:
+      summary: Get logged in user's details.
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    put:
+      summary: Update logged in user's name, last name and/or profile image
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/{id}:
+    get:
+      summary: Get logged in user's details. Must be logged in as admin to obtain any user
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+    delete:
+      summary: Delete user. Must be logged in as admin
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/list:
+    get:
+      summary: Get a list of users. Must be admin
+      security:
+        - bearerAuth: []
+      tags:
+        - User
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+
+  /api/v1/user/register:
+    post:
+      summary: Register a new user
+      tags:
+        - Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/RegisterDto'
+      responses:
+        '200':
+          description: Successfully registered
+        '400':
+          description: Some fields are not filled out
+        '409':
+          description: Already existing email
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/login:
+    post:
+      summary: User login
+      tags:
+        - Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/LoginDto'
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTRhNDFkZTFjNmUzYmVmMTY2OGVjOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNjMzOTA3NywiZXhwIjoxNzI2MzM5OTc3fQ.lo22oTMRxlM_f_tNuKZIOhZPpyzHgQ21nh0ccNBu9A8
+        '400':
+          description: Some fields are not filled out
+        '401':
+          description: Invalid password
+        '404':
+          description: User not found
+        '500':
+          desrciption: Unexpected error
+
+  /api/v1/user/logout:
+    get:
+      summary: User logout
+      tags:
+        - Logout
+      responses: 
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: logout successfully!
+        '403':
+          description: Cookie not found
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/refresh:
+    get:
+      summary: Refresh Token
+      tags:
+        - Refresh
+      responses: 
+        '200':
+          description: Successfully refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTRhNDFkZTFjNmUzYmVmMTY2OGVjOSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcyNjMzOTA3NywiZXhwIjoxNzI2MzM5OTc3fQ.lo22oTMRxlM_f_tNuKZIOhZPpyzHgQ21nh0ccNBu9A8
+        '403':
+          description: Cookie not found, token invalid or hacked user
+        '500':
+          description: Unexpected error
+
+  /api/v1/user/change-password:
+    put:
+      summary: Change the password
+      security:
+        - bearerAuth: []
+      tags:
+        - Change password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/ChangePasswordDto'
+      responses:
+        '200':
+          description: password successfully changed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: password successfully changed!
+        '401':
+          description: 'Unauthorized: jwt not provided or wrong role'
+        '403':
+          description: Jwt expired
+        '500':
+          description: Unexpected error
+
+components:
+  schemas:
+    RegisterDto:
+      type: object
+      required:
+        - email
+        - name
+        - lastName
+        - password
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+    LoginDto:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        imageUrl:
+          type: string
+    UpdateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+        lastName:
+          type: string
+        imageUrl:
+          type: string
+    ChangePasswordDto:
+      type: object
+      required:
+        - currentPassword
+        - newPassword
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string

@@ -1,0 +1,290 @@
+paths:
+  /api/v1/cases:
+    post:
+      summary: Create a new case
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaseDto'
+      responses:
+        201:
+          description: The created case.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: case successfully created!
+
+    get:
+      summary: Get all cases as admin user
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      responses:
+        200:
+          description: A list of cases.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cases'
+
+  /api/v1/cases/user:
+    get:
+      summary: Get all cases created by logged user
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      responses:
+        200:
+          description: A list of cases for the specified user ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cases'
+        404:
+          description: No cases found for the specified user ID.
+
+  /api/v1/cases/user/{userId}:
+    get:
+      summary: As admin get all cases by user ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of cases for the specified user ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cases'
+        404:
+          description: No cases found for the specified user ID.
+
+  /api/v1/cases/{id}:
+    get:
+      summary: Get a case and its movements by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The case data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniqueCase'
+        404:
+          description: Case not found.
+
+    put:
+      summary: Update a case by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseDto'
+      responses:
+        200:
+          description: The updated case.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: case successfully updated!
+        400:
+          description: Failed to update case.
+    delete:
+      summary: Delete a case by ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Cases
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Case deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: case successfully deleted!
+        400:
+          description: Failed to delete case.
+
+components:
+  schemas:
+    CreateCaseDto:
+      type: object
+      required:
+        - caseName
+        - jury
+        - caseNumber
+        - applicant
+        - respondent
+        - type
+        - status
+      properties:
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+    UpdateCaseDto:
+      type: object
+      properties:
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+    Cases:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        caseName:
+          type: string
+        jury:
+          type: string
+        caseNumber:
+          type: string
+        applicant:
+          type: string
+        respondent:
+          type: string
+        type:
+          type: string
+          enum:
+            - SUCCESSION
+            - EXECUTION
+            - TERMINATION
+            - DAMAGES_AND_LOSSES
+            - CONTRACT_DISPUTE
+            - FAMILY_LAW
+            - CRIMINAL
+            - PROPERTY_DISPUTE
+            - PERSONAL_INJURY
+            - INTELLECTUAL_PROPERTY
+        status:
+          type: string
+          enum:
+            - INITIATED
+            - EVIDENCE
+            - JUDGMENT
+            - CLOSED
+        userId:
+          type: string
+    UniqueCase:
+      allOf:
+        - $ref: '#/components/schemas/Cases'
+      properties:
+        movements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movement'

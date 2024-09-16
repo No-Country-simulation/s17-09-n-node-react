@@ -1,177 +1,315 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { TextField, Checkbox, FormControlLabel, Button, Typography, Container, Grid, FormHelperText } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm, SubmitHandler } from 'react-hook-form'
 
-interface RegisterFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  termsAccepted: boolean;
+import { Box, Button, Container, TextField, Typography } from '@mui/material'
+
+import { useAuth } from '../../../hooks'
+import { showStatusSnackbar } from '../../../helpers'
+
+import mail from './mail.svg'
+import icono from './icononombre.svg'
+import iconopass from './iconopass.svg'
+
+type Inputs = {
+  name: string
+  lastName: string
+  email: string
+  password: string
+  confirmPassword: string
 }
 
-const Register: React.FC = () => {
-  const [formData, setFormData] = useState<RegisterFormData>({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    termsAccepted: false,
-  });
+const Register = () => {
+  const navigate = useNavigate()
+  const { startRegister } = useAuth()
 
-  const [errors, setErrors] = useState<string[]>([]);
-  const [serverError, setServerError] = useState<string>('');
+  const {
+    watch,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>({ mode: 'onChange' })
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...rest } = data
+    const res = await startRegister(rest)
 
-  const validateForm = () => {
-    const newErrors: string[] = [];
-    if (!formData.name) newErrors.push('Nombre es requerido.');
-    if (!formData.email) newErrors.push('Email es requerido.');
-    if (!formData.password) newErrors.push('Contraseña es requerida.');
-    if (formData.password !== formData.confirmPassword) newErrors.push('Las contraseñas no coinciden.');
-    if (!formData.termsAccepted) newErrors.push('Debe aceptar los términos y condiciones.');
-    setErrors(newErrors);
-    return newErrors.length === 0;
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      try {
-        const response = await fetch('/api/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
-
-        if (!response.ok) {
-          const { message } = await response.json();
-          setServerError(message || 'Error en el servidor.');
-        } else {
-          // Redirigir o mostrar mensaje de éxito
-          console.log('Registro exitoso');
-        }
-      } catch (error) {
-        setServerError('Error en el servidor.');
-        console.log(error);
-      }
+    if (!res.ok) {
+      showStatusSnackbar(res)
+      return
     }
-  };
+
+    showStatusSnackbar(res, { vertical: 'bottom', horizontal: 'right' }, 7000)
+    navigate('/login')
+  }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Typography variant="h5" gutterBottom>
-        Regístrate
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Crea tu cuenta y únete a miles de profesionales que ya utilizan nuestros servicios.
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
+    <Container maxWidth='xs'>
+      <Box
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        minHeight='100vh'
+      >
+        <Typography variant='h4' component='h1' align='left' gutterBottom>
+          Registrate
+        </Typography>
+        <Typography variant='body1' align='left' paragraph>
+          Crea tu cuenta y unete a miles de profesionales que ya utilizan
+          nuestros servicios.
+        </Typography>
+        <div className='ml-[-20%]'>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <img
+                src={icono}
+                alt='log'
+                style={{
+                  width: '15%',
+                  height: '15%',
+                  alignSelf: 'center',
+                  padding: '2%',
+                }}
+              />
+              <TextField
+                label='Nombre'
+                variant='outlined'
+                fullWidth
+                margin='normal'
+                {...register('name', {
+                  required: {
+                    value: true,
+                    message: 'El nombre es obligatorio.',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'El nombre debe tener al menos 2 caracteres.',
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z\s]+$/,
+                    message: 'El nombre solo puede contener letras y espacios.',
+                  },
+                })}
+                error={!!errors?.name}
+                helperText={errors?.name?.message}
+                InputProps={{
+                  sx: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    height: '50px',
+                    widht: '100%',
+                  },
+                }}
+              />
+            </div>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <img
+                src={icono}
+                alt='log'
+                style={{
+                  width: '15%',
+                  height: '15%',
+                  alignSelf: 'center',
+                  padding: '2%',
+                }}
+              />
+              <TextField
+                label='Apellido'
+                variant='outlined'
+                fullWidth
+                margin='normal'
+                {...register('lastName', {
+                  required: {
+                    value: true,
+                    message: 'El apellido es obligatorio.',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'El apellido debe tener al menos 2 caracteres.',
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z\s]+$/,
+                    message:
+                      'El apellido solo puede contener letras y espacios.',
+                  },
+                })}
+                error={!!errors?.lastName}
+                helperText={errors?.lastName?.message}
+                InputProps={{
+                  sx: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    height: '50px',
+                    widht: '100%',
+                  },
+                }}
+              />
+            </div>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <img
+                src={mail}
+                alt='log'
+                style={{
+                  width: '15%',
+                  height: '15%',
+                  alignSelf: 'center',
+                  padding: '2%',
+                }}
+              />
+              <TextField
+                label='Email'
+                variant='outlined'
+                fullWidth
+                margin='normal'
+                {...register('email', {
+                  required: {
+                    value: true,
+                    message: 'Por favor, completa este campo.',
+                  },
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: 'Por favor, ingresa un email válido.',
+                  },
+                })}
+                error={!!errors?.email}
+                helperText={errors?.email?.message}
+                InputProps={{
+                  sx: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    height: '50px',
+                    widht: '100%',
+                  },
+                }}
+              />
+            </div>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <img
+                src={iconopass}
+                alt='log'
+                style={{
+                  width: '15%',
+                  height: '15%',
+                  alignSelf: 'center',
+                  padding: '2%',
+                }}
+              />
+              <TextField
+                label='Contraseña'
+                type='password'
+                variant='outlined'
+                fullWidth
+                margin='normal'
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: 'Por favor, completa este campo.',
+                  },
+                  minLength: {
+                    value: 8,
+                    message: 'La contraseña debe tener al menos 8 caracteres.',
+                  },
+                  pattern: {
+                    value: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                    message:
+                      'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+                  },
+                })}
+                error={!!errors?.password}
+                helperText={errors?.password?.message}
+                InputProps={{
+                  sx: {
+                    height: '50px',
+                    widht: '100%',
+                    backgroundColor: 'white',
+                    color: 'black',
+                  },
+                }}
+              />
+            </div>
+            <div
+              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
+            >
+              <img
+                src={iconopass}
+                alt='log'
+                style={{
+                  width: '15%',
+                  height: '15%',
+                  alignSelf: 'center',
+                  padding: '2%',
+                }}
+              />
+
+              <TextField
+                label='Confirmar Contraseña'
+                type='password'
+                variant='outlined'
+                fullWidth
+                margin='normal'
+                {...register('confirmPassword', {
+                  required: 'Por favor repite la contraseña',
+                  validate: (value) =>
+                    value === watch('password') ||
+                    'Las contraseñas no coinciden',
+                })}
+                error={!!errors?.confirmPassword}
+                helperText={errors?.confirmPassword?.message}
+                InputProps={{
+                  sx: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    height: '50px',
+                    widht: '100%',
+                  },
+                }}
+              />
+            </div>
+
+            <Button
+              type='submit'
+              variant='contained'
+              color='inherit'
+              sx={{
+                backgroundColor: '#4B527E',
+                color: 'white',
+                margin: '0 10%',
+                boxShadow: '10px black',
+                borderRadius: '15px',
+                border: '2px solid white',
+              }}
+              disabled={isSubmitting}
               fullWidth
-              label="Ingresa aquí tu nombre"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Ingresa aquí tu nombre"
-              error={errors.includes('Nombre es requerido.')}
-              helperText={errors.includes('Nombre es requerido.') ? 'Nombre es requerido.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Ingresa aquí tu email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Ingresa aquí tu email"
-              type="email"
-              error={errors.includes('Email es requerido.')}
-              helperText={errors.includes('Email es requerido.') ? 'Email es requerido.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Crea tu contraseña"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Crea tu contraseña"
-              type="password"
-              error={errors.includes('Contraseña es requerida.')}
-              helperText={errors.includes('Contraseña es requerida.') ? 'Contraseña es requerida.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Confirma tu contraseña"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirma tu contraseña"
-              type="password"
-              error={errors.includes('Las contraseñas no coinciden.')}
-              helperText={errors.includes('Las contraseñas no coinciden.') ? 'Las contraseñas no coinciden.' : ''}
-              InputProps={{ style: { backgroundColor: 'white' } }}  // Fondo blanco
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="termsAccepted"
-                  checked={formData.termsAccepted}
-                  onChange={handleChange}
-                />
-              }
-              label="Estoy de acuerdo con los Términos y Condiciones de uso."
-            />
-            {errors.includes('Debe aceptar los términos y condiciones.') && (
-              <FormHelperText error>
-                Debe aceptar los términos y condiciones.
-              </FormHelperText>
-            )}
-          </Grid>
-
-          {serverError && (
-            <Grid item xs={12}>
-              <FormHelperText error>{serverError}</FormHelperText>
-            </Grid>
-          )}
-
-          <Grid item xs={5}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-              Registrarse
+            >
+              Registrarme
             </Button>
-          </Grid>
-        </Grid>
-      </form>
+          </form>
+        </div>
+        <Typography
+          variant='body2'
+          color='textSecondary'
+          align='center'
+          style={{ marginTop: '1rem' }}
+        >
+          ¿Ya tienes una cuenta?{' '}
+          <Link
+            to='/login'
+            style={{ textDecoration: 'none', color: '#749BFF' }}
+          >
+            Inicia sesión aquí
+          </Link>
+        </Typography>
+      </Box>
     </Container>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
