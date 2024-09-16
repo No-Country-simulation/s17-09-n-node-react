@@ -16,8 +16,8 @@ import {
 } from '@mui/material'
 
 interface CaseProfileProps {
-  caseState: string
-  setCaseState: React.Dispatch<React.SetStateAction<string>>
+  caseStatus: string | null
+  setCaseStatus: React.Dispatch<React.SetStateAction<string | null>>
   caseName: string
   jury: string
   caseNumber: string
@@ -27,8 +27,8 @@ interface CaseProfileProps {
 }
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
-  caseState,
-  setCaseState,
+  caseStatus,
+  setCaseStatus,
   caseName,
   jury,
   caseNumber,
@@ -39,30 +39,37 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
   // Menu states
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   const handleMenuItemClick = (newState: string) => {
-    setCaseState(newState)
+    setCaseStatus(newState)
     handleClose()
   }
 
   const renderIconForState = () => {
-    switch (caseState) {
-      case 'initial':
-        return <DoneIcon sx={{ width: 50, color: 'white' }} />
-      case 'proof':
-        return <ErrorIcon sx={{ width: 50, color: 'white' }} />
-      case 'veredict':
-        return <GroupsIcon sx={{ width: 50, color: 'white' }} />
-      case 'archive':
-        return <ArchiveIcon sx={{ width: 50, color: 'white' }} />
-      default:
-        return <DoneIcon sx={{ width: 50, color: 'white' }} />
+    console.log('Rendering icon for state:', caseStatus)
+    if (caseStatus) {
+      switch (caseStatus) {
+        case 'INITIATED':
+          return <DoneIcon sx={{ width: 50, color: 'white' }} />
+        case 'EVIDENCE':
+          return <ErrorIcon sx={{ width: 50, color: 'white' }} />
+        case 'JUDGMENT':
+          return <GroupsIcon sx={{ width: 50, color: 'white' }} />
+        case 'CLOSED':
+          return <ArchiveIcon sx={{ width: 50, color: 'white' }} />
+        default:
+          return <DoneIcon sx={{ width: 50, color: 'white' }} />
+      }
     }
+    return <DoneIcon sx={{ width: 50, color: 'white' }} /> // Default icon if caseStatus is null
   }
 
   return (
@@ -84,7 +91,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
           >
             <Box>
               <Typography variant='body1' color='white'>
-                NOMBRE DEL CASO: {caseName}
+                Caso: {caseName}
               </Typography>
             </Box>
 
@@ -120,28 +127,28 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
                   },
                 }}
               >
-                <MenuItem onClick={() => handleMenuItemClick('initial')}>
+                <MenuItem onClick={() => handleMenuItemClick('INITIATED')}>
                   <ListItemIcon>
                     <DoneIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Inicio</ListItemText>
                 </MenuItem>
 
-                <MenuItem onClick={() => handleMenuItemClick('proof')}>
+                <MenuItem onClick={() => handleMenuItemClick('EVIDENCE')}>
                   <ListItemIcon>
                     <ErrorIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Prueba</ListItemText>
                 </MenuItem>
 
-                <MenuItem onClick={() => handleMenuItemClick('veredict')}>
+                <MenuItem onClick={() => handleMenuItemClick('JUDGMENT')}>
                   <ListItemIcon>
                     <GroupsIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Sentencia</ListItemText>
                 </MenuItem>
 
-                <MenuItem onClick={() => handleMenuItemClick('archive')}>
+                <MenuItem onClick={() => handleMenuItemClick('CLOSED')}>
                   <ListItemIcon>
                     <ArchiveIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>

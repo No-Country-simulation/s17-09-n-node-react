@@ -60,8 +60,9 @@ interface CaseType {
 const CaseMovementDetails: React.FC = () => {
   const [filter, setFilter] = useState('all')
   const [searchFilter, setSearchFilter] = useState('')
-  const [caseState, setCaseState] = useState('initial')
+
   const [caseData, setCaseData] = useState<CaseType | null>(null)
+  const [caseStatus, setCaseStatus] = useState<string | null>(null)
   const [movements, setMovements] = useState<MovementInfoType[]>([])
 
   const { token } = useAuth()
@@ -74,6 +75,7 @@ const CaseMovementDetails: React.FC = () => {
         if (res?.data) {
           setCaseData(res.data)
           setMovements(res.data.movements)
+          setCaseStatus(res.data.status)
         } else {
           console.log('Error al obtener los datos del movimiento')
         }
@@ -103,8 +105,8 @@ const CaseMovementDetails: React.FC = () => {
         </Typography>
         {caseData ? (
           <CaseProfileCard
-            caseState={caseState}
-            setCaseState={setCaseState}
+            caseStatus={caseStatus}
+            setCaseStatus={setCaseStatus}
             caseName={caseData.caseName}
             jury={caseData.jury}
             caseNumber={caseData.caseNumber}
@@ -126,6 +128,7 @@ const CaseMovementDetails: React.FC = () => {
           filter={filter}
           searchFilter={searchFilter} // Asegúrate de pasar `searchFilter`
           caseId={caseId}
+          setMovements={setMovements}
         />
       </Box>
     </Box>

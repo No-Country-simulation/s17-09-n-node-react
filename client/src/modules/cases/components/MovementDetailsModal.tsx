@@ -1,3 +1,4 @@
+import { formatDate } from '../utils/format.date'
 import {
   Dialog,
   DialogContent,
@@ -57,7 +58,7 @@ const MovementDetailsModal = ({
 
         <Box display={'flex'} justifyContent={'space-around'}>
           <Typography variant='subtitle1' color='white'>
-            {movementInfo.date}
+            {formatDate(movementInfo.date)}
           </Typography>
 
           <Box>

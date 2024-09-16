@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { formatDate } from '../utils/format.date'
 import {
   Box,
   Paper,
@@ -22,7 +22,8 @@ import RemoveDoneIcon from '@mui/icons-material/RemoveDone'
 import DeleteMovementModal from './DeleteMovementModal'
 import EditMovementModal from './EditMovementModal'
 import MovementDetailsModal from './MovementDetailsModal'
-
+import movementsService from '../services/movements.service'
+import { useAuth } from '../../../hooks'
 // Type de Movimiento
 export interface MovementInfoType {
   id: string
@@ -37,9 +38,16 @@ export interface MovementInfoType {
 
 interface MovementCardProp {
   movementInfo: MovementInfoType
+  setMovements: any
+  caseId: any
 }
 
-const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
+const MovementCard: React.FC<MovementCardProp> = ({
+  movementInfo,
+  setMovements,
+  caseId,
+}) => {
+  const { token } = useAuth()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -77,6 +85,35 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
   const [openMovementDetail, setOpenMovementDetail] = useState(false)
   const OpenMovementDetail = () => {
     setOpenMovementDetail(true)
+  }
+
+  const updateDone = () => {
+    if (token) {
+      const updatedMovement = {
+        ...movementInfo,
+        done: !movementInfo.done, // Invertir el estado de "done"
+      }
+
+      movementsService
+        .updateMovement(movementInfo.id, updatedMovement)
+        .then((res) => {
+          if (res?.data) {
+            // Actualizar el estado local con el nuevo movimiento
+            setMovements((prevMovements: MovementInfoType[]) =>
+              prevMovements.map((movement) =>
+                movement.id === movementInfo.id
+                  ? { ...movement, done: updatedMovement.done }
+                  : movement,
+              ),
+            )
+          } else {
+            console.log('Error al actualizar el estado', res)
+          }
+        })
+        .catch((error) => {
+          console.error('Error en la actualización:', error)
+        })
+    }
   }
 
   return (
@@ -120,7 +157,9 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                 <BookmarkIcon sx={{ width: 50 }} />
               )}
 
-              <Typography variant='caption'>{movementInfo.date}</Typography>
+              <Typography variant='caption'>
+                {formatDate(movementInfo.date)}
+              </Typography>
             </Box>
 
             {/* Nombre del caso */}
@@ -171,7 +210,12 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
               >
                 {movementInfo.type === 'APPOINTMENT' &&
                   movementInfo.done === false && (
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose()
+                        updateDone()
+                      }}
+                    >
                       <ListItemIcon>
                         <DoneAllIcon
                           sx={{ color: 'white', fontSize: 'medium' }}
@@ -182,7 +226,12 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
                   )}
                 {movementInfo.type === 'APPOINTMENT' &&
                   movementInfo.done === true && (
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem
+                      onClick={() => {
+                        handleClose()
+                        updateDone()
+                      }}
+                    >
                       <ListItemIcon>
                         <RemoveDoneIcon
                           sx={{ color: 'white', fontSize: 'medium' }}
@@ -222,11 +271,15 @@ const MovementCard: React.FC<MovementCardProp> = ({ movementInfo }) => {
         openDeleteMovement={openDeleteMovement}
         setOpenDeleteMovement={setOpenDeleteMovement}
         movementInfo={movementInfo}
+        setMovements={setMovements}
+        caseId={caseId}
       />
       <EditMovementModal
         openEditMovement={openEditMovement}
         setOpenEditMovement={setOpenEditMovement}
         movementInfo={movementInfo}
+        setMovements={setMovements}
+        caseId={caseId}
       />
       <MovementDetailsModal
         openMovementDetail={openMovementDetail}

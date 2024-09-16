@@ -10,11 +10,13 @@ const MovementList = ({
   filter,
   searchFilter, // Añadir searchFilter
   caseId,
+  setMovements,
 }: {
   items: MovementInfoType[]
   filter: undefined | null | string
   searchFilter: string // Añadir searchFilter
   caseId: undefined | null | string
+  setMovements: any
 }) => {
   const [filteredMovements, setFilteredMovements] = useState<
     MovementInfoType[]
@@ -56,7 +58,12 @@ const MovementList = ({
             }}
           >
             {filteredMovements.map((movementInfo, index) => (
-              <MovementCard key={index} movementInfo={movementInfo} />
+              <MovementCard
+                key={index}
+                movementInfo={movementInfo}
+                setMovements={setMovements}
+                caseId={caseId}
+              />
             ))}
           </ul>
         </CasesScrollbar>
@@ -78,6 +85,7 @@ const MovementList = ({
             openCreateMovement={openCreateMovement}
             setOpenCreateMovement={setOpenCreateMovement}
             caseId={caseId}
+            setMovements={setMovements}
           />
         </Box>
       </Box>

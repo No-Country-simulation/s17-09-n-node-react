@@ -21,13 +21,13 @@ import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import movementsService from '../services/movements.service'
 import { useAuth } from '../../../hooks'
-
 dayjs.extend(utc)
 
 const CreateMovementModal = ({
   openCreateMovement,
   setOpenCreateMovement,
   caseId,
+  setMovements,
 }: any) => {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs())
   const [navValue, setNavValue] = useState('PROCEDURAL_ACTION')
@@ -62,10 +62,19 @@ const CreateMovementModal = ({
     if (token) {
       movementsService.createMovement(data).then((res) => {
         if (res?.data) {
-          console.log('usuario creado')
+          console.log('Movimiento creado')
           setOpenCreateMovement(false)
         } else {
-          console.log('Error al crear el usuario', Error)
+          console.log('Error al crear el Movimiento', Error)
+        }
+        if (token && typeof caseId === 'string') {
+          movementsService.getMovementsByCaseId(caseId).then((res) => {
+            if (res?.data) {
+              setMovements(res.data.movements)
+            } else {
+              console.log('Error al obtener los datos del movimiento')
+            }
+          })
         }
       })
     }

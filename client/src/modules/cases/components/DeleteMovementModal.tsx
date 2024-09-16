@@ -12,23 +12,33 @@ import CheckIcon from '@mui/icons-material/Check'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import movementsService from '../services/movements.service'
 import { useAuth } from '../../../hooks'
-import { useNavigate } from 'react-router-dom'
 
 const DeleteMovementModal = ({
   movementInfo,
   openDeleteMovement,
   setOpenDeleteMovement,
+  setMovements,
+  caseId,
 }: any) => {
   const { token } = useAuth()
-  const navigate = useNavigate()
+
   const handleDeleteMovement = (movementInfo: any) => {
     if (token && movementInfo) {
       movementsService.deleteMovement(movementInfo.id).then((res) => {
         if (res?.data) {
           console.log('Movimiento eliminado')
-          navigate(`/cases/details/${movementInfo.caseId}`)
+          setOpenDeleteMovement(false)
         } else {
           console.log('Error al eliminar el movimiento', Error)
+        }
+        if (token && typeof caseId === 'string') {
+          movementsService.getMovementsByCaseId(caseId).then((res) => {
+            if (res?.data) {
+              setMovements(res.data.movements)
+            } else {
+              console.log('Error al obtener los datos del movimiento')
+            }
+          })
         }
       })
     }
