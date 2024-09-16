@@ -81,7 +81,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
       }
     }
     fetchData()
-  }, [])
+  }, [alert, id ,reset])
 
 
 
@@ -100,7 +100,7 @@ export const UpdateCase = ({setUpdateModal, id}:{setUpdateModal: Dispatch<SetSta
       
           const res = await caseService.updateCase(id, data);
      
-           if (res.status !== 200) {
+           if (res?.status !== 200) {
             setAlert({...alert, message: "No se pudo actualizar el caso", tipe: 'error' })
              setShow(true)
              console.log('hola hola',alert)

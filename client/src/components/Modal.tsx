@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 export const Modal = ({children}: {children: ReactNode}) => {
