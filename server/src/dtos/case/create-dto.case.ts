@@ -8,20 +8,18 @@ export class CreateCaseDTO {
     public caseNumber: string,
     public applicant: string,
     public respondent: string,
-    public userId: string,
     public type: CaseType,
     public status?: CaseStatus,
   ) {}
 
   static create(object: { [key: string]: string }): [string[]?, CreateCaseDTO?] {
-    const { caseName, jury, caseNumber, applicant, respondent, userId, type, status } = object
+    const { caseName, jury, caseNumber, applicant, respondent, type, status } = object
     const instance = new CreateCaseDTO(
       caseName,
       jury,
       caseNumber,
       applicant,
       respondent,
-      userId,
       type as CaseType,
       status as CaseStatus,
     )
@@ -59,7 +57,6 @@ export class CreateCaseDTO {
     if (!object.jury) errors.push(`'jury' is missing`)
     if (!object.caseNumber) errors.push(`'caseNumber' is missing`)
     if (!object.applicant) errors.push(`'applicant' is missing`)
-    if (!object.userId) errors.push(`'userId' is missing`)
     if (!object.respondent) errors.push(`'respondent' is missing`)
     if (!object.type) errors.push(`'type' is missing`)
     if (!object.status) errors.push(`'status' is missing`)
@@ -70,13 +67,14 @@ export class CreateCaseDTO {
     if (!Validators.isString(object.jury)) errors.push('jury should be a string')
     if (!Validators.isString(object.caseNumber)) errors.push('caseNumber should be a string')
     if (!Validators.isString(object.applicant)) errors.push('applicant should be a string')
-    if (!Validators.isString(object.userId)) errors.push('userId should be a string')
     if (!Validators.isString(object.respondent)) errors.push('respondent should be a string')
   }
 
   private static checkEnumValues(object: { [key: string]: string }, errors: string[]) {
-    if (!Validators.enums(object.type, CaseType)) errors.push('type is not valid')
-    if (!Validators.enums(object.status, CaseStatus)) errors.push('status is not valid')
+    if (!Validators.enums(object.type, CaseType))
+      errors.push(`type should be: ${Object.values(CaseType).join(', ')}`)
+    if (!Validators.enums(object.status, CaseStatus))
+      errors.push(`status should be: ${Object.values(CaseStatus).join(', ')} `)
   }
 
   private static checkExtraFields(
@@ -96,7 +94,6 @@ export class CreateCaseDTO {
     if (object.jury.trim() === '') errors.push('jury should not be an empty string')
     if (object.caseNumber.trim() === '') errors.push('caseNumber should not be an empty string')
     if (object.applicant.trim() === '') errors.push('applicant should not be an empty string')
-    if (object.userId.trim() === '') errors.push('userId should not be an empty string')
     if (object.respondent.trim() === '') errors.push('respondent should not be an empty string')
   }
 }

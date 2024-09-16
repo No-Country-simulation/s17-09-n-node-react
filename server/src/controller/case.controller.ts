@@ -8,25 +8,16 @@ import { HTTP_STATUS, ROLE } from '../enums/enum'
 const caseService = new CaseService()
 
 export class CaseController {
-  constructor(private readonly caseService: CaseService) {}
-
   createCase(req: Request, res: Response, next: NextFunction) {
     const userId = req.user?.id
-    const { body } = req
-
-    if (!userId) {
-      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
-    }
-
-    const caseWithUserId = { ...body, userId }
-
-    const [error, createCaseDto] = CreateCaseDTO.create(caseWithUserId)
+    if (!userId) throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
+    const [error, createCaseDto] = CreateCaseDTO.create(req.body)
 
     if (error || !createCaseDto) throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
 
     caseService
-      .createCase(createCaseDto)
-      .then((data) => res.status(201).json(data))
+      .createCase(userId, createCaseDto)
+      .then(() => res.status(201).json({ message: 'case successfully created!' }))
       .catch((error) => next(error))
   }
 
@@ -104,32 +95,32 @@ export class CaseController {
   }
 
   async updateCase(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { id } = req.params
+    const { id } = req.params
 
-      const [errors, updateCaseDto] = UpdateCaseDTO.create(req.body)
+    const [errors, updateCaseDto] = UpdateCaseDTO.create(req.body)
 
-      if (errors || !updateCaseDto) {
-        return res.status(400).json({ errors })
+    if (errors || !updateCaseDto) {
+      return res.status(400).json({ errors })
+    }
+
+    if (req.user?.role === ROLE.ADMIN) {
+      await caseService
+        .updateCase(id, updateCaseDto)
+        .then(() => {
+          res.status(200).json({ message: 'case successfully updated!' })
+        })
+        .catch((error) => next(error))
+    } else {
+      const userId = req.user?.id
+
+      if (!userId) {
+        throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
       }
 
-      if (req.user?.role === ROLE.ADMIN) {
-        const updatedCase = await caseService.updateCase(id, updateCaseDto)
-        res.status(200).json(updatedCase)
-      } else {
-        const userId = req.user?.id
-
-        if (!userId) {
-          throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
-        }
-
-        caseService
-          .checkUserIdAndUpdateCase(id, userId, updateCaseDto)
-          .then((data) => res.status(200).json(data))
-          .catch((error) => next(error))
-      }
-    } catch (error) {
-      next(error)
+      caseService
+        .checkUserIdAndUpdateCase(id, userId, updateCaseDto)
+        .then(() => res.status(200).json({ message: 'case successfully updated!' }))
+        .catch((error) => next(error))
     }
   }
 

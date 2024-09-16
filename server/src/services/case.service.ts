@@ -7,12 +7,8 @@ import HttpError from '../config/errors'
 const prisma = new PrismaClient()
 
 export class CaseService {
-  async createCase(createCaseDTO: CreateCaseDTO) {
-    return await prisma.case.create({ data: createCaseDTO })
-  }
-
-  async getCases() {
-    return await prisma.case.findMany()
+  async createCase(userId: string, createCaseDTO: CreateCaseDTO) {
+    await prisma.case.create({ data: { userId: userId, ...createCaseDTO } })
   }
 
   async getCaseById(id: string) {
@@ -28,14 +24,18 @@ export class CaseService {
 
   async getCasesByUserId(userId: string) {
     return await prisma.case.findMany({
-      where: { userId },
+      where: { userId: userId },
     })
+  }
+
+  async getCases() {
+    return await prisma.case.findMany()
   }
 
   async updateCase(caseId: string, updateCaseDto: UpdateCaseDTO) {
     return await prisma.case.update({
       where: { id: caseId },
-      data: updateCaseDto,
+      data: { updatedAt: new Date(), ...updateCaseDto },
     })
   }
 
