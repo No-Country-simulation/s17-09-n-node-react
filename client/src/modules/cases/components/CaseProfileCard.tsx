@@ -1,4 +1,8 @@
 import React from 'react'
+import DoneIcon from '@mui/icons-material/Done'
+import ErrorIcon from '@mui/icons-material/Error'
+import GroupsIcon from '@mui/icons-material/Groups'
+import ArchiveIcon from '@mui/icons-material/Archive'
 import {
   Typography,
   Paper,
@@ -11,16 +15,9 @@ import {
   Divider,
 } from '@mui/material'
 
-import {
-  InitialStateIcon,
-  ProofStateIcon,
-  VeredictStateIcon,
-  ArchiveIcon,
-} from '../assets'
-
 interface CaseProfileProps {
-  caseState: string
-  setCaseState: React.Dispatch<React.SetStateAction<string>>
+  caseStatus: string | null
+  setCaseStatus: React.Dispatch<React.SetStateAction<string | null>>
   caseName: string
   jury: string
   caseNumber: string
@@ -30,8 +27,8 @@ interface CaseProfileProps {
 }
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
-  caseState,
-  setCaseState,
+  caseStatus,
+  setCaseStatus,
   caseName,
   jury,
   caseNumber,
@@ -42,34 +39,41 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
   // Menu states
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   const handleMenuItemClick = (newState: string) => {
-    setCaseState(newState)
+    setCaseStatus(newState)
     handleClose()
   }
 
   const renderIconForState = () => {
-    switch (caseState) {
-      case 'initial':
-        return <InitialStateIcon size={'30px'} color={'white'} />
-      case 'proof':
-        return <ProofStateIcon size={'30px'} color={'white'} />
-      case 'veredict':
-        return <VeredictStateIcon size={'30px'} color={'white'} />
-      case 'archive':
-        return <ArchiveIcon size={'30px'} color={'white'} />
-      default:
-        return <InitialStateIcon size={'30px'} color={'white'} />
+    console.log('Rendering icon for state:', caseStatus)
+    if (caseStatus) {
+      switch (caseStatus) {
+        case 'INITIATED':
+          return <DoneIcon sx={{ width: 50, color: 'white' }} />
+        case 'EVIDENCE':
+          return <ErrorIcon sx={{ width: 50, color: 'white' }} />
+        case 'JUDGMENT':
+          return <GroupsIcon sx={{ width: 50, color: 'white' }} />
+        case 'CLOSED':
+          return <ArchiveIcon sx={{ width: 50, color: 'white' }} />
+        default:
+          return <DoneIcon sx={{ width: 50, color: 'white' }} />
+      }
     }
+    return <DoneIcon sx={{ width: 50, color: 'white' }} /> // Default icon if caseStatus is null
   }
 
   return (
-    <Box display={'flex'} justifyContent={'center'}>
+    <Box display={'flex'} justifyContent={'center'} py={3}>
       <Paper
         sx={{
           width: '400px',
@@ -87,7 +91,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
           >
             <Box>
               <Typography variant='body1' color='white'>
-                {caseName}
+                Caso: {caseName}
               </Typography>
             </Box>
 
@@ -113,48 +117,40 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
                 }}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: '#7077A1',
+                    backgroundColor: 'primary.dark',
+                    border: '1px solid white',
                     color: 'white',
-                    paddingX: '10px',
+                    padding: '10px',
+                  },
+                  '.MuiMenu-list': {
+                    color: 'white',
                   },
                 }}
               >
-                <MenuItem onClick={() => handleMenuItemClick('initial')}>
+                <MenuItem onClick={() => handleMenuItemClick('INITIATED')}>
                   <ListItemIcon>
-                    <InitialStateIcon size={'25px'} color={'white'} />
+                    <DoneIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Inicio</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
-                <MenuItem onClick={() => handleMenuItemClick('proof')}>
+
+                <MenuItem onClick={() => handleMenuItemClick('EVIDENCE')}>
                   <ListItemIcon>
-                    <ProofStateIcon size={'25px'} color={'white'} />
+                    <ErrorIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Prueba</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
-                <MenuItem onClick={() => handleMenuItemClick('veredict')}>
+
+                <MenuItem onClick={() => handleMenuItemClick('JUDGMENT')}>
                   <ListItemIcon>
-                    <VeredictStateIcon size={'25px'} color={'white'} />
+                    <GroupsIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Sentencia</ListItemText>
                 </MenuItem>
-                <Divider
-                  sx={{
-                    backgroundColor: 'white',
-                  }}
-                />
-                <MenuItem onClick={() => handleMenuItemClick('archive')}>
+
+                <MenuItem onClick={() => handleMenuItemClick('CLOSED')}>
                   <ListItemIcon>
-                    <ArchiveIcon size={'25px'} color={'white'} />
+                    <ArchiveIcon sx={{ width: 25, color: 'white' }} />
                   </ListItemIcon>
                   <ListItemText>Archivo</ListItemText>
                 </MenuItem>

@@ -52,7 +52,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
   }
 
   const handleOpenCase = () => {
-    navigate(`/cases/${caseInfo.id}`)
+    navigate(`/cases/details/${caseInfo.id}`)
   }
 
   const handleDeleteClose = () => {

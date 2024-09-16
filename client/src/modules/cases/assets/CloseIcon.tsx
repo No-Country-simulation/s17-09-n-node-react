@@ -6,7 +6,7 @@ const CloseIcon = ({ size, color }: any) => {
       <g
         id='Icons-56/add_circle_outline_56'
         stroke='none'
-        stroke-width='1'
+        strokeWidth='1'
         fill='none'
         fill-rule='evenodd'
         transform='rotate(45 28 28)' // Rotación de 45 grados alrededor del centro del SVG
