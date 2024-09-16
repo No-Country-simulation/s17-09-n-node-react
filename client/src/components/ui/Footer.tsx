@@ -29,7 +29,7 @@ const Footer = () => {
           <h4 className="mb-4 text-mellowApricot">Enlaces útiles</h4>
           <div className="flex flex-col space-y-2">
             <Link to="/about" className="text-white hover:underline">Acerca de</Link>
-            <Link to="/services" className="text-white hover:underline">Servicios</Link>
+            <Link to="/help" className="text-white hover:underline">Ayuda</Link>
             <Link to="/terms" className="text-white hover:underline">Términos y Condiciones</Link>
             <Link to="/privacy" className="text-white hover:underline">Política de Privacidad</Link>
             <Link to="/support" className="text-white hover:underline">Soporte</Link>
