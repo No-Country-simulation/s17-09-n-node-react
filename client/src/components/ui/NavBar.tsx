@@ -18,9 +18,13 @@ import { useAuth } from '../../hooks'
 export default function NavBar() {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const {user} = useAuth() 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const { startLogout } = useAuth();
+  const { startLogout } = useAuth()
+
+  // // Obtener la información del usuario autenticado
+
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -99,7 +103,7 @@ export default function NavBar() {
             {
               title: 'Inicio',
               icon: <HomeIcon />,
-              path: '/',
+              path: '/home',
             },
             {
               title: 'Casos',
@@ -116,7 +120,9 @@ export default function NavBar() {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center hover:scale-125 transition-all duration-100 ${isActive ? 'text-mellowApricot' : 'text-white'}`
+                  `flex items-center hover:scale-125 transition-all duration-100 ${
+                    isActive ? 'text-mellowApricot' : 'text-white'
+                  }`
                 }
               >
                 <ListItemIcon className='!text-inherit !min-w-0 mr-2'>
@@ -132,6 +138,7 @@ export default function NavBar() {
   )
 
   const AvatarMenu = () => (
+    
     <Menu
       id='menu-appbar'
       anchorEl={anchorEl}
@@ -183,9 +190,11 @@ export default function NavBar() {
       {isMobile ? <Mobile /> : <Desktop />}
       <div>
         <button onClick={handleMenu}>
-          <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+          {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
+    
+          <Avatar  src={user ?  user.imageUrl : '/profile.png'} /> 
         </button>
-        {<AvatarMenu />}
+        {<AvatarMenu />}  
       </div>
     </nav>
   )

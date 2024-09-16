@@ -1,91 +1,120 @@
-import { useEffect, useState } from 'react'
-import { LiaEdit } from 'react-icons/lia'
-import ProfileModal from '../components/ProfileModal'
-import Cookies from 'js-cookie'
-import { useNavigate } from 'react-router-dom'
-import { Avatar } from '@mui/material'
-import Aos from 'aos'
-import 'aos/dist/aos.css'
+import { useEffect, useState } from 'react';
+import { LiaEdit } from 'react-icons/lia';
+import ProfileModal from '../components/ProfileModal';
+import { useNavigate } from 'react-router-dom';
+import { Avatar } from '@mui/material';
+import Aos from 'aos';
+import 'aos/dist/aos.css';
+import { lawCaseApi } from '../../../apis/index';
+import { useAuth } from '../../../hooks';
+import Cookies from 'js-cookie';
 
 const ProfilePage: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { user, setUser } = useAuth();
 
-  const [user, setUser] = useState(() => {
-    const storedUser = Cookies.get('user')
-    return storedUser
-      ? JSON.parse(storedUser)
-      : {
-          id: '123',
-          name: 'Martina',
-          lastName: 'Elifonzo',
-          email: 'martina@mail.com',
-          role: 'User',
-          profilePic: './Abogada3.png',
-          password: 'password123',
-        }
-  })
+  const [profilePic, setProfilePic] = useState(user?.imageUrl || '/profile.png');
+  const [open, setOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [newName, setNewName] = useState(user?.name || '');
+  const [newLastName, setNewLastName] = useState(user?.lastName || '');
+  const [newEmail, setNewEmail] = useState(user?.email || '');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
-  const [profilePic, setProfilePic] = useState(
-    () => Cookies.get('profilePic') || user.profilePic,
-  )
-  const [open, setOpen] = useState(false)
-  const [editMode, setEditMode] = useState(false)
-  const [newName, setNewName] = useState('')
-  const [newLastName, setNewLastName] = useState('')
-  const [newEmail, setNewEmail] = useState('')
-  const [oldPassword, setOldPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
 
-  const [error, setError] = useState('')
-
+  
+  
   useEffect(() => {
-    Aos.init()
+    Aos.init();
+  }, []);
 
-    if (profilePic) {
-      setProfilePic(profilePic)
+  // Recuperar y establecer datos del usuario desde las cookies
+  useEffect(() => {
+    const storedUser = Cookies.get(`${user}`);
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setProfilePic(parsedUser?.imageUrl || '/profile.png');
+        setNewName(parsedUser?.name || '');
+        setNewLastName(parsedUser?.lastName || '');
+        setNewEmail(parsedUser?.email || '');
+      } catch (error) {
+        console.error('Error al analizar los datos de las cookies:', error);
+      }
     }
-  }, [profilePic])
+  }, [user]);
 
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleProfilePicUpdate = (newUrl: string) => {
-    setProfilePic(newUrl)
-    Cookies.set('profilePic', newUrl)
-  }
-
-  const handleSaveChanges = () => {
-    if (oldPassword !== user.password) {
-      setError('La contraseña actual es incorrecta.')
-      return
+    setProfilePic(newUrl);
+    // Actualiza la imagen en el estado global (user) después de subirla
+    if (user) {
+      const updatedUser = {
+        ...user,
+        imageUrl: newUrl,
+      };
+      setUser(updatedUser);
     }
+  };
 
-    const updatedUser = {
-      ...user,
-      name: newName || user.name,
-      lastName: newLastName || user.lastName,
-      email: newEmail || user.email,
-      password: newPassword || user.password,
-      profilePic: profilePic,
+  // Guardar los datos actualizados en cookies
+  const saveUserToCookies = (updatedUser: any) => {
+    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 });
+  };
+
+  // Función para guardar los cambios y actualizar el contexto
+  const handleSaveChanges = async () => {
+    try {
+      const updatedUser = {
+        name: newName || user?.name,
+        lastName: newLastName || user?.lastName,
+        email: newEmail || user?.email,
+        imageUrl: profilePic,
+      };
+
+      const res = await lawCaseApi.put('/user', `${updatedUser}`);
+
+      if (res.status === 200 || res.status === 201) {
+        setUser(res.data);
+        saveUserToCookies(res.data); 
+        setEditMode(false);
+        alert('Perfil actualizado exitosamente');
+      }
+    } catch (error) {
+      console.error('Error actualizando el perfil:', error);
     }
+  };
 
-    setUser(updatedUser)
-    Cookies.set('user', JSON.stringify(updatedUser))
-    setEditMode(false)
-    setNewName('')
-    setNewLastName('')
-    setNewEmail('')
-    setOldPassword('')
-    setNewPassword('')
-    setError('')
-  }
+  // Función para cambiar la contraseña
+  const handleChangePassword = async () => {
+    if (currentPassword && newPassword) {
+      try {
+        const response = await lawCaseApi.put(
+          '/user/change-password',
+          { currentPassword, newPassword },
+          { withCredentials: true },
+        );
+
+        if (response.status === 200) {
+          alert('Contraseña actualizada exitosamente');
+          setCurrentPassword('');
+          setNewPassword('');
+        } else {
+          alert('Error al cambiar la contraseña.');
+        }
+      } catch (error) {
+        console.error('Error actualizando la contraseña:', error);
+      }
+    }
+  };
 
   return (
     <main className='min-h-screen bg-[#424769] flex justify-center items-center w-full'>
-      <div
-        className='flex flex-col w-full lg:w-3/4 p-6 bg-[#7077A1] 
-      m-8 mt-20 shadow-lg rounded-md h-3/4'
-      >
+      <div className='flex flex-col w-full lg:w-3/4 p-6 bg-[#7077A1] m-8 mt-20 shadow-lg rounded-md h-3/4'>
         <div className='flex w-full p-8 justify-between items-center'>
           <h1 className='text-3xl text-[#2D3250] font-semibold'>Mi perfil</h1>
           <button
@@ -96,7 +125,7 @@ const ProfilePage: React.FC = () => {
           </button>
         </div>
         <div className='flex flex-col lg:flex-row gap-4 lg:gap-2 text-white px-4 lg:px-10 w-full lg:h-1/2'>
-          <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-12'>
+          <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-8'>
             <button onClick={handleOpen}>
               <LiaEdit className='w-8 text-[#F6B17A] ml-44 mb-[-18px]' />
             </button>
@@ -104,36 +133,25 @@ const ProfilePage: React.FC = () => {
               <Avatar
                 data-aos='fade-zoom-in'
                 alt='LawCase profile picture'
-                src={profilePic}
+                src={profilePic || './profile.png'}
                 sx={{ width: 200, height: 200 }}
-                className='transition-transform w-full 
-         
-              duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl '
+                className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
               />
             </div>
             <h3 className='text-2xl mt-4 text-center font-semibold text-white'>
-              {user.name} {user.lastName}
+              {newName || user?.name} {newLastName || user?.lastName}
             </h3>
-            <p className='text-white'>{user.email}</p>
-            {!editMode ? (
-              <button
-                className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 p-2 rounded
-              hover:bg-[#7077A1] hover:border-white hover:text-white hover:border-2 m-4'
-                onClick={() => setEditMode(true)}
-              >
-                Editar Perfil
-              </button>
-            ) : (
-              <button
-                className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 p-2 rounded
-              m-4 opacity-50'
-                onClick={() => setEditMode(true)}
-                disabled
-              >
-                Editar Perfil
-              </button>
-            )}
+            <p className='text-white'>{newEmail || user?.email}</p>
+            <button
+              className={`bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 p-2 rounded hover:bg-[#7077A1] hover:border-white hover:text-white m-4 ${editMode ? 'opacity-50' : ''}`}
+              onClick={() => setEditMode(!editMode)}
+              disabled={editMode}
+            >
+              Editar Perfil
+            </button>
           </section>
+
+          {/* Sección de edición en tiempo real */}
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
               <div className='flex flex-col w-[80%] gap-2 p-4'>
@@ -142,9 +160,7 @@ const ProfilePage: React.FC = () => {
                   data-aos-duration='1000'
                   src='/logo.png'
                   alt='logo'
-                  className="w-2/6  mx-auto transition-transform duration-1500 ease-in-out ${
-                    editMode ? 'scale-80' : 'scale-100'
-                  }"
+                  className='w-2/6 mx-auto transition-transform duration-1500 ease-in-out'
                 />
                 <input
                   type='text'
@@ -167,33 +183,32 @@ const ProfilePage: React.FC = () => {
                   placeholder='Nuevo Email'
                   className='p-1 rounded border text-white border-gray-300'
                 />
+
+                {/* Inputs para cambiar la contraseña */}
                 <input
                   type='password'
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  placeholder='Contraseña Actual'
-                  className='p-1 rounded border text-white border-gray-300'
+                  placeholder='Contraseña actual'
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                 />
                 <input
                   type='password'
+                  placeholder='Nueva contraseña'
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder='Nueva Contraseña'
-                  className='p-1 rounded border text-white border-gray-300'
                 />
-                {error && <p className='text-red-500'>{error}</p>}
+                <button onClick={handleChangePassword}>
+                  Actualizar Contraseña
+                </button>
+
                 <button
-                  className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250]
-                  border-2 rounded p-0 m-0
-                  hover:bg-[#7077A1] hover:border-white hover:text-white hover:border-2'
+                  className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 rounded p-0 m-0 hover:bg-[#7077A1] hover:border-white hover:text-white'
                   onClick={handleSaveChanges}
                 >
                   Guardar cambios
                 </button>
                 <button
-                  className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250]
-                  border-2 rounded mt-0
-                  hover:bg-[#7077A1] hover:border-white hover:text-white hover:border-2'
+                  className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 rounded mt-0 hover:bg-[#7077A1] hover:border-white hover:text-white'
                   onClick={() => setEditMode(false)}
                 >
                   Cancelar
@@ -205,22 +220,21 @@ const ProfilePage: React.FC = () => {
                 data-aos-duration='1000'
                 src='/logo.png'
                 alt='logo'
-                className="w-full transition-transform duration-1500 ease-in-out ${
-                  editMode ? 'scale-150' : 'scale-100'
-                }"
+                className='w-full lg:w-2/4 transition-transform duration-1500 ease-in-out'
               />
             )}
           </section>
         </div>
-        <ProfileModal
-          open={open}
-          onClose={handleClose}
-          currentProfilePic={profilePic}
-          onProfilePicUpdate={handleProfilePicUpdate}
-        />
       </div>
-    </main>
-  )
-}
 
-export default ProfilePage
+      {/* Modal para cambiar foto de perfil */}
+      <ProfileModal
+        open={open}
+        onClose={handleClose}
+        handleProfilePicUpdate={handleProfilePicUpdate}
+      />
+    </main>
+  );
+};
+
+export default ProfilePage;

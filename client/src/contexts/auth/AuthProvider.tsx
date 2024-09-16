@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useReducer, useEffect } from 'react'
+import { useReducer, useEffect, useCallback } from 'react'
 
 import { AxiosError } from 'axios'
 
@@ -136,7 +135,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   }
 
-  const startRefreshToken = async (): Promise<string | undefined> => {
+  const startRefreshToken = useCallback(async (): Promise<
+    string | undefined
+  > => {
     dispatch({ type: 'setLoading' })
 
     try {
@@ -150,7 +151,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     } catch (error) {
       dispatch({ type: 'logout', payload: null })
     }
-  }
+  }, [])
 
   const setUser = (user: IUser) => {
     dispatch({ type: 'setUser', payload: user })
@@ -206,7 +207,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     return () => {
       lawCaseApi.interceptors.response.eject(responseInterceptor)
     }
-  }, [])
+  }, [startRefreshToken])
 
   return (
     <AuthContext.Provider

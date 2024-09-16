@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   Box,
@@ -6,12 +6,13 @@ import {
   Button,
   Avatar,
   CircularProgress,
-} from '@mui/material'
-import axios from 'axios'
+} from '@mui/material';
+import axios from 'axios';
+import { useAuth } from '../../../hooks';
 
 // Configura Cloudinary
-const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL
-const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET
+const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_PRESET;
 
 const style = {
   position: 'absolute',
@@ -22,49 +23,59 @@ const style = {
   bgcolor: '#2D3250',
   boxShadow: 24,
   p: 4,
-}
+};
 
 type ProfileModalProps = {
-  open: boolean
-  onClose: () => void
-  currentProfilePic: string
-  onProfilePicUpdate: (newUrl: string) => void
-}
+  open: boolean;
+  onClose: () => void;
+  handleProfilePicUpdate: (newUrl: string) => void;
+};
 
 const ProfileModal: React.FC<ProfileModalProps> = ({
   open,
   onClose,
-  currentProfilePic,
-  onProfilePicUpdate,
+  handleProfilePicUpdate,
+
 }) => {
-  const [uploading, setUploading] = useState(false)
-  const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false);
+  const [newProfilePic, setNewProfilePic] = useState<string | null>(null);
+  const { user, setUser } = useAuth(); // Usamos useAuth para acceder al estado global del usuario
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    setUploading(true)
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
 
     try {
-      const response = await axios.post(CLOUDINARY_URL, formData)
-      const newImageUrl = response.data.secure_url
-      setNewProfilePic(newImageUrl)
+      const response = await axios.post(CLOUDINARY_URL, formData);
+      const newImageUrl = response.data.secure_url;
+      setNewProfilePic(newImageUrl);
+
+      if (user) {
+        const updatedUser = {
+          ...user,
+          imageUrl: newImageUrl,
+        };
+   
+        setUser(updatedUser); 
+
+      }
     } catch (error) {
-      console.error('Error subiendo la imagen a Cloudinary:', error)
+      console.error('Error subiendo la imagen a Cloudinary:', error);
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (newProfilePic) {
-      onProfilePicUpdate(newProfilePic)
+      handleProfilePicUpdate(newProfilePic); 
     }
-  }, [newProfilePic, onProfilePicUpdate])
+  }, [newProfilePic, handleProfilePicUpdate]);
 
   return (
     <Modal
@@ -84,7 +95,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
           ) : (
             <Avatar
               alt='Foto de perfil'
-              src={newProfilePic || currentProfilePic}
+              src={newProfilePic || "./profile.png"} 
               sx={{ width: 100, height: 100 }}
             />
           )}
@@ -139,7 +150,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         </Button>
       </Box>
     </Modal>
-  )
-}
+  );
+};
 
-export default ProfileModal
+export default ProfileModal;

@@ -1,14 +1,5 @@
-import React from 'react'
-
-import {
-  AgendaTypeIcon,
-  ProceduralTypeIcon,
-  DeleteIcon,
-  DoneIcon,
-  EditIcon,
-  MenuIcon,
-} from '../assets'
-
+import React, { useState } from 'react'
+import { formatDate } from '../utils/format.date'
 import {
   Box,
   Paper,
@@ -18,18 +9,111 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Divider,
 } from '@mui/material'
 
-const MovementCard = ({ movement }: any) => {
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import TodayIcon from '@mui/icons-material/Today'
+import BookmarkIcon from '@mui/icons-material/Bookmark'
+import EventAvailableIcon from '@mui/icons-material/EventAvailable'
+import DoneAllIcon from '@mui/icons-material/DoneAll'
+import RemoveDoneIcon from '@mui/icons-material/RemoveDone'
+import DeleteMovementModal from './DeleteMovementModal'
+import EditMovementModal from './EditMovementModal'
+import MovementDetailsModal from './MovementDetailsModal'
+import movementsService from '../services/movements.service'
+import { useAuth } from '../../../hooks'
+// Type de Movimiento
+export interface MovementInfoType {
+  id: string
+  createdAt: string
+  date: string
+  title: string
+  type: string
+  done: boolean
+  content: string
+  caseId: string
+}
+
+interface MovementCardProp {
+  movementInfo: MovementInfoType
+  setMovements: any
+  caseId: any
+}
+
+const MovementCard: React.FC<MovementCardProp> = ({
+  movementInfo,
+  setMovements,
+  caseId,
+}) => {
+  const { token } = useAuth()
   // Menu states
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const paperColor = (() => {
+    if (movementInfo.done === true && movementInfo.type === 'APPOINTMENT') {
+      return '#424769'
+    } else if (movementInfo.type === 'PROCEDURAL_ACTION') {
+      return '#7077A1'
+    } else if (
+      movementInfo.done === false &&
+      movementInfo.type === 'APPOINTMENT'
+    ) {
+      return '#F6B17A'
+    }
+    return 'primary.light'
+  })()
+
+  const [openEditMovement, setOpenEditMovement] = useState(false)
+  const OpenEditModal = () => {
+    setOpenEditMovement(true)
+  }
+  const [openDeleteMovement, setOpenDeleteMovement] = useState(false)
+  const OpenDeleteModal = () => {
+    setOpenDeleteMovement(true)
+  }
+
+  const [openMovementDetail, setOpenMovementDetail] = useState(false)
+  const OpenMovementDetail = () => {
+    setOpenMovementDetail(true)
+  }
+
+  const updateDone = () => {
+    if (token) {
+      const updatedMovement = {
+        ...movementInfo,
+        done: !movementInfo.done, // Invertir el estado de "done"
+      }
+
+      movementsService
+        .updateMovement(movementInfo.id, updatedMovement)
+        .then((res) => {
+          if (res?.data) {
+            // Actualizar el estado local con el nuevo movimiento
+            setMovements((prevMovements: MovementInfoType[]) =>
+              prevMovements.map((movement) =>
+                movement.id === movementInfo.id
+                  ? { ...movement, done: updatedMovement.done }
+                  : movement,
+              ),
+            )
+          } else {
+            console.log('Error al actualizar el estado', res)
+          }
+        })
+        .catch((error) => {
+          console.error('Error en la actualización:', error)
+        })
+    }
   }
 
   return (
@@ -38,7 +122,8 @@ const MovementCard = ({ movement }: any) => {
         <Paper
           sx={{
             marginBottom: '10px',
-            backgroundColor: movement.type === 'agenda' ? '#F6B17A' : '#7077A1',
+            backgroundColor: paperColor,
+            borderRadius: '15px',
             transition: 'transform 0.1s ease, box-shadow 0.3s ease',
             '&:hover': {
               transform: 'scale(1.03)', // Efecto de escala al pasar el mouse
@@ -51,39 +136,46 @@ const MovementCard = ({ movement }: any) => {
             display={'flex'}
             alignItems={'center'}
             justifyContent={'space-between'}
-            p={1}
+            p={{ xs: 2, md: 0 }}
             gap={1}
             flexDirection={{ xs: 'column', sm: 'row', lg: 'row' }}
           >
-            {/* Fecha */}
-            <Box display={'flex'} alignItems={'center'} gap={2} px={1}>
-              {movement.type === 'agenda' ? (
-                <AgendaTypeIcon size={'25px'} />
-              ) : (
-                <ProceduralTypeIcon size={'25'} color={'white'} />
+            <Box
+              display={'flex'}
+              alignItems={'center'}
+              gap={1}
+              px={0}
+              color={'white'}
+            >
+              {movementInfo.type === 'APPOINTMENT' &&
+                movementInfo.done === false && <TodayIcon sx={{ width: 50 }} />}
+              {movementInfo.type === 'APPOINTMENT' &&
+                movementInfo.done === true && (
+                  <EventAvailableIcon sx={{ width: 50 }} />
+                )}
+              {movementInfo.type === 'PROCEDURAL_ACTION' && (
+                <BookmarkIcon sx={{ width: 50 }} />
               )}
-              <Typography
-                variant='body1'
-                color={movement.type === 'agenda' ? 'initial' : 'white'}
-              >
-                {movement.date}
+
+              <Typography variant='caption'>
+                {formatDate(movementInfo.date)}
               </Typography>
             </Box>
 
-            {/* Contenido */}
+            {/* Nombre del caso */}
             <Box display={'flex'} justifyContent={'center'}>
-              <Button>
+              <Button onClick={OpenMovementDetail}>
                 <Typography
                   variant='body1'
-                  color={movement.type === 'agenda' ? 'initial' : 'white'}
+                  color={'white'}
                   sx={{ textTransform: 'none' }}
                 >
-                  {movement.content}
+                  {movementInfo.title}
                 </Typography>
               </Button>
             </Box>
 
-            {/* Menues */}
+            {/* Menu */}
             <Box>
               <Button
                 id='basic-button'
@@ -92,100 +184,110 @@ const MovementCard = ({ movement }: any) => {
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
               >
-                <MenuIcon
-                  size={'24px'}
-                  color={movement.type === 'agenda' ? 'initial' : 'white'}
-                />
+                <Typography variant='body1' color={'white'}>
+                  <MoreHorizIcon />
+                </Typography>
               </Button>
-              {movement.type === 'agenda' ? (
-                <Menu
-                  id='basic-menu'
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                  }}
-                  sx={{
-                    '& .MuiPaper-root': {
-                      backgroundColor: '#7077A1',
-                      color: 'white',
-                      paddingX: '10px',
-                    },
-                  }}
-                >
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <DoneIcon size={'25px'} color={'white'} />
-                    </ListItemIcon>
-                    <ListItemText>Hecho</ListItemText>
-                  </MenuItem>
-                  <Divider
-                    sx={{
-                      backgroundColor: 'white',
-                    }}
-                  />
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <EditIcon size={'25px'} color={'white'} />
-                    </ListItemIcon>
-                    <ListItemText>Editar</ListItemText>
-                  </MenuItem>
-                  <Divider
-                    sx={{
-                      backgroundColor: 'white', // Cambia a tu color preferido
-                    }}
-                  />
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <DeleteIcon size={'25px'} color={'white'} />
-                    </ListItemIcon>
-                    <ListItemText>Eliminar</ListItemText>
-                  </MenuItem>
-                </Menu>
-              ) : (
-                <Menu
-                  id='basic-menu'
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                  }}
-                  sx={{
-                    '& .MuiPaper-root': {
-                      backgroundColor: '#7077A1', // Cambia a tu color preferido
-                      color: 'white',
-                      paddingX: '10px',
-                    },
+              <Menu
+                id='basic-menu'
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+                sx={{
+                  '& .MuiPaper-root': {
+                    backgroundColor: 'primary.dark',
+                    border: '1px solid white',
+                    color: 'white',
+                    padding: '10px',
+                  },
+                  '.MuiMenu-list': {
+                    color: 'white',
+                  },
+                }}
+              >
+                {movementInfo.type === 'APPOINTMENT' &&
+                  movementInfo.done === false && (
+                    <MenuItem
+                      onClick={() => {
+                        handleClose()
+                        updateDone()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <DoneAllIcon
+                          sx={{ color: 'white', fontSize: 'medium' }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText>Marcar como hecho</ListItemText>
+                    </MenuItem>
+                  )}
+                {movementInfo.type === 'APPOINTMENT' &&
+                  movementInfo.done === true && (
+                    <MenuItem
+                      onClick={() => {
+                        handleClose()
+                        updateDone()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <RemoveDoneIcon
+                          sx={{ color: 'white', fontSize: 'medium' }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText>Marcar como pendiente</ListItemText>
+                    </MenuItem>
+                  )}
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    OpenEditModal()
                   }}
                 >
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <EditIcon size={'25px'} color={'white'} />
-                    </ListItemIcon>
-                    <ListItemText>Editar</ListItemText>
-                  </MenuItem>
-                  <Divider
-                    sx={{
-                      backgroundColor: 'white', // Cambia a tu color preferido
-                    }}
-                  />
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <DeleteIcon size={'25px'} color={'white'} />
-                    </ListItemIcon>
-                    <ListItemText>Eliminar</ListItemText>
-                  </MenuItem>
-                </Menu>
-              )}
+                  <ListItemIcon>
+                    <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
+                  </ListItemIcon>
+                  <ListItemText>Editar</ListItemText>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    OpenDeleteModal()
+                  }}
+                >
+                  <ListItemIcon>
+                    <DeleteIcon sx={{ color: 'white', fontSize: 'medium' }} />
+                  </ListItemIcon>
+                  <ListItemText>Eliminar</ListItemText>
+                </MenuItem>
+              </Menu>
             </Box>
           </Box>
         </Paper>
       </li>
+      <DeleteMovementModal
+        openDeleteMovement={openDeleteMovement}
+        setOpenDeleteMovement={setOpenDeleteMovement}
+        movementInfo={movementInfo}
+        setMovements={setMovements}
+        caseId={caseId}
+      />
+      <EditMovementModal
+        openEditMovement={openEditMovement}
+        setOpenEditMovement={setOpenEditMovement}
+        movementInfo={movementInfo}
+        setMovements={setMovements}
+        caseId={caseId}
+      />
+      <MovementDetailsModal
+        openMovementDetail={openMovementDetail}
+        setOpenMovementDetail={setOpenMovementDetail}
+        movementInfo={movementInfo}
+      />
     </>
   )
 }
 
 export default MovementCard
-//  isCompleted ? "#A5D6A7" : "#F6B17A"

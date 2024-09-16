@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Case from '../utils/case.status'
 import {
   Box,
   Paper,
@@ -17,26 +18,8 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-
-const CaseTypes: { [key: string]: string } = {
-  SUCCESSION: 'Sucesión',
-  EXECUTION: 'Ejecución',
-  TERMINATION: 'Despido',
-  DAMAGES_AND_LOSSES: 'Daños y perjuicios',
-  CONTRACT_DISPUTE: 'Disputa contractual',
-  FAMILY_LAW: 'Derecho de familia',
-  CRIMINAL: 'Penal',
-  PROPERTY_DISPUTE: 'Disputa de propiedad',
-  PERSONAL_INJURY: 'Lesiones personales',
-  INTELLECTUAL_PROPERTY: 'Propiedad intelectual',
-}
-
-const CasesStatus: { [key: string]: string } = {
-  INITIATED: 'Inicio',
-  EVIDENCE: 'Prueba',
-  JUDGMENT: 'Sentencia',
-  CLOSED: 'Archivado',
-}
+import { Modal } from '../../../components/Modal'
+import { UpdateCase } from './UpdateCase'
 
 // Type de Caso
 export interface CaseInfoType {
@@ -54,12 +37,14 @@ export interface CaseInfoType {
 
 interface CaseCardProp {
   caseInfo: CaseInfoType
+  handleDelete: () => void
 }
 
-const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
+const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
   const navigate = useNavigate()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [updateCase, setUpdateCase] = useState<boolean>(false);
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +55,12 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
   }
 
   const handleOpenCase = () => {
-    navigate(`/cases/${caseInfo.id}`)
+    navigate(`/cases/details/${caseInfo.id}`)
+  }
+
+  const handleDeleteClose = () => {
+    handleDelete()
+    setAnchorEl(null)
   }
 
   return (
@@ -104,6 +94,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               gap={1}
               px={0}
               color={'white'}
+              maxWidth={{ sm: '150px' }}
             >
               {caseInfo.status == 'INITIATED' && (
                 <DoneIcon sx={{ width: 50 }} />
@@ -117,8 +108,8 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               {caseInfo.status == 'CLOSED' && (
                 <ArchiveIcon sx={{ width: 50 }} />
               )}
-              <Typography variant='caption'>
-                {`${CasesStatus[caseInfo.status]} - ${CaseTypes[caseInfo.type]}`}
+              <Typography variant='caption' sx={{ textWrap: { sm: 'nowrap' } }}>
+                {`${Case.CasesStatus[caseInfo.status]} - ${Case.CaseTypes[caseInfo.type]}`}
               </Typography>
             </Box>
 
@@ -168,13 +159,13 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
                   },
                 }}
               >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={() =>{handleClose(); setUpdateCase(true)} }>
                   <ListItemIcon>
                     <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
-                  <ListItemText>Editar</ListItemText>
+                  <ListItemText  >Editar</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleDeleteClose}>
                   <ListItemIcon>
                     <DeleteIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
@@ -183,8 +174,21 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo }) => {
               </Menu>
             </Box>
           </Box>
+         
         </Paper>
       </li>
+      { updateCase && (
+  <div>
+   <div
+   className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
+   onClick={() => setUpdateCase(false)}
+ />
+    <Modal>
+    <UpdateCase setUpdateModal={setUpdateCase} id={caseInfo.id} />
+  </Modal>
+  </div>
+  
+)}
     </>
   )
 }
