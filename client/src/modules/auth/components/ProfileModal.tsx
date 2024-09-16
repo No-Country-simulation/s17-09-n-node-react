@@ -55,7 +55,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       const newImageUrl = response.data.secure_url;
       setNewProfilePic(newImageUrl);
 
-      // Actualiza la imagen en el estado global (user) después de subirla
       if (user) {
         const updatedUser = {
           ...user,
@@ -74,7 +73,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
 
   useEffect(() => {
     if (newProfilePic) {
-      handleProfilePicUpdate(newProfilePic); // También actualizar el estado local del perfil en la página principal
+      handleProfilePicUpdate(newProfilePic); 
     }
   }, [newProfilePic, handleProfilePicUpdate]);
 

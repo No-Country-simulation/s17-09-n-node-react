@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Input, Button } from "@mui/material";
+import { Input} from "@mui/material";
 
 const Footer = () => {
   return (
@@ -42,7 +42,7 @@ const Footer = () => {
           <p className="mb-4 text-white ">Recibe actualizaciones sobre nuestras herramientas y servicios.</p>
           <div className="relative w-full mt-4">
             <Input className="py-2" placeholder="Tu correo electrónico" fullWidth />
-            <Button variant="contained" color="primary" className="mt-2 w-full">Suscribirse</Button>
+            <button color="primary" className="mt-2 w-full" onClick={()  => alert("Gracias por suscribirse a nuesto  Newsletter")}>Suscribirse</button>
           </div>
         </div>
       </div>

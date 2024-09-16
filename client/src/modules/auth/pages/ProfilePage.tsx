@@ -22,6 +22,9 @@ const ProfilePage: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
+
+  
+  
   useEffect(() => {
     Aos.init();
   }, []);
@@ -32,28 +35,16 @@ const ProfilePage: React.FC = () => {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setProfilePic(parsedUser.imageUrl || '/profile.png');
-        setNewName(parsedUser.name || '');
-        setNewLastName(parsedUser.lastName || '');
-        setNewEmail(parsedUser.email || '');
+        setProfilePic(parsedUser?.imageUrl || '/profile.png');
+        setNewName(parsedUser?.name || '');
+        setNewLastName(parsedUser?.lastName || '');
+        setNewEmail(parsedUser?.email || '');
       } catch (error) {
         console.error('Error al analizar los datos de las cookies:', error);
       }
     }
-  }, []);
+  }, [user]);
 
-  // Obtener la información del usuario autenticado
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await lawCaseApi.get('/user');
-        setUser(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
-  }, [setUser]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -134,7 +125,7 @@ const ProfilePage: React.FC = () => {
           </button>
         </div>
         <div className='flex flex-col lg:flex-row gap-4 lg:gap-2 text-white px-4 lg:px-10 w-full lg:h-1/2'>
-          <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-12'>
+          <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-8'>
             <button onClick={handleOpen}>
               <LiaEdit className='w-8 text-[#F6B17A] ml-44 mb-[-18px]' />
             </button>
@@ -142,7 +133,7 @@ const ProfilePage: React.FC = () => {
               <Avatar
                 data-aos='fade-zoom-in'
                 alt='LawCase profile picture'
-                src={profilePic}
+                src={profilePic || './profile.png'}
                 sx={{ width: 200, height: 200 }}
                 className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
               />

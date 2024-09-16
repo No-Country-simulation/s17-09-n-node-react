@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
@@ -14,31 +14,17 @@ import WorkIcon from '@mui/icons-material/Work'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../hooks'
-import { lawCaseApi } from '../../apis'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const {user, setUser} = useAuth() 
+  const {user} = useAuth() 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { startLogout } = useAuth()
 
   // // Obtener la información del usuario autenticado
 
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await lawCaseApi.get('/user') // Corregir el endpoint
-        const userData = res.data
-        setUser(userData) // Almacenar los datos del usuario
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getUser()
-   }, [setUser])
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -152,6 +138,7 @@ export default function NavBar() {
   )
 
   const AvatarMenu = () => (
+    
     <Menu
       id='menu-appbar'
       anchorEl={anchorEl}
@@ -204,7 +191,8 @@ export default function NavBar() {
       <div>
         <button onClick={handleMenu}>
           {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
-          <Avatar  src={user?.imageUrl || '/profile.png'} />
+    
+          <Avatar  src={user ?  user.imageUrl : '/profile.png'} /> 
         </button>
         {<AvatarMenu />}  
       </div>
