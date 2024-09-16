@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
  
 
 
@@ -50,7 +50,7 @@ const LandingPage: React.FC = () => { const navigate = useNavigate()
       {/* Sección de presentación */}
       <section className="hero bg-blue-500 text-white py-20">
         <div className="container mx-auto text-center">
-        <img src="" className="testimonial-photo" />
+        <img src="./logo.png" className="testimonial-photo" title='logo'/>
           <h1 className="text-6xl font-bold mb-4">LAW CASE</h1>
           <h1 className="text-4xl font-bold mb-8">Organiza y agiliza tus casos con nuestra app. Centraliza información, automatiza tareas y colabora en tiempo real para lograr resultados óptimos.</h1>
           <button onClick={redirigir} className="bg-white text-blue-500 font-bold py-2 px-4 rounded"> 

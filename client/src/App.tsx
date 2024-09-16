@@ -1,37 +1,102 @@
-import React from 'react'
+import { useEffect } from 'react'
 
-import { useThemeSwitcher } from './hooks'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
-import { LoginPage, RegisterPage,  } from './modules/auth'
-import './App.css';
-import  LandingPage from "./pages/LandingPage" 
+import 'dayjs/locale/es'
+import { esES } from '@mui/x-date-pickers/locales'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+import { Layout, HelpPage } from './pages'
+import { Loading, PublicRoute, PrivateRoute } from './components'
+
+import { CasesListPage } from './modules/cases'
+import { LoginPage, RegisterPage } from './modules/auth'
+import ProfilePage from './modules/auth/pages/ProfilePage'
+import CaseDetailsPage from './modules/cases/pages/CaseDetailsPage'
+import Home from './pages/Home'
+
+import { useAuth } from './hooks'
+
+import './App.css'
 
 const router = createBrowserRouter([
   {
-    path: '/LandingPage',
-    element: <LandingPage />,
-    errorElement: <p>Not found</p>,
-    children: [],
+    path: '/landing',
+    element: <p>Landing</p>,
+  },
+  {
+    path: '/*',
+    element: (
+      <PrivateRoute>
+        <Layout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        path: '*',
+        element: <Navigate to='home' replace />,
+      },
+      {
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: 'cases',
+        element: <CasesListPage />,
+      },
+      {
+        path: 'cases/:caseId',
+        element: <CaseDetailsPage />,
+      },
+    ],
   },
   {
     path: '/login',
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '/register',
-    element: <RegisterPage />,
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: '/help',
+    element: <HelpPage />,
   },
 ])
 
-const App: React.FC = () => {
-  const { themeMode, ThemeProvider: CustomThemeProvider } = useThemeSwitcher()
+function App() {
+  const { startRefreshToken, status } = useAuth()
+
+  const calendarLocaleText =
+    esES.components.MuiLocalizationProvider.defaultProps.localeText
+
+  useEffect(() => {
+    startRefreshToken()
+  }, [startRefreshToken])
+
+  if (status === 'loading') return <Loading />
 
   return (
-    <CustomThemeProvider  theme={themeMode}>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      localeText={calendarLocaleText}
+      adapterLocale='es'
+    >
       <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
-    </CustomThemeProvider>
+    </LocalizationProvider>
   )
 }
 

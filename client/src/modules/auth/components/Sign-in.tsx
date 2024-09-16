@@ -1,155 +1,163 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Box, Alert } from '@mui/material';
+import { Link } from 'react-router-dom'
+
+import { useForm, type SubmitHandler } from 'react-hook-form'
+
+import {
+  Box,
+  Alert,
+  Button,
+  Container,
+  TextField,
+  Typography,
+} from '@mui/material'
+
+import { useAuth } from '../../../hooks'
+
+type Inputs = {
+  email: string
+  password: string
+}
 
 const Login = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
-  const [passwordError, setPasswordError] = useState<string>('');
-  const navigate = useNavigate();
+  const { startLogin, errorMessage } = useAuth()
 
-  // Credenciales fake para acceso temporal
-  const fakeCredentials = {
-    email: 'user@fake.com',
-    password: 'password123',
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<Inputs>({ mode: 'onChange' })
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError('Por favor, ingresa un email válido.');
-    } else {
-      setEmailError('');
-    }
-  };
-
-  const validatePassword = (password: string) => {
-    if (password.length < 8) {
-      setPasswordError('La contraseña debe tener al menos 8 caracteres.');
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (email === '' || password === '') {
-      setError('Por favor, completa todos los campos.');
-    } else if (emailError || passwordError) {
-      setError('Por favor, corrige los errores antes de continuar.');
-    } else {
-      setError('');
-
-      // Verificación de credenciales fake
-      if (email === fakeCredentials.email && password === fakeCredentials.password) {
-        localStorage.setItem('token', 'fake-token'); // Simula el almacenamiento de un token
-        navigate('/dashboard'); // Redirige al dashboard
-      } else {
-        try {
-          const response = await fetch('/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-          });
-
-          if (!response.ok) {
-            const { message } = await response.json();
-            setError(message || 'Credenciales incorrectas.');
-          } else {
-            const { accessToken } = await response.json();
-            localStorage.setItem('token', accessToken);
-            navigate('/dashboard');
-          }
-        } catch (error) {
-          setError('Error en el servidor.');
-          console.log(error);
-        }
-      }
-    }
-  };
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await startLogin({ ...data })
+  }
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth='sm'>
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        minHeight="100vh"
+        display='flex'
+        flexDirection='column'
+        alignItems='center'
+        justifyContent='center'
+        minHeight='100vh'
       >
-        <Typography  variant="h4" component="h1" gutterBottom>
+        <Typography variant='h4' component='h6' width='80%' gutterBottom>
           Bienvenido a tu espacio de trabajo
         </Typography>
-        <Typography variant="body1" align="center" paragraph>
-          Puedes ingresar usando el email con el que te encuentras registrado, seguido de tu
-          contraseña.
+        <Typography variant='body1' align='center' paragraph>
+          Puedes ingresar usando el email con el que te encuentras registrado,
+          seguido de tu contraseña.
         </Typography>
-        <form  onSubmit={handleSubmit} style={{ width: '100%', marginTop: '1rem', color: 'white' }}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ width: '100%', marginTop: '1rem', color: 'white' }}
+        >
           <TextField
-            label="Ingresa aquí tu email"
-            variant="outlined"
+            label='Ingresa aquí tu email'
+            variant='outlined'
             fullWidth
-            margin="normal"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              validateEmail(e.target.value);
-            }}
-            error={!!emailError}
-            helperText={emailError}
+            margin='normal'
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Por favor, ingresa un email válido.',
+              },
+            })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             required
             InputProps={{
               sx: {
                 backgroundColor: 'white',
-                color: 'black',               },
-            }}
-          />
-       
-          <TextField
-            label="Ingresa aquí tu contraseña"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              validatePassword(e.target.value);
-            }}
-            error={!!passwordError}
-            helperText={passwordError}
-            required
-            InputProps={{
-              sx: {
-                backgroundColor: 'white', // Fondo blanco para el input
-                color: 'black', // Color del texto
+                color: 'black',
               },
             }}
           />
-          {error && (
-            <Alert severity="error" style={{ marginBottom: '1rem' }}>
-              {error}
+
+          <TextField
+            label='Ingresa aquí tu contraseña'
+            type='password'
+            variant='outlined'
+            fullWidth
+            margin='normal'
+            {...register('password', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              minLength: {
+                value: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres.',
+              },
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            required
+            InputProps={{
+              sx: {
+                backgroundColor: 'white',
+                color: 'black',
+              },
+            }}
+          />
+
+          {errorMessage && (
+            <Alert severity='error' style={{ marginBottom: '1rem' }}>
+              {errorMessage}
             </Alert>
           )}
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            Ingresar
+
+          <Button
+            fullWidth
+            type='submit'
+            variant='contained'
+            color='primary'
+            disabled={isSubmitting}
+            sx={{
+              backgroundColor: '#424769',
+              color: 'white',
+              width: '80%',
+              margin: '0 10%',
+              '&.Mui-disabled': {
+                color: 'white',
+              },
+            }}
+          >
+            {isSubmitting && (
+              <Box
+                sx={{
+                  backgroundImage: { xs: `url(loader.svg)` },
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 16,
+                  width: 16,
+                  height: 16,
+                  marginRight: '0.5rem',
+                }}
+              />
+            )}
+            {isSubmitting ? 'Ingresando...' : 'Ingresar'}
           </Button>
         </form>
-        <Typography variant="body2" align="center" style={{ marginTop: '1rem' }}>
+        <Typography
+          variant='body2'
+          align='center'
+          style={{ marginTop: '1rem' }}
+        >
           ¿Aun no tienes una cuenta?{' '}
-          <Link to="/register" style={{ color: '#1976d2', textDecoration: 'none' }}>
+          <Link
+            to='/register'
+            style={{ color: '#1976d2', textDecoration: 'none' }}
+          >
             Registrate
           </Link>{' '}
           para poder disfrutar de nuestros servicios
         </Typography>
       </Box>
     </Container>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

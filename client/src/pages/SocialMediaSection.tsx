@@ -1,4 +1,4 @@
-import React from 'react';
+
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';  // 'X' anteriormente conocido como Twitter
@@ -13,16 +13,16 @@ function SocialMediaSection() {
 
   return (
     <div className="social-media-section">
-      <button onClick={() => handleSocialMediaClick('enlace_a_facebook')}>
+      <button onClick={() => handleSocialMediaClick('enlace_a_facebook')} title='facebook'>
         <FacebookIcon /> 
       </button>
-      <button onClick={() => handleSocialMediaClick('enlace_a_instagram')}>
+      <button onClick={() => handleSocialMediaClick('enlace_a_instagram')} title='instagram'>
         <InstagramIcon /> 
       </button>
       <button onClick={() => handleSocialMediaClick('enlace_a_x')}> {/* 'X' anteriormente conocido como Twitter */}
         <TwitterIcon />  
       </button>
-      <button onClick={() => handleSocialMediaClick('enlace_a_whatsapp')}>
+      <button onClick={() => handleSocialMediaClick('enlace_a_whatsapp')}title='Whatsapp'>
         <WhatsAppIcon /> 
       </button>
     </div>
