@@ -29,12 +29,14 @@ type ProfileModalProps = {
   open: boolean
   onClose: () => void
   handleProfilePicUpdate: (newUrl: string) => void
+  profilePic: string
 }
 
 const ProfileModal: React.FC<ProfileModalProps> = ({
   open,
   onClose,
   handleProfilePicUpdate,
+  profilePic
 }) => {
   const [uploading, setUploading] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
@@ -93,7 +95,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
           ) : (
             <Avatar
               alt='Foto de perfil'
-              src={newProfilePic || './profile.png'}
+              src={newProfilePic || profilePic}
               sx={{ width: 100, height: 100 }}
             />
           )}
