@@ -9,6 +9,8 @@ import { lawCaseApi } from '../../../apis/index'
 import { useAuth } from '../../../hooks'
 import Cookies from 'js-cookie'
 import { IUser } from '../../../interfaces/user.interface'
+import Alert from '@mui/material/Alert';
+
 
 
 // Definición del tipo IUser (esto debería estar en tus types)
@@ -26,6 +28,7 @@ const ProfilePage: React.FC = () => {
   const [newEmail, setNewEmail] = useState(user?.email || '')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [success, setSuccess] = useState (false)
 
   useEffect(() => {
     Aos.init()
@@ -34,7 +37,7 @@ const ProfilePage: React.FC = () => {
   // Recuperar y establecer datos del usuario desde las cookies
   useEffect(() => {
     const storedUser = Cookies.get(`${user}`)
-    console.log (storedUser, "parsedUser")
+   
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser)
@@ -42,12 +45,11 @@ const ProfilePage: React.FC = () => {
         setNewName(parsedUser?.name || '')
         setNewLastName(parsedUser?.lastName || '')
         setNewEmail(parsedUser?.email || '')
-     
       } catch (error) {
         console.error('Error al analizar los datos de las cookies:', error)
       }
     }
-
+   
   }, [user])
 
   const handleOpen = () => setOpen(true)
@@ -90,7 +92,7 @@ const ProfilePage: React.FC = () => {
       setUser(updatedUser)
       saveUserToCookies(updatedUser)
       setEditMode(false)
-      alert('Perfil actualizado exitosamente')
+    setSuccess(true)
     } catch (error) {
       console.error('Error actualizando el perfil:', error)
     }
@@ -229,6 +231,14 @@ const ProfilePage: React.FC = () => {
                 className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
             )}
+           {success && (
+          <Alert
+            severity='success'
+           variant="filled"
+           onClose={() => { setSuccess(false)}}
+          >
+            "Se editaron los datos de Mi Perfil"
+          </Alert>)}
           </section>
         </div>
       </div>
