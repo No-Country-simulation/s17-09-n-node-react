@@ -1,3 +1,4 @@
+import { parseISO, isValid } from 'date-fns'
 export class Validators {
   static get email() {
     return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
@@ -22,8 +23,7 @@ export class Validators {
   }
 
   static isValidISODate(date: string) {
-    const parsedDate = new Date(date)
-    return !isNaN(parsedDate.getTime())
+    return isValid(parseISO(date))
   }
 
   static isValidObjectId(id: string): boolean {
