@@ -80,7 +80,7 @@ export default function NavBar() {
 
   const Mobile = () => (
     <>
-      <button onClick={toggleDrawer(true)}>
+      <button onClick={toggleDrawer(true)} title='OpenDrawer'>
         <MenuIcon className='text-white' />
       </button>
       <NavLink to={'/'} className='flex'>
