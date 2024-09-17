@@ -1,70 +1,66 @@
-import { useEffect, useState } from 'react';
-import { LiaEdit } from 'react-icons/lia';
-import ProfileModal from '../components/ProfileModal';
-import { useNavigate } from 'react-router-dom';
-import { Avatar } from '@mui/material';
-import Aos from 'aos';
-import 'aos/dist/aos.css';
-import { lawCaseApi } from '../../../apis/index';
-import { useAuth } from '../../../hooks';
-import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react'
+import { LiaEdit } from 'react-icons/lia'
+import ProfileModal from '../components/ProfileModal'
+import { useNavigate } from 'react-router-dom'
+import { Avatar } from '@mui/material'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
+import { lawCaseApi } from '../../../apis/index'
+import { useAuth } from '../../../hooks'
+import Cookies from 'js-cookie'
 
 const ProfilePage: React.FC = () => {
-  const navigate = useNavigate();
-  const { user, setUser } = useAuth();
+  const navigate = useNavigate()
+  const { user, setUser } = useAuth()
 
-  const [profilePic, setProfilePic] = useState(user?.imageUrl || '/profile.png');
-  const [open, setOpen] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [newName, setNewName] = useState(user?.name || '');
-  const [newLastName, setNewLastName] = useState(user?.lastName || '');
-  const [newEmail, setNewEmail] = useState(user?.email || '');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [profilePic, setProfilePic] = useState(user?.imageUrl || '/profile.png')
+  const [open, setOpen] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const [newName, setNewName] = useState(user?.name || '')
+  const [newLastName, setNewLastName] = useState(user?.lastName || '')
+  const [newEmail, setNewEmail] = useState(user?.email || '')
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
 
-
-  
-  
   useEffect(() => {
-    Aos.init();
-  }, []);
+    Aos.init()
+  }, [])
 
   // Recuperar y establecer datos del usuario desde las cookies
   useEffect(() => {
-    const storedUser = Cookies.get(`${user}`);
+    const storedUser = Cookies.get(`${user}`)
     if (storedUser) {
       try {
-        const parsedUser = JSON.parse(storedUser);
-        setProfilePic(parsedUser?.imageUrl || '/profile.png');
-        setNewName(parsedUser?.name || '');
-        setNewLastName(parsedUser?.lastName || '');
-        setNewEmail(parsedUser?.email || '');
+        const parsedUser = JSON.parse(storedUser)
+        setProfilePic(parsedUser?.imageUrl || '/profile.png')
+        setNewName(parsedUser?.name || '')
+        setNewLastName(parsedUser?.lastName || '')
+        setNewEmail(parsedUser?.email || '')
       } catch (error) {
-        console.error('Error al analizar los datos de las cookies:', error);
+        console.error('Error al analizar los datos de las cookies:', error)
       }
     }
-  }, [user]);
+  }, [user])
 
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   const handleProfilePicUpdate = (newUrl: string) => {
-    setProfilePic(newUrl);
+    setProfilePic(newUrl)
     // Actualiza la imagen en el estado global (user) después de subirla
     if (user) {
       const updatedUser = {
         ...user,
         imageUrl: newUrl,
-      };
-      setUser(updatedUser);
+      }
+      setUser(updatedUser)
     }
-  };
+  }
 
   // Guardar los datos actualizados en cookies
   const saveUserToCookies = (updatedUser: any) => {
-    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 });
-  };
+    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 })
+  }
 
   // Función para guardar los cambios y actualizar el contexto
   const handleSaveChanges = async () => {
@@ -74,20 +70,20 @@ const ProfilePage: React.FC = () => {
         lastName: newLastName || user?.lastName,
         email: newEmail || user?.email,
         imageUrl: profilePic,
-      };
+      }
 
-      const res = await lawCaseApi.put('/user', `${updatedUser}`);
+      const res = await lawCaseApi.put('/user', `${updatedUser}`)
 
       if (res.status === 200 || res.status === 201) {
-        setUser(res.data);
-        saveUserToCookies(res.data); 
-        setEditMode(false);
-        alert('Perfil actualizado exitosamente');
+        setUser(res.data)
+        saveUserToCookies(res.data)
+        setEditMode(false)
+        alert('Perfil actualizado exitosamente')
       }
     } catch (error) {
-      console.error('Error actualizando el perfil:', error);
+      console.error('Error actualizando el perfil:', error)
     }
-  };
+  }
 
   // Función para cambiar la contraseña
   const handleChangePassword = async () => {
@@ -97,20 +93,20 @@ const ProfilePage: React.FC = () => {
           '/user/change-password',
           { currentPassword, newPassword },
           { withCredentials: true },
-        );
+        )
 
         if (response.status === 200) {
-          alert('Contraseña actualizada exitosamente');
-          setCurrentPassword('');
-          setNewPassword('');
+          alert('Contraseña actualizada exitosamente')
+          setCurrentPassword('')
+          setNewPassword('')
         } else {
-          alert('Error al cambiar la contraseña.');
+          alert('Error al cambiar la contraseña.')
         }
       } catch (error) {
-        console.error('Error actualizando la contraseña:', error);
+        console.error('Error actualizando la contraseña:', error)
       }
     }
-  };
+  }
 
   return (
     <main className='min-h-screen bg-[#424769] flex justify-center items-center w-full'>
@@ -234,7 +230,7 @@ const ProfilePage: React.FC = () => {
         handleProfilePicUpdate={handleProfilePicUpdate}
       />
     </main>
-  );
-};
+  )
+}
 
-export default ProfilePage;
+export default ProfilePage
