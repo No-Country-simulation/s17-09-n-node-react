@@ -9,5 +9,9 @@ type TPublicRouteProps = PropsWithChildren
 export const PublicRoute = ({ children }: TPublicRouteProps) => {
   const { status } = useAuth()
 
-  return status === 'not-authenticated' ? children : <Navigate to='/' replace />
+  return status === 'not-authenticated' ? (
+    children
+  ) : (
+    <Navigate to='/home' replace />
+  )
 }
