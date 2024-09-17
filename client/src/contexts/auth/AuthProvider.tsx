@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useReducer, useEffect, useCallback } from 'react'
+import { useReducer, useCallback, useLayoutEffect } from 'react'
 
 import { AxiosError } from 'axios'
 
@@ -157,7 +157,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     dispatch({ type: 'setUser', payload: user })
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const requestInterceptor = lawCaseApi.interceptors.request.use((config) => {
       config.headers.Authorization =
         !(config as any)._retry && state.token
@@ -171,7 +171,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     }
   }, [state.token])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const responseInterceptor = lawCaseApi.interceptors.response.use(
       (response) => response,
       async (error) => {
