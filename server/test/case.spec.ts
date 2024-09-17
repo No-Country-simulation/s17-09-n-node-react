@@ -7,7 +7,7 @@ jest.mock('../src/middlewares/auth-handler', () => ({
   __esModule: true,
   default: jest.fn((req, res, next) => {
     if (req.headers.authorization === 'Bearer mocked-token') {
-      req.user = { id: '66d9fd3e95190dbbe7c4f3c7' } // Mock user ID
+      req.user = { id: '66e98746e0faee2e5cf51569', role: 'ADMIN' } // Mock user ID
       next()
     } else {
       res.status(401).send({ message: 'Unauthorized' })
@@ -45,7 +45,7 @@ describe('Case Routes', () => {
         caseNumber: '12345',
         applicant: 'Test Applicant',
         respondent: 'Test Respondent',
-        userId: '66d9fd3e95190dbbe7c4f3c7',
+        userId: '66e98746e0faee2e5cf51569',
         type: 'DAMAGES_AND_LOSSES',
         status: 'INITIATED',
       }
@@ -67,7 +67,7 @@ describe('Case Routes', () => {
         caseNumber: '12345',
         applicant: 'Test Applicant',
         respondent: 'Test Respondent',
-        userId: '66d9fd3e95190dbbe7c4f3c7',
+        userId: '66e98746e0faee2e5cf51569',
         type: 'DAMAGES_AND_LOSSES',
         status: 'INITIATED',
       }
