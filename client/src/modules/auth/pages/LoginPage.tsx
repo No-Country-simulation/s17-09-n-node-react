@@ -26,7 +26,10 @@ export default function LoginPage() {
           backgroundPosition: 'top center',
         }}
       >
-        <Box height='100%' width={{ xs: '100%', sm: '24rem', md: '26rem' }}>
+        <Box
+          height={{ xs: 'auto', md: '100%' }}
+          width={{ xs: '100%', sm: '24rem', md: '26rem' }}
+        >
           <LoginForm />
         </Box>
       </Box>
