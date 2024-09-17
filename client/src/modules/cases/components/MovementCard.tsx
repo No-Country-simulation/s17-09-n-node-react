@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { formatDate } from '../utils/format.date'
+import { formatDate } from '../utils/utils'
 import {
   Box,
   Paper,

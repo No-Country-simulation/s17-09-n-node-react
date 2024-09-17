@@ -7,7 +7,8 @@ import Aos from 'aos'
 import 'aos/dist/aos.css'
 import { lawCaseApi } from '../../../apis/index'
 import { useAuth } from '../../../hooks'
-import Cookies from 'js-cookie'
+import { IUser } from '../../../interfaces/user.interface'
+import Alert from '@mui/material/Alert'
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate()
@@ -21,31 +22,16 @@ const ProfilePage: React.FC = () => {
   const [newEmail, setNewEmail] = useState(user?.email || '')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     Aos.init()
   }, [])
 
-  // Recuperar y establecer datos del usuario desde las cookies
-  useEffect(() => {
-    const storedUser = Cookies.get(`${user}`)
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser)
-        setProfilePic(parsedUser?.imageUrl || '/profile.png')
-        setNewName(parsedUser?.name || '')
-        setNewLastName(parsedUser?.lastName || '')
-        setNewEmail(parsedUser?.email || '')
-      } catch (error) {
-        console.error('Error al analizar los datos de las cookies:', error)
-      }
-    }
-  }, [user])
-
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const handleProfilePicUpdate = (newUrl: string) => {
+  const handleProfilePicUpdate = async (newUrl: string) => {
     setProfilePic(newUrl)
     // Actualiza la imagen en el estado global (user) después de subirla
     if (user) {
@@ -54,32 +40,29 @@ const ProfilePage: React.FC = () => {
         imageUrl: newUrl,
       }
       setUser(updatedUser)
+      await lawCaseApi.put('/user', updatedUser)
     }
   }
 
-  // Guardar los datos actualizados en cookies
-  const saveUserToCookies = (updatedUser: any) => {
-    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 })
-  }
-
-  const handleSaveChanges = async (e: any) => {
-    e.preventDefault()
+  // Función para guardar los cambios y actualizar el contexto
+  const handleSaveChanges = async () => {
     try {
-      const updatedUser = {
-        name: newName || user?.name,
-        lastName: newLastName || user?.lastName,
-        email: newEmail || user?.email,
-        imageUrl: profilePic,
+      // Asegúrate de que las propiedades no sean undefined asignando un valor predeterminado
+      const updatedUser: IUser = {
+        name: newName || user?.name || '', // Si está vacío o undefined, usa una cadena vacía
+        lastName: newLastName || user?.lastName || '',
+        email: newEmail || user?.email || '',
+        imageUrl: profilePic, // Ya está definido siempre, no necesita cambio
+        role: user?.role || 'USER',
       }
 
-      const res = await lawCaseApi.put('/user', `${updatedUser}`)
+      await lawCaseApi.put('/user', updatedUser)
 
-      if (res.status === 200 || res.status === 201) {
-        setUser(res.data)
-        saveUserToCookies(res.data)
-        setEditMode(false)
-        alert('Perfil actualizado exitosamente')
-      }
+      // Actualizar el estado global y las cookies
+      setUser(updatedUser)
+      //saveUserToCookies(updatedUser)
+      setEditMode(false)
+      setSuccess(true)
     } catch (error) {
       console.error('Error actualizando el perfil:', error)
     }
@@ -123,16 +106,17 @@ const ProfilePage: React.FC = () => {
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-8'>
             <button onClick={handleOpen}>
               <LiaEdit className='w-8 text-[#F6B17A] ml-44 mb-[-18px]' />
+
+              <div className='hover:scale-105'>
+                <Avatar
+                  //data-aos='fade-zoom-in'
+
+                  src={profilePic}
+                  sx={{ width: 200, height: 200 }}
+                  className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
+                />
+              </div>
             </button>
-            <div className='hover:scale-105'>
-              <Avatar
-                data-aos='fade-zoom-in'
-                alt='LawCase profile picture'
-                src={profilePic || './profile.png'}
-                sx={{ width: 200, height: 200 }}
-                className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
-              />
-            </div>
             <h3 className='text-2xl mt-4 text-center font-semibold text-white'>
               {newName || user?.name} {newLastName || user?.lastName}
             </h3>
@@ -148,7 +132,7 @@ const ProfilePage: React.FC = () => {
 
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
-              <div className='flex flex-col w-[80%] gap-2 p-4'>
+              <div className='flex flex-col w-[80%] gap-2 p-4   text-black'>
                 <img
                   data-aos='zoom-out'
                   data-aos-duration='1000'
@@ -161,21 +145,21 @@ const ProfilePage: React.FC = () => {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder='Nuevo Nombre'
-                  className='p-1 rounded border text-white border-gray-300'
+                  className='p-1 rounded border  border-gray-300'
                 />
                 <input
                   type='text'
                   value={newLastName}
                   onChange={(e) => setNewLastName(e.target.value)}
                   placeholder='Nuevo Apellido'
-                  className='p-1 rounded border text-white border-gray-300'
+                  className='p-1 rounded border  border-gray-300'
                 />
                 <input
                   type='email'
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder='Nuevo Email'
-                  className='p-1 rounded border text-white border-gray-300'
+                  className='p-1 rounded border border-gray-300'
                 />
                 <input
                   type='password'
@@ -209,19 +193,45 @@ const ProfilePage: React.FC = () => {
             ) : (
               <img
                 data-aos='zoom-in'
-                data-aos-duration='1500'
                 src='/logo.png'
                 alt='logo'
-                className='w-2/6'
+                className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
+            )}
+            {success && (
+              <Alert
+                severity='success'
+                variant='filled'
+                onClose={() => {
+                  setSuccess(false)
+                }}
+                className='mx-4'
+              >
+                "Se editaron los datos de Mi Perfil"
+              </Alert>
+            )}
+            {success && (
+              <Alert
+                severity='success'
+                variant='filled'
+                onClose={() => {
+                  setSuccess(false)
+                }}
+                className='mx-4'
+              >
+                "Se editaron los datos de Mi Perfil"
+              </Alert>
             )}
           </section>
         </div>
       </div>
+
+      {/* Modal para editar la imagen de perfil */}
       <ProfileModal
         open={open}
         onClose={handleClose}
         handleProfilePicUpdate={handleProfilePicUpdate}
+        profilePic={profilePic}
       />
     </main>
   )
