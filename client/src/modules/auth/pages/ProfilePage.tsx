@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LiaEdit } from 'react-icons/lia'
 import ProfileModal from '../components/ProfileModal'
 import { useNavigate } from 'react-router-dom'
@@ -22,33 +22,42 @@ const ProfilePage: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
-  Aos.init()
+  useEffect(() => {
+    Aos.init()
+  }, [])
 
-  // Llamada a la API para obtener los datos del usuario logueado
+  // Recuperar y establecer datos del usuario desde las cookies
+  useEffect(() => {
+    const storedUser = Cookies.get(`${user}`)
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser)
+        setProfilePic(parsedUser?.imageUrl || '/profile.png')
+        setNewName(parsedUser?.name || '')
+        setNewLastName(parsedUser?.lastName || '')
+        setNewEmail(parsedUser?.email || '')
+      } catch (error) {
+        console.error('Error al analizar los datos de las cookies:', error)
+      }
+    }
+  }, [user])
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const handleProfilePicUpdate = async (newUrl: string) => {
+  const handleProfilePicUpdate = (newUrl: string) => {
     setProfilePic(newUrl)
-
+    // Actualiza la imagen en el estado global (user) después de subirla
     if (user) {
       const updatedUser = {
         ...user,
         imageUrl: newUrl,
       }
       setUser(updatedUser)
-      try {
-        const res = await lawCaseApi.put('/user', updatedUser)
-        if (res.status === 200 || res.status === 201) {
-          setUser(res.data)
-        }
-      } catch (error) {
-        console.error('Error actualizando el perfil:', error)
-      }
     }
   }
 
+  // Guardar los datos actualizados en cookies
   const saveUserToCookies = (updatedUser: any) => {
     Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 })
   }
@@ -60,10 +69,10 @@ const ProfilePage: React.FC = () => {
         name: newName || user?.name,
         lastName: newLastName || user?.lastName,
         email: newEmail || user?.email,
-        imageUrl: profilePic || user?.imageUrl,
+        imageUrl: profilePic,
       }
 
-      const res = await lawCaseApi.put('/user', updatedUser)
+      const res = await lawCaseApi.put('/user', `${updatedUser}`)
 
       if (res.status === 200 || res.status === 201) {
         setUser(res.data)

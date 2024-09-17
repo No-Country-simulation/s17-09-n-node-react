@@ -44,7 +44,7 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
   const navigate = useNavigate()
   // Menu states
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [updateCase, setUpdateCase] = useState<boolean>(false);
+  const [updateCase, setUpdateCase] = useState<boolean>(false)
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -159,11 +159,16 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
                   },
                 }}
               >
-                <MenuItem onClick={() =>{handleClose(); setUpdateCase(true)} }>
+                <MenuItem
+                  onClick={() => {
+                    handleClose()
+                    setUpdateCase(true)
+                  }}
+                >
                   <ListItemIcon>
                     <EditIcon sx={{ color: 'white', fontSize: 'medium' }} />
                   </ListItemIcon>
-                  <ListItemText  >Editar</ListItemText>
+                  <ListItemText>Editar</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleDeleteClose}>
                   <ListItemIcon>
@@ -174,21 +179,19 @@ const CaseCard: React.FC<CaseCardProp> = ({ caseInfo, handleDelete }) => {
               </Menu>
             </Box>
           </Box>
-         
         </Paper>
       </li>
-      { updateCase && (
-  <div>
-   <div
-   className="fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 "
-   onClick={() => setUpdateCase(false)}
- />
-    <Modal>
-    <UpdateCase setUpdateModal={setUpdateCase} id={caseInfo.id} />
-  </Modal>
-  </div>
-  
-)}
+      {updateCase && (
+        <div>
+          <div
+            className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30 '
+            onClick={() => setUpdateCase(false)}
+          />
+          <Modal>
+            <UpdateCase setUpdateModal={setUpdateCase} id={caseInfo.id} />
+          </Modal>
+        </div>
+      )}
     </>
   )
 }

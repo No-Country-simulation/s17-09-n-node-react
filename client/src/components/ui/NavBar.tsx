@@ -18,13 +18,12 @@ import { useAuth } from '../../hooks'
 export default function NavBar() {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const {user} = useAuth() 
+  const { user } = useAuth()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { startLogout } = useAuth()
 
   // // Obtener la información del usuario autenticado
-
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -80,7 +79,7 @@ export default function NavBar() {
 
   const Mobile = () => (
     <>
-      <button onClick={toggleDrawer(true)}>
+      <button onClick={toggleDrawer(true)} title='OpenDrawer'>
         <MenuIcon className='text-white' />
       </button>
       <NavLink to={'/'} className='flex'>
@@ -138,7 +137,6 @@ export default function NavBar() {
   )
 
   const AvatarMenu = () => (
-    
     <Menu
       id='menu-appbar'
       anchorEl={anchorEl}
@@ -191,10 +189,10 @@ export default function NavBar() {
       <div>
         <button onClick={handleMenu}>
           {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
-    
-          <Avatar  src={user ?  user.imageUrl : '/profile.png'} /> 
+
+          <Avatar src={user ? user.imageUrl : '/profile.png'} />
         </button>
-        {<AvatarMenu />}  
+        {<AvatarMenu />}
       </div>
     </nav>
   )

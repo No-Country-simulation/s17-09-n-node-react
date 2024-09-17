@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../../../hooks'
 import movementsService from '../services/movements.service'
 import { NavLink } from 'react-router-dom'
+import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import Case from '../utils/case.status'
 import Checkbox from '@mui/material/Checkbox'
@@ -59,7 +60,7 @@ const CalendarMovements = ({ selectedDate }: MovementsProp) => {
   }
 
   useEffect(() => {
-    const formattedDate = selectedDate.toISOString().slice(0, 10)
+    const formattedDate = dayjs(selectedDate).toISOString()
     if (token) {
       movementsService.getMovementsByDate(formattedDate).then((res) => {
         if (Array.isArray(res?.data)) {

@@ -101,8 +101,7 @@ const actions = [
 const CasesListPage: React.FC = () => {
   const [filter, setFilter] = useState()
   const [cases, setCases] = useState<CaseInfoType[]>([])
-  const [openNewCase, setOpenNewCase] = useState<boolean>(false);
-
+  const [openNewCase, setOpenNewCase] = useState<boolean>(false)
 
   const { token } = useAuth()
 
@@ -117,7 +116,6 @@ const CasesListPage: React.FC = () => {
       })
     }
   }, [token, openNewCase])
-
 
   return (
     <Box
@@ -140,7 +138,12 @@ const CasesListPage: React.FC = () => {
           Mis casos:
         </Typography>
         <CasesFilterBar actions={actions} setFilter={setFilter} />
-        <CasesList items={cases} filter={filter} setOpenNewCase={setOpenNewCase} openNewCase={openNewCase} />
+        <CasesList
+          items={cases}
+          filter={filter}
+          setOpenNewCase={setOpenNewCase}
+          openNewCase={openNewCase}
+        />
       </Box>
     </Box>
   )
