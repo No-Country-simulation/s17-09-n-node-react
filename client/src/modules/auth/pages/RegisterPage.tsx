@@ -20,7 +20,7 @@ export default function RegistrationPage() {
           height='100%'
           maxWidth='95rem'
           margin='0 auto'
-          minHeight='45rem'
+          minHeight='48rem'
           p={{ xs: '1.5rem', md: '2.5rem' }}
           direction='row'
           spacing={{ xs: '2rem', md: '2.5rem' }}
