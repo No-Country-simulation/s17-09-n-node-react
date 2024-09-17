@@ -65,7 +65,8 @@ const CaseMovementDetails: React.FC = () => {
   const [caseStatus, setCaseStatus] = useState<string | null>(null)
   const [movements, setMovements] = useState<MovementInfoType[]>([])
 
-  const { token } = useAuth()
+  const { token, user } = useAuth()
+  console.log(user)
   const params = useParams()
   const caseId = params.id
 
