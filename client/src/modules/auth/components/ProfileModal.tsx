@@ -36,7 +36,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
   open,
   onClose,
   handleProfilePicUpdate,
-  profilePic
+  profilePic,
 }) => {
   const [uploading, setUploading] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<string | null>(null)

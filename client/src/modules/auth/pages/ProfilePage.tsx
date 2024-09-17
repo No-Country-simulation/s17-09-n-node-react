@@ -9,12 +9,7 @@ import { lawCaseApi } from '../../../apis/index'
 import { useAuth } from '../../../hooks'
 import Cookies from 'js-cookie'
 import { IUser } from '../../../interfaces/user.interface'
-import Alert from '@mui/material/Alert';
-
-
-
-// Definición del tipo IUser (esto debería estar en tus types)
-
+import Alert from '@mui/material/Alert'
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate()
@@ -28,7 +23,7 @@ const ProfilePage: React.FC = () => {
   const [newEmail, setNewEmail] = useState(user?.email || '')
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [success, setSuccess] = useState (false)
+  const [success, setSuccess] = useState(false)
 
   useEffect(() => {
     Aos.init()
@@ -37,7 +32,7 @@ const ProfilePage: React.FC = () => {
   // Recuperar y establecer datos del usuario desde las cookies
   useEffect(() => {
     const storedUser = Cookies.get(`${user}`)
-   
+
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser)
@@ -49,7 +44,6 @@ const ProfilePage: React.FC = () => {
         console.error('Error al analizar los datos de las cookies:', error)
       }
     }
-   
   }, [user])
 
   const handleOpen = () => setOpen(true)
@@ -65,7 +59,6 @@ const ProfilePage: React.FC = () => {
       }
       setUser(updatedUser)
       await lawCaseApi.put('/user', updatedUser)
-  
     }
   }
 
@@ -84,7 +77,7 @@ const ProfilePage: React.FC = () => {
         email: newEmail || user?.email || '',
         imageUrl: profilePic, // Ya está definido siempre, no necesita cambio
         role: user?.role || 'USER',
-            }
+      }
 
       await lawCaseApi.put('/user', updatedUser)
 
@@ -92,7 +85,7 @@ const ProfilePage: React.FC = () => {
       setUser(updatedUser)
       saveUserToCookies(updatedUser)
       setEditMode(false)
-    setSuccess(true)
+      setSuccess(true)
     } catch (error) {
       console.error('Error actualizando el perfil:', error)
     }
@@ -136,16 +129,16 @@ const ProfilePage: React.FC = () => {
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2 p-8'>
             <button onClick={handleOpen}>
               <LiaEdit className='w-8 text-[#F6B17A] ml-44 mb-[-18px]' />
-          
-            <div className='hover:scale-105'>
-              <Avatar
-                //data-aos='fade-zoom-in'
-              
-                src={profilePic}
-                sx={{ width: 200, height: 200 }}
-                className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
-              />
-            </div>
+
+              <div className='hover:scale-105'>
+                <Avatar
+                  //data-aos='fade-zoom-in'
+
+                  src={profilePic}
+                  sx={{ width: 200, height: 200 }}
+                  className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
+                />
+              </div>
             </button>
             <h3 className='text-2xl mt-4 text-center font-semibold text-white'>
               {newName || user?.name} {newLastName || user?.lastName}
@@ -163,7 +156,7 @@ const ProfilePage: React.FC = () => {
           {/* Sección de edición en tiempo real */}
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
-              <div className='flex flex-col w-[80%] gap-2 p-4   text-black' >
+              <div className='flex flex-col w-[80%] gap-2 p-4   text-black'>
                 <img
                   data-aos='zoom-out'
                   data-aos-duration='1000'
@@ -231,14 +224,17 @@ const ProfilePage: React.FC = () => {
                 className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
             )}
-           {success && (
-          <Alert
-            severity='success'
-           variant="filled"
-           onClose={() => { setSuccess(false)}}
-          >
-            "Se editaron los datos de Mi Perfil"
-          </Alert>)}
+            {success && (
+              <Alert
+                severity='success'
+                variant='filled'
+                onClose={() => {
+                  setSuccess(false)
+                }}
+              >
+                "Se editaron los datos de Mi Perfil"
+              </Alert>
+            )}
           </section>
         </div>
       </div>
@@ -248,7 +244,8 @@ const ProfilePage: React.FC = () => {
         open={open}
         onClose={handleClose}
         handleProfilePicUpdate={handleProfilePicUpdate}
-        profilePic={profilePic}      />
+        profilePic={profilePic}
+      />
     </main>
   )
 }
