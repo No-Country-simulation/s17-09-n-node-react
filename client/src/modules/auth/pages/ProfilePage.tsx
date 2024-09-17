@@ -7,7 +7,6 @@ import Aos from 'aos'
 import 'aos/dist/aos.css'
 import { lawCaseApi } from '../../../apis/index'
 import { useAuth } from '../../../hooks'
-import Cookies from 'js-cookie'
 import { IUser } from '../../../interfaces/user.interface'
 import Alert from '@mui/material/Alert'
 
@@ -29,22 +28,6 @@ const ProfilePage: React.FC = () => {
     Aos.init()
   }, [])
 
-  // Recuperar y establecer datos del usuario desde las cookies
-  useEffect(() => {
-    const storedUser = Cookies.get(`${user}`)
-
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser)
-        setProfilePic(parsedUser?.imageUrl || '/profile.png')
-        setNewName(parsedUser?.name || '')
-        setNewLastName(parsedUser?.lastName || '')
-        setNewEmail(parsedUser?.email || '')
-      } catch (error) {
-        console.error('Error al analizar los datos de las cookies:', error)
-      }
-    }
-  }, [user])
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -62,10 +45,6 @@ const ProfilePage: React.FC = () => {
     }
   }
 
-  // Guardar los datos actualizados en cookies
-  const saveUserToCookies = (updatedUser: IUser) => {
-    Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 })
-  }
 
   // Función para guardar los cambios y actualizar el contexto
   const handleSaveChanges = async () => {
@@ -83,7 +62,7 @@ const ProfilePage: React.FC = () => {
 
       // Actualizar el estado global y las cookies
       setUser(updatedUser)
-      saveUserToCookies(updatedUser)
+      //saveUserToCookies(updatedUser)
       setEditMode(false)
       setSuccess(true)
     } catch (error) {
@@ -231,6 +210,7 @@ const ProfilePage: React.FC = () => {
                 onClose={() => {
                   setSuccess(false)
                 }}
+               className='mx-4'
               >
                 "Se editaron los datos de Mi Perfil"
               </Alert>
