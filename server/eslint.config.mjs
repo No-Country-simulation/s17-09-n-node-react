@@ -36,6 +36,7 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-inferrable-types': 'off',
+      '@typescript-eslint/no-var-requires': 'off',
       'prefer-const': 'off',
       'no-new': 'off',
       'no-console': 'warn',
