@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SocialMediaSection from './SocialMediaSection';
+import { Footer } from '../components';
  
 
 
@@ -113,11 +114,7 @@ const LandingPage: React.FC = () => { const navigate = useNavigate()
 
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6">
-        <div className="container mx-auto text-center">
-          <p>&copy; S17-09-N-NODE-REACT</p>
-        </div>
-      </footer>
+    <Footer/>
     </div>
   );
 };

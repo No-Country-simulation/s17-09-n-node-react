@@ -189,8 +189,6 @@ export default function NavBar() {
     <nav className='h-[85px] w-full flex items-center justify-between px-6 sm:px-12 lg:px-16'>
       {isMobile ? <Mobile /> : <Desktop />}
       <div>
-        <button onClick={handleMenu} title='avatarMenu'>
-          <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
         <button onClick={handleMenu}>
           {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
     
