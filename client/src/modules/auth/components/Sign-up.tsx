@@ -1,14 +1,20 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { Box, Button, Container, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from '@mui/material'
+import { VisibilityOff, Visibility } from '@mui/icons-material'
 
 import { useAuth } from '../../../hooks'
 import { showStatusSnackbar } from '../../../helpers'
-
-import mail from './mail.svg'
-import icono from './icononombre.svg'
-import iconopass from './iconopass.svg'
+import { LockIcon, MailIcon, PersonIcon } from '../../../components'
 
 type Inputs = {
   name: string
@@ -22,12 +28,14 @@ const Register = () => {
   const navigate = useNavigate()
   const { startRegister } = useAuth()
 
+  const [showPassword, setShowPassword] = useState(false)
+
   const {
     watch,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<Inputs>({ mode: 'onChange' })
+  } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,271 +52,284 @@ const Register = () => {
   }
 
   return (
-    <Container maxWidth='xs'>
-      <Box
-        display='flex'
-        flexDirection='column'
-        justifyContent='center'
-        minHeight='100vh'
-      >
-        <Typography variant='h4' component='h1' align='left' gutterBottom>
-          Registrate
+    <Box
+      height='100%'
+      display='flex'
+      flexDirection='column'
+      justifyContent='center'
+    >
+      <Box mb='1.5rem'>
+        <Typography
+          variant='h4'
+          color='white'
+          component='h1'
+          gutterBottom
+          textAlign={{ xs: 'center', md: 'left' }}
+        >
+          Regístrate
         </Typography>
-        <Typography variant='body1' align='left' paragraph>
-          Crea tu cuenta y unete a miles de profesionales que ya utilizan
+        <Typography
+          variant='body1'
+          color='white'
+          component='p'
+          textAlign={{ xs: 'center', md: 'left' }}
+        >
+          Crea tu cuenta y únete a miles de profesionales que ya utilizan
           nuestros servicios.
         </Typography>
-        <div className='ml-[-20%]'>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <img
-                src={icono}
-                alt='log'
-                style={{
-                  width: '15%',
-                  height: '15%',
-                  alignSelf: 'center',
-                  padding: '2%',
-                }}
-              />
-              <TextField
-                label='Nombre'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-                {...register('name', {
-                  required: {
-                    value: true,
-                    message: 'El nombre es obligatorio.',
-                  },
-                  minLength: {
-                    value: 2,
-                    message: 'El nombre debe tener al menos 2 caracteres.',
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z\s]+$/,
-                    message: 'El nombre solo puede contener letras y espacios.',
-                  },
-                })}
-                error={!!errors?.name}
-                helperText={errors?.name?.message}
-                InputProps={{
-                  sx: {
-                    backgroundColor: 'white',
-                    color: 'black',
-                    height: '50px',
-                    widht: '100%',
-                  },
-                }}
-              />
-            </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <img
-                src={icono}
-                alt='log'
-                style={{
-                  width: '15%',
-                  height: '15%',
-                  alignSelf: 'center',
-                  padding: '2%',
-                }}
-              />
-              <TextField
-                label='Apellido'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-                {...register('lastName', {
-                  required: {
-                    value: true,
-                    message: 'El apellido es obligatorio.',
-                  },
-                  minLength: {
-                    value: 2,
-                    message: 'El apellido debe tener al menos 2 caracteres.',
-                  },
-                  pattern: {
-                    value: /^[a-zA-Z\s]+$/,
-                    message:
-                      'El apellido solo puede contener letras y espacios.',
-                  },
-                })}
-                error={!!errors?.lastName}
-                helperText={errors?.lastName?.message}
-                InputProps={{
-                  sx: {
-                    backgroundColor: 'white',
-                    color: 'black',
-                    height: '50px',
-                    widht: '100%',
-                  },
-                }}
-              />
-            </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <img
-                src={mail}
-                alt='log'
-                style={{
-                  width: '15%',
-                  height: '15%',
-                  alignSelf: 'center',
-                  padding: '2%',
-                }}
-              />
-              <TextField
-                label='Email'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-                {...register('email', {
-                  required: {
-                    value: true,
-                    message: 'Por favor, completa este campo.',
-                  },
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Por favor, ingresa un email válido.',
-                  },
-                })}
-                error={!!errors?.email}
-                helperText={errors?.email?.message}
-                InputProps={{
-                  sx: {
-                    backgroundColor: 'white',
-                    color: 'black',
-                    height: '50px',
-                    widht: '100%',
-                  },
-                }}
-              />
-            </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <img
-                src={iconopass}
-                alt='log'
-                style={{
-                  width: '15%',
-                  height: '15%',
-                  alignSelf: 'center',
-                  padding: '2%',
-                }}
-              />
-              <TextField
-                label='Contraseña'
-                type='password'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-                {...register('password', {
-                  required: {
-                    value: true,
-                    message: 'Por favor, completa este campo.',
-                  },
-                  minLength: {
-                    value: 8,
-                    message: 'La contraseña debe tener al menos 8 caracteres.',
-                  },
-                  pattern: {
-                    value: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-                    message:
-                      'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
-                  },
-                })}
-                error={!!errors?.password}
-                helperText={errors?.password?.message}
-                InputProps={{
-                  sx: {
-                    height: '50px',
-                    widht: '100%',
-                    backgroundColor: 'white',
-                    color: 'black',
-                  },
-                }}
-              />
-            </div>
-            <div
-              style={{ display: 'flex', flexDirection: 'row', margin: '10px' }}
-            >
-              <img
-                src={iconopass}
-                alt='log'
-                style={{
-                  width: '15%',
-                  height: '15%',
-                  alignSelf: 'center',
-                  padding: '2%',
-                }}
-              />
-
-              <TextField
-                label='Confirmar Contraseña'
-                type='password'
-                variant='outlined'
-                fullWidth
-                margin='normal'
-                {...register('confirmPassword', {
-                  required: 'Por favor repite la contraseña',
-                  validate: (value) =>
-                    value === watch('password') ||
-                    'Las contraseñas no coinciden',
-                })}
-                error={!!errors?.confirmPassword}
-                helperText={errors?.confirmPassword?.message}
-                InputProps={{
-                  sx: {
-                    backgroundColor: 'white',
-                    color: 'black',
-                    height: '50px',
-                    widht: '100%',
-                  },
-                }}
-              />
-            </div>
-
-            <Button
-              type='submit'
-              variant='contained'
-              color='inherit'
-              sx={{
-                backgroundColor: '#4B527E',
-                color: 'white',
-                margin: '0 10%',
-                boxShadow: '10px black',
-                borderRadius: '15px',
-                border: '2px solid white',
-              }}
-              disabled={isSubmitting}
-              fullWidth
-            >
-              Registrarme
-            </Button>
-          </form>
-        </div>
-        <Typography
-          variant='body2'
-          color='textSecondary'
-          align='center'
-          style={{ marginTop: '1rem' }}
-        >
-          ¿Ya tienes una cuenta?{' '}
-          <Link
-            to='/login'
-            style={{ textDecoration: 'none', color: '#749BFF' }}
-          >
-            Inicia sesión aquí
-          </Link>
-        </Typography>
       </Box>
-    </Container>
+
+      <Box
+        component='form'
+        display='flex'
+        flexDirection='column'
+        gap={{ xs: '1rem', md: '1.5rem' }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <Box display='flex' alignItems='start' gap='1rem'>
+          <Box
+            component='label'
+            htmlFor='name'
+            display={{ xs: 'none', md: 'block' }}
+          >
+            <PersonIcon style={{ width: 'auto', height: '3.5rem' }} />
+          </Box>
+          <TextField
+            id='name'
+            fullWidth
+            placeholder='Nombre'
+            variant='outlined'
+            {...register('name', {
+              required: {
+                value: true,
+                message: 'El nombre es obligatorio.',
+              },
+              minLength: {
+                value: 2,
+                message: 'El nombre debe tener al menos 2 caracteres.',
+              },
+              pattern: {
+                value: /^[a-zA-Z\s]+$/,
+                message: 'El nombre solo puede contener letras y espacios.',
+              },
+            })}
+            error={!!errors?.name}
+            helperText={errors?.name?.message}
+            slotProps={{
+              input: {
+                sx: {
+                  bgcolor: 'white',
+                  color: 'black',
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Box display='flex' alignItems='start' gap='1rem'>
+          <Box
+            component='label'
+            htmlFor='lastName'
+            display={{ xs: 'none', md: 'block' }}
+          >
+            <PersonIcon style={{ width: 'auto', height: '3.5rem' }} />
+          </Box>
+          <TextField
+            id='lastName'
+            fullWidth
+            placeholder='Apellido'
+            variant='outlined'
+            {...register('lastName', {
+              required: {
+                value: true,
+                message: 'El apellido es obligatorio.',
+              },
+              minLength: {
+                value: 2,
+                message: 'El apellido debe tener al menos 2 caracteres.',
+              },
+              pattern: {
+                value: /^[a-zA-Z\s]+$/,
+                message: 'El apellido solo puede contener letras y espacios.',
+              },
+            })}
+            error={!!errors?.lastName}
+            helperText={errors?.lastName?.message}
+            slotProps={{
+              input: {
+                sx: {
+                  bgcolor: 'white',
+                  color: 'black',
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Box display='flex' alignItems='start' gap='1rem'>
+          <Box
+            component='label'
+            htmlFor='email'
+            display={{ xs: 'none', md: 'block' }}
+          >
+            <MailIcon style={{ width: 'auto', height: '3.5rem' }} />
+          </Box>
+          <TextField
+            id='email'
+            fullWidth
+            type='email'
+            placeholder='Email'
+            variant='outlined'
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Por favor, ingresa un email válido.',
+              },
+            })}
+            error={!!errors?.email}
+            helperText={errors?.email?.message}
+            slotProps={{
+              input: {
+                sx: {
+                  bgcolor: 'white',
+                  color: 'black',
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Box display='flex' alignItems='start' gap='1rem'>
+          <Box
+            component='label'
+            htmlFor='password'
+            display={{ xs: 'none', md: 'block' }}
+          >
+            <LockIcon style={{ width: 'auto', height: '3.5rem' }} />
+          </Box>
+          <TextField
+            id='password'
+            fullWidth
+            type={showPassword ? 'text' : 'password'}
+            placeholder='Contraseña'
+            variant='outlined'
+            {...register('password', {
+              required: {
+                value: true,
+                message: 'Por favor, completa este campo.',
+              },
+              minLength: {
+                value: 8,
+                message: 'La contraseña debe tener al menos 8 caracteres.',
+              },
+              pattern: {
+                value: /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+                message:
+                  'La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.',
+              },
+            })}
+            error={!!errors?.password}
+            helperText={errors?.password?.message}
+            slotProps={{
+              input: {
+                sx: {
+                  bgcolor: 'white',
+                  color: 'black',
+                },
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge='end'
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </Box>
+
+        <Box display='flex' alignItems='start' gap='1rem'>
+          <Box
+            component='label'
+            htmlFor='confirmPassword'
+            display={{ xs: 'none', md: 'block' }}
+          >
+            <LockIcon style={{ width: 'auto', height: '3.5rem' }} />
+          </Box>
+          <TextField
+            id='confirmPassword'
+            fullWidth
+            type='password'
+            placeholder='Confirmar Contraseña'
+            variant='outlined'
+            {...register('confirmPassword', {
+              required: 'Por favor repite la contraseña',
+              validate: (value) =>
+                value === watch('password') || 'Las contraseñas no coinciden',
+            })}
+            error={!!errors?.confirmPassword}
+            helperText={errors?.confirmPassword?.message}
+            slotProps={{
+              input: {
+                sx: {
+                  bgcolor: 'white',
+                  color: 'black',
+                },
+              },
+            }}
+          />
+        </Box>
+
+        <Button
+          fullWidth
+          type='submit'
+          variant='contained'
+          disabled={isSubmitting}
+          sx={{
+            color: 'white',
+            bgcolor: '#4B527E',
+            border: '2px solid white',
+            '&.Mui-disabled': {
+              color: 'white',
+            },
+          }}
+        >
+          {isSubmitting && (
+            <Box
+              sx={{
+                backgroundImage: { xs: `url(loader.svg)` },
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 16,
+                width: 16,
+                height: 16,
+                marginRight: '0.5rem',
+              }}
+            />
+          )}
+          {isSubmitting ? 'Registrando...' : 'Registrarme'}
+        </Button>
+      </Box>
+
+      <Typography variant='body2' align='center' color='white' mt='1.5rem'>
+        ¿Ya tienes una cuenta?&nbsp;
+        <Typography
+          component={Link}
+          to='/login'
+          variant='body2'
+          color='secondary.main'
+        >
+          Inicia sesión aquí.
+        </Typography>
+      </Typography>
+    </Box>
   )
 }
 

@@ -1,107 +1,64 @@
-import React from 'react'
-import styled from 'styled-components'
 import { useLocation, Link } from 'react-router-dom'
-import { useThemeSwitcher } from '../../../hooks'
 
-const Navbar = styled.nav`
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #2d3250;
-  opacity: 0.9;
-  z-index: 1;
-  font-family: 'Inter', sans-serif;
-  padding-left: 10%;
-  padding-right: 10%;
-`
+import { Box, Button, styled } from '@mui/material'
 
-const Logo = styled.div`
-  background-image: url('/logo.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 250px;
-  height: 90px;
-`
-
-// const ThemeButton = styled.button`
-//   background-color: ${(props) => props.theme.accent};
-//   color: ${(props) => props.theme.text};
-//   border: none;
-//   padding: 8px 16px;
-//   cursor: pointer;
-//   font-size: 14px;
-//   border-radius: 5px;
-//   transition: all 0.3s ease-in-out;
-
-//   &:hover {
-//     background-color: ${(props) => props.theme.background};
-//   }
-// `
-
-const NavButton = styled(Link)`
-  background-color: ${(props) => props.theme.accent};
-  color: ${(props) => props.theme.text};
-  border: none;
-  padding: 8px 16px;
-  margin-left: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
-  text-decoration: none;
-  text-align: center;
-  transition: all 0.3s ease-in-out;
-
-  &:hover {
-    background-color: ${(props) => props.theme.background};
-  }
-`
-
-const ButtonContainer = styled.div`
-  display: flex;
-  align-items: left;
-`
-
-const LayoutContainer = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #2d3250;
-`
-
-const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const location = useLocation()
-  const { themeMode, ThemeProvider } = useThemeSwitcher()
-
-  return (
-    <ThemeProvider theme={themeMode}>
-      <LayoutContainer>
-        <Navbar>
-          <Logo />
-          <ButtonContainer>
-            {location.pathname === '/login' && (
-              <>
-                <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/register'>Registrate</NavButton>
-              </>
-            )}
-            {location.pathname === '/register' && (
-              <>
-                <NavButton to='/help'>Ayuda</NavButton>
-                <NavButton to='/login'>Ingresar</NavButton>
-              </>
-            )}
-            {/* <ThemeButton onClick={toggleTheme} style={{ marginLeft: '20px' }}> */}
-            {/* {themeMode === lightTheme ? '🌙' : '☀️'} */}
-            {/* </ThemeButton> */}
-          </ButtonContainer>
-        </Navbar>
-        <main>{children}</main>
-      </LayoutContainer>
-    </ThemeProvider>
-  )
+interface IAuthLayoutProps {
+  children: React.ReactNode
 }
 
-export default AuthLayout
+export default function AuthLayout({ children }: IAuthLayoutProps) {
+  const location = useLocation()
+
+  const isOnLogin = location.pathname === '/login'
+
+  const NavButton = styled(Button)(() => ({
+    color: 'white',
+    backgroundColor: '#424769',
+    padding: '0.5rem 1rem',
+    lineHeight: 'normal',
+    border: '1px solid transparent',
+    textTransform: 'capitalize',
+    ':hover': {
+      border: '1px solid white',
+      backgroundColor: 'transparent',
+    },
+  }))
+
+  return (
+    <>
+      <Box
+        component='header'
+        position='fixed'
+        top={0}
+        right={0}
+        left={0}
+        height={{ xs: '4rem', sm: '5rem', md: '6rem' }}
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        bgcolor='primary.dark'
+        p={{
+          xs: '0rem 0.5rem',
+          md: '0.5rem 5rem',
+          lg: '0.5rem 7rem',
+          xl: '0.5rem 10rem',
+        }}
+        zIndex={1}
+        sx={{ opacity: 0.9 }}
+      >
+        <Box component='img' src='logo.png' height='100%' alt='Law Case Logo' />
+        <Box component='nav' display='flex' gap={1} mr={{ xs: 1, md: 0 }}>
+          <Link to='/help'>
+            <NavButton>Adyua</NavButton>
+          </Link>
+          <Link to={isOnLogin ? '/register' : '/login'}>
+            <NavButton>{isOnLogin ? 'Regístrate' : 'Ingresar'}</NavButton>
+          </Link>
+        </Box>
+      </Box>
+      <Box component='main' height='100vh'>
+        {children}
+      </Box>
+    </>
+  )
+}
