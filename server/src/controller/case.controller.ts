@@ -36,7 +36,7 @@ export class CaseController {
       .then((cases) => {
         res.status(200).json(cases)
       })
-      .then((error) => {
+      .catch((error) => {
         next(error)
       })
   }
