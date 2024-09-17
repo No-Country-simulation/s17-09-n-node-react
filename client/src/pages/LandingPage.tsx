@@ -75,22 +75,11 @@ const LandingPage: React.FC = () => {
   return (
     <div className='landing-page'>
       {/* Sección de presentación */}
-      <section className='hero bg-policeBlue text-white py-20'>
-        <div className='container mx-auto'>
-          <img
-            src='./logo.png'
-            className='testimonial-photo max-w-xl mx-auto'
-            title='logo'
-          />
-          <h1 className='text-4xl font-bold mb-8 text-center'>
-            Organiza y agiliza tus casos con nuestra app. Centraliza
-            información, automatiza tareas y colabora en tiempo real para lograr
-            resultados óptimos.
-          </h1>
-          <button
-            onClick={redirigir}
-            className='bg-white text-blue-500 font-bold py-2 px-4 rounded mx-auto'
-          >
+      <section className="hero bg-policeBlue text-white py-20">
+        <div className="container mx-auto">
+          <img src="./logo.png" className="testimonial-photo max-w-xl mx-auto" title='logo'/>
+          <h1 className="text-4xl font-bold mb-8 text-center">Organiza y agiliza tus casos con nuestra app. Centraliza información, automatiza tareas y colabora en tiempo real para lograr resultados óptimos.</h1>
+          <button onClick={redirigir} className=" flex bg-white text-blue-500 font-bold py-2 px-4 rounded mx-auto justify-center"> 
             ¡Comienza ahora!
           </button>
         </div>
@@ -148,4 +137,4 @@ const LandingPage: React.FC = () => {
   )
 }
 
-export default LandingPage
+export default LandingPage;
