@@ -51,7 +51,12 @@ export class MovementController {
     if (!userId) {
       throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
     }
+    //console.log(req.query)
+    const { date } = req.query
 
+    if (typeof date === 'string') {
+      req.query.date = date.replace(' ', '+')
+    }
     const [error, dateMovementDto] = DateMovementDTO.create(req.query)
 
     if (error || !dateMovementDto) {
