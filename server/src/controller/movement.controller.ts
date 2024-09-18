@@ -4,6 +4,7 @@ import { HTTP_STATUS } from '../enums/enum'
 import HttpError from '../config/errors'
 import { CreateMovementDTO } from '../dtos/movement/create-dto.movement'
 import { UpdateMovementDTO } from '../dtos/movement/update-dto.movement'
+import { DateMovementDTO } from '../dtos/movement/date-dto.movement'
 
 export class MovementController {
   constructor(private readonly movementService: MovementService) {}
@@ -16,6 +17,27 @@ export class MovementController {
       .getMovements(userId)
       .then((data) => {
         res.status(201).json(data)
+      })
+      .catch((error: unknown) => next(error))
+  }
+
+  getUserMovementsByDate = (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id
+
+    if (!userId) {
+      throw new HttpError(401, HTTP_STATUS.UNAUTHORIZED, 'Unauthorized')
+    }
+
+    const [error, dateMovementDto] = DateMovementDTO.create(req.query)
+
+    if (error || !dateMovementDto) {
+      throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, error)
+    }
+
+    this.movementService
+      .getMovementsByUserIdAndDate(userId, dateMovementDto)
+      .then((movements) => {
+        res.status(201).json(movements)
       })
       .catch((error: unknown) => next(error))
   }
