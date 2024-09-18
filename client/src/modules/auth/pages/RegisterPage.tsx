@@ -17,15 +17,14 @@ export default function RegistrationPage() {
       >
         <Stack
           width='100%'
-          height='100%'
-          maxWidth='95rem'
+          height='auto'
           margin='0 auto'
-          minHeight='48rem'
-          p={{ xs: '1.5rem', md: '2.5rem' }}
           direction='row'
-          spacing={{ xs: '2rem', md: '2.5rem' }}
+          maxWidth='95rem'
           bgcolor='#4B527E'
           borderRadius='0.5rem'
+          p={{ xs: '1.5rem', md: '2.5rem' }}
+          spacing={{ xs: '2rem', md: '2.5rem' }}
         >
           <Box width={{ xs: '100%', md: '50%' }}>
             <RegisterForm />
