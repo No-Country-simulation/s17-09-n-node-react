@@ -70,6 +70,8 @@ export class UserService {
     if (updatePasswordDto.currentPassword === updatePasswordDto.newPassword)
       throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'The passwords are equal')
 
+    updatePasswordDto.newPassword = await bcrypt.hash(updatePasswordDto.newPassword, 10)
+
     await prisma.user.update({
       where: { id: id },
       data: {
