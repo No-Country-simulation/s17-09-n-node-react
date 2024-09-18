@@ -1,29 +1,31 @@
 import { useState } from 'react'
-import Box from '@mui/material/Box'
-import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@mui/material/styles'
-import { Avatar, Menu, MenuItem } from '@mui/material'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import HomeIcon from '@mui/icons-material/Home'
-//import ContactsIcon from '@mui/icons-material/Contacts'
-import WorkIcon from '@mui/icons-material/Work'
-import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
+
+import {
+  Box,
+  Menu,
+  List,
+  Drawer,
+  Avatar,
+  MenuItem,
+  ListItem,
+  useTheme,
+  ListItemText,
+  ListItemIcon,
+  useMediaQuery,
+} from '@mui/material'
+import { Home, Work, Menu as MenuIcon } from '@mui/icons-material'
+
 import { useAuth } from '../../hooks'
 
 export default function NavBar() {
+  const { user, startLogout } = useAuth()
+
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { user } = useAuth()
+
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const { startLogout } = useAuth()
-
-  // // Obtener la información del usuario autenticado
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen)
@@ -47,12 +49,12 @@ export default function NavBar() {
         {[
           {
             title: 'Inicio',
-            icon: <HomeIcon className='text-inherit' />,
+            icon: <Home className='text-inherit' />,
             path: '/',
           },
           {
             title: 'Casos',
-            icon: <WorkIcon className='text-inherit' />,
+            icon: <Work className='text-inherit' />,
             path: '/cases',
           },
           /*           {
@@ -101,12 +103,12 @@ export default function NavBar() {
           {[
             {
               title: 'Inicio',
-              icon: <HomeIcon />,
+              icon: <Home />,
               path: '/home',
             },
             {
               title: 'Casos',
-              icon: <WorkIcon />,
+              icon: <Work />,
               path: '/cases',
             },
             /*             {
@@ -188,11 +190,9 @@ export default function NavBar() {
       {isMobile ? <Mobile /> : <Desktop />}
       <div>
         <button onClick={handleMenu}>
-          {/* Muestra la imagen del usuario autenticado o un perfil por defecto */}
-
           <Avatar src={user ? user.imageUrl : '/profile.png'} />
         </button>
-        {<AvatarMenu />}
+        <AvatarMenu />
       </div>
     </nav>
   )
