@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles'
 import { Avatar, Menu, MenuItem } from '@mui/material'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import HomeIcon from '@mui/icons-material/Home'
-import ContactsIcon from '@mui/icons-material/Contacts'
+//import ContactsIcon from '@mui/icons-material/Contacts'
 import WorkIcon from '@mui/icons-material/Work'
 import MenuIcon from '@mui/icons-material/Menu'
 import { NavLink } from 'react-router-dom'
@@ -55,11 +55,11 @@ export default function NavBar() {
             icon: <WorkIcon className='text-inherit' />,
             path: '/cases',
           },
-          {
+          /*           {
             title: 'Contactos',
             icon: <ContactsIcon className='text-inherit' />,
             path: '/contacts',
-          },
+          }, */
         ].map((item, index) => (
           <ListItem key={index}>
             <NavLink
@@ -109,11 +109,11 @@ export default function NavBar() {
               icon: <WorkIcon />,
               path: '/cases',
             },
-            {
+            /*             {
               title: 'Contactos',
               icon: <ContactsIcon />,
               path: '/contacts',
-            },
+            }, */
           ].map((item, index) => (
             <li key={index} className='!w-none'>
               <NavLink
