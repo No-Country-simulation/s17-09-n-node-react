@@ -41,8 +41,6 @@ const CreateMovementModal = ({
     },
   })
 
-  ;('2024-09-13T20:44:13.683Z')
-
   const { token } = useAuth()
 
   const handleDateChange = (newDate: Dayjs | null) => {
