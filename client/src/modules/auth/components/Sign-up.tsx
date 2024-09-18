@@ -14,7 +14,12 @@ import { VisibilityOff, Visibility } from '@mui/icons-material'
 
 import { useAuth } from '../../../hooks'
 import { showStatusSnackbar } from '../../../helpers'
-import { LockIcon, MailIcon, PersonIcon } from '../../../components'
+import {
+  LockIcon,
+  MailIcon,
+  PersonIcon,
+  SpinnerIcon,
+} from '../../../components'
 
 type Inputs = {
   name: string
@@ -303,15 +308,8 @@ const Register = () => {
           }}
         >
           {isSubmitting && (
-            <Box
-              sx={{
-                backgroundImage: { xs: `url(loader.svg)` },
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 16,
-                width: 16,
-                height: 16,
-                marginRight: '0.5rem',
-              }}
+            <SpinnerIcon
+              style={{ width: '1rem', height: '1rem', marginRight: '0.5rem' }}
             />
           )}
           {isSubmitting ? 'Registrando...' : 'Registrarme'}
