@@ -33,9 +33,9 @@ export class UserService {
       envs.nodeEnv === 'prod' ? (envs.jwtRefreshSecret as string) : 'secret'
 
     const accessJwtExpiration =
-      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '1h'
     const refreshJwtExpiration =
-      envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '3h'
+      envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '1d'
 
     const accessToken = jwt.sign(payload, accessTokenSecret, { expiresIn: accessJwtExpiration })
     const refreshToken = jwt.sign(payload, refreshTokenSecret, { expiresIn: refreshJwtExpiration })
