@@ -1,5 +1,7 @@
 import { Box } from '@mui/material'
 
+import { SpinnerIcon } from '../icons'
+
 export const Loading = () => {
   return (
     <Box
@@ -10,15 +12,7 @@ export const Loading = () => {
       width='100vw'
       bgcolor='#424769'
     >
-      <Box
-        sx={{
-          backgroundImage: { xs: `url(loader.svg)` },
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 48,
-          width: 48,
-          height: 48,
-        }}
-      ></Box>
+      <SpinnerIcon style={{ width: '3rem', height: '3rem' }} />
     </Box>
   )
 }

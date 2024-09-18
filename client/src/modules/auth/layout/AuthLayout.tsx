@@ -49,7 +49,7 @@ export default function AuthLayout({ children }: IAuthLayoutProps) {
         <Box component='img' src='logo.png' height='100%' alt='Law Case Logo' />
         <Box component='nav' display='flex' gap={1} mr={{ xs: 1, md: 0 }}>
           <Link to='/help'>
-            <NavButton>Adyua</NavButton>
+            <NavButton>Ayuda</NavButton>
           </Link>
           <Link to={isOnLogin ? '/register' : '/login'}>
             <NavButton>{isOnLogin ? 'Regístrate' : 'Ingresar'}</NavButton>
