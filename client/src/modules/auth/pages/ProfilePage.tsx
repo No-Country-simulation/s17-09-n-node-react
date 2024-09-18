@@ -28,7 +28,6 @@ const ProfilePage: React.FC = () => {
     Aos.init()
   }, [])
 
-
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -44,21 +43,17 @@ const ProfilePage: React.FC = () => {
       setProfilePic(newUrl)
     }
   }
-  
-
-
 
   // Función para guardar los cambios y actualizar el contexto
   const handleSaveChanges = async () => {
     try {
-      
       // Asegúrate de que las propiedades no sean undefined asignando un valor predeterminado
       handleProfilePicUpdate(profilePic)
       const updatedUser: IUser = {
-        name: newName || user?.name || '', 
+        name: newName || user?.name || '',
         lastName: newLastName || user?.lastName || '',
         email: newEmail || user?.email || '',
-        imageUrl: user?.imageUrl || profilePic, 
+        imageUrl: user?.imageUrl || profilePic,
         role: user?.role || 'USER',
       }
 
@@ -213,7 +208,7 @@ const ProfilePage: React.FC = () => {
                 onClose={() => {
                   setSuccess(false)
                 }}
-               className='mx-4'
+                className='mx-4'
               >
                 "Se editaron los datos de Mi Perfil"
               </Alert>
@@ -223,13 +218,7 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Modal para editar la imagen de perfil */}
-  <ProfileModal
-  open={open}
-  onClose={handleClose}
-  profilePic={profilePic}
- 
-
-/>
+      <ProfileModal open={open} onClose={handleClose} profilePic={profilePic} />
     </main>
   )
 }

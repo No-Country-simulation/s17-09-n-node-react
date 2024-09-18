@@ -64,9 +64,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         }
 
         setUser(updatedUser)
-        const res = await lawCaseApi.put('/user', updatedUser)
-        console.log(res.data, "res.data")
-        console.log(updatedUser, 'updatedUser')
+        await lawCaseApi.put('/user', updatedUser)
       }
     } catch (error) {
       console.error('Error subiendo la imagen a Cloudinary:', error)
@@ -74,8 +72,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       setUploading(false)
     }
   }
-
-
 
   return (
     <Modal
