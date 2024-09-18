@@ -64,7 +64,7 @@ const CaseMovementDetails: React.FC = () => {
   const [caseData, setCaseData] = useState<CaseType | null>(null)
   const [caseStatus, setCaseStatus] = useState<typeStatus | null>(null)
   const [movements, setMovements] = useState<MovementInfoType[]>([])
-
+  const caseName = caseData?.caseName
   const { token, user } = useAuth()
   console.log(user)
   const params = useParams()
@@ -135,6 +135,7 @@ const CaseMovementDetails: React.FC = () => {
           searchFilter={searchFilter} // Asegúrate de pasar `searchFilter`
           caseId={caseId}
           setMovements={setMovements}
+          caseName={caseName}
         />
       </Box>
     </Box>

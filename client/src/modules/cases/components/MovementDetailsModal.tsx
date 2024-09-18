@@ -18,6 +18,7 @@ const MovementDetailsModal = ({
   movementInfo,
   openMovementDetail,
   setOpenMovementDetail,
+  caseName,
 }: any) => {
   return (
     <Dialog
@@ -49,7 +50,7 @@ const MovementDetailsModal = ({
           pb={2}
         >
           <Typography variant='h6' color='white' align='center'>
-            Nombre del caso:
+            Nombre del caso: {caseName}
           </Typography>
 
           <Typography variant='subtitle1' color='white' align='center'>

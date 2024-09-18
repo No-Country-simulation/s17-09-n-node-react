@@ -40,12 +40,14 @@ interface MovementCardProp {
   movementInfo: MovementInfoType
   setMovements: any
   caseId: any
+  caseName: any
 }
 
 const MovementCard: React.FC<MovementCardProp> = ({
   movementInfo,
   setMovements,
   caseId,
+  caseName,
 }) => {
   const { token } = useAuth()
   // Menu states
@@ -285,6 +287,7 @@ const MovementCard: React.FC<MovementCardProp> = ({
         openMovementDetail={openMovementDetail}
         setOpenMovementDetail={setOpenMovementDetail}
         movementInfo={movementInfo}
+        caseName={caseName}
       />
     </>
   )
