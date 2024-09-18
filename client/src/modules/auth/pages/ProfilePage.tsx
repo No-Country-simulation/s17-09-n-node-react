@@ -130,7 +130,6 @@ const ProfilePage: React.FC = () => {
             </button>
           </section>
 
-          {/* Sección de edición en tiempo real */}
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
               <div className='flex flex-col w-[80%] gap-2 p-4   text-black'>
@@ -162,8 +161,6 @@ const ProfilePage: React.FC = () => {
                   placeholder='Nuevo Email'
                   className='p-1 rounded border border-gray-300'
                 />
-
-                {/* Inputs para cambiar la contraseña */}
                 <input
                   type='password'
                   placeholder='Contraseña actual'
@@ -200,6 +197,18 @@ const ProfilePage: React.FC = () => {
                 alt='logo'
                 className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
+            )}
+            {success && (
+              <Alert
+                severity='success'
+                variant='filled'
+                onClose={() => {
+                  setSuccess(false)
+                }}
+                className='mx-4'
+              >
+                "Se editaron los datos de Mi Perfil"
+              </Alert>
             )}
             {success && (
               <Alert

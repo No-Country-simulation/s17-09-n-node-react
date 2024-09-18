@@ -3,6 +3,9 @@ import DoneIcon from '@mui/icons-material/Done'
 import ErrorIcon from '@mui/icons-material/Error'
 import GroupsIcon from '@mui/icons-material/Groups'
 import ArchiveIcon from '@mui/icons-material/Archive'
+import casesService from '../services/cases.service'
+import { typeTipo, typeStatus } from '../services/cases.service'
+import Case from '../utils/case.status'
 import {
   Typography,
   Paper,
@@ -14,19 +17,22 @@ import {
   MenuItem,
   Divider,
 } from '@mui/material'
+import { useAuth } from '../../../hooks'
 
 interface CaseProfileProps {
-  caseStatus: string | null
-  setCaseStatus: React.Dispatch<React.SetStateAction<string | null>>
+  caseId: string | undefined
+  caseStatus: typeStatus | null
+  setCaseStatus: React.Dispatch<React.SetStateAction<typeStatus | null>>
   caseName: string
   jury: string
   caseNumber: string
   applicant: string
   respondent: string
-  caseType: string
+  caseType: typeTipo
 }
 
 const CaseProfileCard: React.FC<CaseProfileProps> = ({
+  caseId,
   caseStatus,
   setCaseStatus,
   caseName,
@@ -39,7 +45,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
   // Menu states
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-
+  const { token } = useAuth()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -48,9 +54,33 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
     setAnchorEl(null)
   }
 
-  const handleMenuItemClick = (newState: string) => {
+  const handleMenuItemClick = (newState: typeStatus) => {
+    setCaseStatus(newState)
+    const updatedCase = {
+      caseName: caseName,
+      jury: jury,
+      caseNumber: caseNumber,
+      applicant: applicant,
+      respondent: respondent,
+      type: caseType,
+      status: newState,
+    }
     setCaseStatus(newState)
     handleClose()
+    if (token && typeof caseId === 'string') {
+      casesService
+        .updateCase(caseId, updatedCase)
+        .then((res) => {
+          if (res?.data) {
+            console.log('Estado actualizado con éxito')
+          } else {
+            console.log('Error al actualizar el Estado')
+          }
+        })
+        .catch((error) => {
+          console.error('Error en la actualización del caso:', error)
+        })
+    }
   }
 
   const renderIconForState = () => {
@@ -176,7 +206,7 @@ const CaseProfileCard: React.FC<CaseProfileProps> = ({
               Demandado: {respondent}
             </Typography>
             <Typography variant='body2' color='white'>
-              Tipo de caso: {caseType}
+              Tipo de caso: {Case.CaseTypes[caseType]}
             </Typography>
           </Box>
         </Box>

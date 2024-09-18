@@ -50,13 +50,13 @@ const DeleteMovementModal = ({
       fullWidth
       sx={{
         '& .MuiPaper-root': {
-          backgroundColor: '#7077A1',
+          backgroundColor: '#2D3250',
           color: 'white',
         },
       }}
     >
       <DialogTitle>
-        Eliminar movimiento
+        Eliminar Movimiento
         <IconButton
           sx={{ float: 'right' }}
           onClick={() => setOpenDeleteMovement(false)}
@@ -65,10 +65,28 @@ const DeleteMovementModal = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        Estas por eliminar el movimiento: {movementInfo?.title}
+        <Box
+          display='flex'
+          flexDirection={'column'}
+          justifyContent='center'
+          alignItems='center'
+          gap={2}
+        >
+          <Typography variant='subtitle1' color='white'>
+            Estas por a punto de eliminar el movimiento:{' '}
+          </Typography>
+          <Typography variant='body1' color='white'>
+            "{movementInfo?.title}"
+          </Typography>
+        </Box>
       </DialogContent>
       <DialogContent>
-        <Box>
+        <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          gap={10}
+        >
           <Button
             startIcon={<CheckIcon sx={{ color: 'white' }} />}
             sx={{

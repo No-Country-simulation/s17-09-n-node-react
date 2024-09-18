@@ -9,7 +9,7 @@ import CaseProfileCard from '../components/CaseProfileCard'
 import { useParams } from 'react-router-dom'
 import ListIcon from '@mui/icons-material/List'
 import { useAuth } from '../../../hooks'
-
+import { typeTipo, typeStatus } from '../services/cases.service'
 import movementsService from '../services/movements.service'
 
 const actions = [
@@ -39,8 +39,8 @@ interface CaseType {
   caseNumber: string
   applicant: string
   respondent: string
-  type: string
-  status: string
+  type: typeTipo
+  status: typeStatus
   userId: string
   movements: [
     {
@@ -62,10 +62,11 @@ const CaseMovementDetails: React.FC = () => {
   const [searchFilter, setSearchFilter] = useState('')
 
   const [caseData, setCaseData] = useState<CaseType | null>(null)
-  const [caseStatus, setCaseStatus] = useState<string | null>(null)
+  const [caseStatus, setCaseStatus] = useState<typeStatus | null>(null)
   const [movements, setMovements] = useState<MovementInfoType[]>([])
-
-  const { token } = useAuth()
+  const caseName = caseData?.caseName
+  const { token, user } = useAuth()
+  console.log(user)
   const params = useParams()
   const caseId = params.id
 
@@ -89,7 +90,7 @@ const CaseMovementDetails: React.FC = () => {
         bgcolor: 'primary.dark',
         minHeight: '100vh',
         px: 1,
-        pt: '20vh',
+        pt: { sm: '25vh', xs: '25vh', md: '25vh', lg: '15vh' },
       }}
     >
       <Box
@@ -100,11 +101,16 @@ const CaseMovementDetails: React.FC = () => {
           my: 'auto',
         }}
       >
-        <Typography variant='h5' color='primary.contrastText'>
+        <Typography
+          variant='h5'
+          color='primary.contrastText'
+          sx={{ paddingX: { xs: '20px' } }}
+        >
           Mis Movimientos:
         </Typography>
         {caseData ? (
           <CaseProfileCard
+            caseId={caseId}
             caseStatus={caseStatus}
             setCaseStatus={setCaseStatus}
             caseName={caseData.caseName}
@@ -129,6 +135,7 @@ const CaseMovementDetails: React.FC = () => {
           searchFilter={searchFilter} // Asegúrate de pasar `searchFilter`
           caseId={caseId}
           setMovements={setMovements}
+          caseName={caseName}
         />
       </Box>
     </Box>
