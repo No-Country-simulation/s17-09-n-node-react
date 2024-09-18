@@ -93,7 +93,7 @@ const CreateMovementModal = ({
       open={openCreateMovement}
       sx={{
         '& .MuiPaper-root': {
-          backgroundColor: '#7077A1',
+          backgroundColor: '#2D3250',
           color: 'white',
         },
       }}
@@ -229,7 +229,7 @@ const CreateMovementModal = ({
                 id='content'
                 label='Observación'
                 multiline
-                minRows={10}
+                minRows={6}
                 sx={{
                   width: '100%',
                   height: '100%',
@@ -272,7 +272,7 @@ const CreateMovementModal = ({
                 }}
                 type='submit'
               >
-                <Typography variant='body2'>Agregar Tarea</Typography>
+                <Typography variant='body2'>Agregar Movimiento</Typography>
               </Button>
             </Box>
           </form>
