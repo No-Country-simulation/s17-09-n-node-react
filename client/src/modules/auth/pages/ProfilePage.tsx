@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -65,11 +64,13 @@ const ProfilePage: React.FC = () => {
 
       setUser(updatedUser)
       setEditMode(false)
-      if (!success) {setSuccess(true)}
+      if (!success) {
+        setSuccess(true)
+      }
       setAlertOpen(true)
 
       setTimeout(() => {
-        setAlertOpen(false) 
+        setAlertOpen(false)
       }, 1500)
     } catch (error) {
       console.error('Error actualizando el perfil:', error)
@@ -79,22 +80,25 @@ const ProfilePage: React.FC = () => {
   const handleChangePassword = async () => {
     if (currentPassword && newPassword) {
       try {
-        const response = await lawCaseApi.put('/user/change-password', { currentPassword, newPassword });
-  
+        const response = await lawCaseApi.put('/user/change-password', {
+          currentPassword,
+          newPassword,
+        })
+
         if (response.status >= 200 && response.status < 300) {
-          setAlertOpen(true) 
-          setCurrentPassword('');
-          setNewPassword('');
+          setAlertOpen(true)
+          setCurrentPassword('')
+          setNewPassword('')
         } else {
-          alert('Error al cambiar la contraseña.');
+          alert('Error al cambiar la contraseña.')
         }
       } catch (error) {
-        console.error('Error actualizando la contraseña:', error);
-        alert('Error al cambiar la contraseña.');
+        console.error('Error actualizando la contraseña:', error)
+        alert('Error al cambiar la contraseña.')
       }
     }
-  };
-  
+  }
+
   return (
     <main className='min-h-screen bg-[#424769] flex justify-center items-center w-full'>
       <div className='flex flex-col w-full lg:w-3/4 p-6 bg-[#7077A1] m-8 mt-20 shadow-lg rounded-md h-3/4'>
@@ -176,7 +180,7 @@ const ProfilePage: React.FC = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-  
+
                 <button
                   className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 rounded p-0 m-0 hover:bg-[#7077A1] hover:border-white hover:text-white'
                   onClick={handleSaveChanges}
@@ -211,18 +215,17 @@ const ProfilePage: React.FC = () => {
       >
         <Alert
           onClose={() => setAlertOpen(false)}
-          severity="success"
-          variant="filled"
+          severity='success'
+          variant='filled'
           sx={{ marginBottom: '16px' }} // Margen adicional
         >
           Se editaron los datos de Mi Perfil
         </Alert>
       </Snackbar>
 
-       {/* Modal para editar la imagen de perfil */}
-       <ProfileModal open={open} onClose={handleClose} profilePic={profilePic} />
+      {/* Modal para editar la imagen de perfil */}
+      <ProfileModal open={open} onClose={handleClose} profilePic={profilePic} />
     </main>
-
   )
 }
 
