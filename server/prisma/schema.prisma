@@ -7,16 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Document {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  createdAt DateTime @default(now())
+  cases     Case[]
+}
+
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  name     String
-  lastName String
-  password String
-  role     Role   @default(USER)
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  email       String    @unique
+  name        String
+  lastName    String
+  password    String
+  role        Role      @default(USER)
   refreshToken String[] @default([])
-  imageUrl String @default("image")
-  cases    Case[]
+  imageUrl    String    @default("image")
+  cases       Case[]
 }
 
 model Case {
@@ -29,9 +36,11 @@ model Case {
   respondent String
   type       CaseType
   status     CaseStatus @default(INITIATED)
-  User       User       @relation(fields: [userId], references: [id])
   userId     String     @db.ObjectId
+  User       User       @relation(fields: [userId], references: [id])
   movements  Movement[]
+  documentId String?    @db.ObjectId
+  Document   Document?  @relation(fields: [documentId], references: [id])
 }
 
 model Movement {
@@ -42,8 +51,8 @@ model Movement {
   type      MovementType
   done      Boolean      @default(false)
   content   String
-  Case      Case         @relation(fields: [caseId], references: [id])
   caseId    String       @db.ObjectId
+  Case      Case         @relation(fields: [caseId], references: [id])
 }
 
 enum Role {
