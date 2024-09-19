@@ -107,31 +107,33 @@ const CalendarMovements = ({ selectedDate }: MovementsProp) => {
       </div>
       <ul className='flex flex-col gap-4 overflow-y-auto my-4 scrollbar-thin scrollbar-thumb-white scrollbar-track-bg px-2'>
         {movements &&
-          movements.map((item, index) => {
-            const date = new Date(item.date)
-            return (
-              <li
-                key={index}
-                onClick={() => handleIndexFocus(index)}
-                className={`bg-bg cursor-pointer flex justify-between items-center px-5 rounded-lg py-1 md:py-0 ${
-                  indexFocus === index
-                    ? 'bg-mellowApricot text-black border-2 border-white'
-                    : ''
-                }`}
-              >
-                <span className='text-xs md:text-sm max-w-[100px] md:max-w-full'>
-                  <TodayIcon /> {date.toLocaleDateString()}
-                </span>
-                <span className='text-xs md:text-sm'>{item.title}</span>
-                <Checkbox
-                  {...label}
-                  className='!text-inherit'
-                  defaultChecked={item.done}
-                  onChange={() => handleMovementCheck(item)}
-                />
-              </li>
-            )
-          })}
+          movements
+            .filter((item) => item.type === 'APPOINTMENT')
+            .map((item, index) => {
+              const date = new Date(item.date)
+              return (
+                <li
+                  key={index}
+                  onClick={() => handleIndexFocus(index)}
+                  className={`bg-bg cursor-pointer flex justify-between items-center px-5 rounded-lg py-1 md:py-0 ${
+                    indexFocus === index
+                      ? 'bg-mellowApricot text-black border-2 border-white'
+                      : ''
+                  }`}
+                >
+                  <span className='text-xs md:text-sm max-w-[100px] md:max-w-full'>
+                    <TodayIcon /> {date.toLocaleDateString()}
+                  </span>
+                  <span className='text-xs md:text-sm'>{item.title}</span>
+                  <Checkbox
+                    {...label}
+                    className='!text-inherit'
+                    defaultChecked={item.done}
+                    onChange={() => handleMovementCheck(item)}
+                  />
+                </li>
+              )
+            })}
       </ul>
     </div>
   )
