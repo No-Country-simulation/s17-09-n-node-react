@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --clear ./src/main.ts",
-    "build": "tsc",
+    "clean": "rimraf dist", 
+    "build": "npm run clean && tsc",
     "start": "cross-env NODE_ENV=prod node ./dist/src/main.js",
     "generate": "npx prisma generate",
     "seed": "cross-env NODE_ENV=dev ts-node-dev prisma/seeder.ts",
@@ -25,6 +26,7 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "pdfmake": "^0.2.12",
+    "rimraf": "^6.0.1",
     "server": "file:",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
