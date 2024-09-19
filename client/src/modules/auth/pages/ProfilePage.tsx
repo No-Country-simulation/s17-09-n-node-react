@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
-import { LiaEdit } from 'react-icons/lia'
-import ProfileModal from '../components/ProfileModal'
 import { useNavigate } from 'react-router-dom'
-import { Avatar } from '@mui/material'
+
+import { Avatar, Alert } from '@mui/material'
+import { LiaEdit } from 'react-icons/lia'
+
 import Aos from 'aos'
 import 'aos/dist/aos.css'
-import { lawCaseApi } from '../../../apis/index'
+
 import { useAuth } from '../../../hooks'
-import { IUser } from '../../../interfaces/user.interface'
-import Alert from '@mui/material/Alert'
+import { lawCaseApi } from '../../../apis'
+import { IUser } from '../../../interfaces'
+import ProfileModal from '../components/ProfileModal'
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate()
@@ -59,7 +61,6 @@ const ProfilePage: React.FC = () => {
 
       await lawCaseApi.put('/user', updatedUser)
 
-      // Actualizar el estado global y las cookies
       setUser(updatedUser)
       setEditMode(false)
       setSuccess(true)
@@ -197,18 +198,6 @@ const ProfilePage: React.FC = () => {
                 alt='logo'
                 className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
-            )}
-            {success && (
-              <Alert
-                severity='success'
-                variant='filled'
-                onClose={() => {
-                  setSuccess(false)
-                }}
-                className='mx-4'
-              >
-                "Se editaron los datos de Mi Perfil"
-              </Alert>
             )}
             {success && (
               <Alert

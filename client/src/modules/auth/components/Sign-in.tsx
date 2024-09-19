@@ -172,7 +172,7 @@ const Login = () => {
           variant='body2'
           color='secondary.main'
         >
-          Registrate&nbsp;
+          Regístrate&nbsp;
         </Typography>
         para poder disfrutar de nuestros servicios.
       </Typography>

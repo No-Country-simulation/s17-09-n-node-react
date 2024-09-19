@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+
+import axios from 'axios'
+
 import {
-  Modal,
   Box,
-  Typography,
+  Modal,
   Button,
   Avatar,
+  Typography,
   CircularProgress,
 } from '@mui/material'
-import axios from 'axios'
+
 import { useAuth } from '../../../hooks'
 import { lawCaseApi } from '../../../apis'
 
@@ -28,20 +31,19 @@ const style = {
 
 type ProfileModalProps = {
   open: boolean
-  onClose: () => void
-
   profilePic: string
+  onClose: () => void
 }
 
 const ProfileModal: React.FC<ProfileModalProps> = ({
   open,
   onClose,
-
   profilePic,
 }) => {
+  const { user, setUser } = useAuth()
+
   const [uploading, setUploading] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
-  const { user, setUser } = useAuth() // Usamos useAuth para acceder al estado global del usuario
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
