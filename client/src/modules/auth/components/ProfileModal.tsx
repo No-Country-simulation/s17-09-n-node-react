@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import axios from 'axios'
 
@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 
 import { useAuth } from '../../../hooks'
+import { lawCaseApi } from '../../../apis'
 
 // Configura Cloudinary
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_API_URL
@@ -30,20 +31,19 @@ const style = {
 
 type ProfileModalProps = {
   open: boolean
-  onClose: () => void
-  handleProfilePicUpdate: (newUrl: string) => void
   profilePic: string
+  onClose: () => void
 }
 
 const ProfileModal: React.FC<ProfileModalProps> = ({
   open,
   onClose,
-  handleProfilePicUpdate,
   profilePic,
 }) => {
+  const { user, setUser } = useAuth()
+
   const [uploading, setUploading] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<string | null>(null)
-  const { user, setUser } = useAuth() // Usamos useAuth para acceder al estado global del usuario
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -66,6 +66,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
         }
 
         setUser(updatedUser)
+        await lawCaseApi.put('/user', updatedUser)
       }
     } catch (error) {
       console.error('Error subiendo la imagen a Cloudinary:', error)
@@ -73,12 +74,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
       setUploading(false)
     }
   }
-
-  useEffect(() => {
-    if (newProfilePic) {
-      handleProfilePicUpdate(newProfilePic)
-    }
-  }, [newProfilePic, handleProfilePicUpdate])
 
   return (
     <Modal

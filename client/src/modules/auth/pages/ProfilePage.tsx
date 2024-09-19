@@ -33,16 +33,16 @@ const ProfilePage: React.FC = () => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const handleProfilePicUpdate = async (newUrl: string) => {
+  const handleProfilePicUpdate = (newUrl: string) => {
     setProfilePic(newUrl)
-    // Actualiza la imagen en el estado global (user) después de subirla
+    // Actualiza también el estado global del usuario
     if (user) {
       const updatedUser = {
         ...user,
         imageUrl: newUrl,
       }
       setUser(updatedUser)
-      await lawCaseApi.put('/user', updatedUser)
+      setProfilePic(newUrl)
     }
   }
 
@@ -50,11 +50,12 @@ const ProfilePage: React.FC = () => {
   const handleSaveChanges = async () => {
     try {
       // Asegúrate de que las propiedades no sean undefined asignando un valor predeterminado
+      handleProfilePicUpdate(profilePic)
       const updatedUser: IUser = {
-        name: newName || user?.name || '', // Si está vacío o undefined, usa una cadena vacía
+        name: newName || user?.name || '',
         lastName: newLastName || user?.lastName || '',
         email: newEmail || user?.email || '',
-        imageUrl: profilePic, // Ya está definido siempre, no necesita cambio
+        imageUrl: user?.imageUrl || profilePic,
         role: user?.role || 'USER',
       }
 
@@ -111,7 +112,7 @@ const ProfilePage: React.FC = () => {
                 <Avatar
                   //data-aos='fade-zoom-in'
 
-                  src={profilePic}
+                  src={user?.imageUrl}
                   sx={{ width: 200, height: 200 }}
                   className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
                 />
@@ -130,7 +131,6 @@ const ProfilePage: React.FC = () => {
             </button>
           </section>
 
-          {/* Sección de edición en tiempo real */}
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
               <div className='flex flex-col w-[80%] gap-2 p-4   text-black'>
@@ -162,8 +162,6 @@ const ProfilePage: React.FC = () => {
                   placeholder='Nuevo Email'
                   className='p-1 rounded border border-gray-300'
                 />
-
-                {/* Inputs para cambiar la contraseña */}
                 <input
                   type='password'
                   placeholder='Contraseña actual'
@@ -218,12 +216,7 @@ const ProfilePage: React.FC = () => {
       </div>
 
       {/* Modal para editar la imagen de perfil */}
-      <ProfileModal
-        open={open}
-        onClose={handleClose}
-        handleProfilePicUpdate={handleProfilePicUpdate}
-        profilePic={profilePic}
-      />
+      <ProfileModal open={open} onClose={handleClose} profilePic={profilePic} />
     </main>
   )
 }

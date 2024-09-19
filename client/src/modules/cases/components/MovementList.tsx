@@ -11,12 +11,14 @@ const MovementList = ({
   searchFilter, // Añadir searchFilter
   caseId,
   setMovements,
+  caseName,
 }: {
   items: MovementInfoType[]
   filter: undefined | null | string
   searchFilter: string // Añadir searchFilter
   caseId: undefined | null | string
   setMovements: any
+  caseName: any
 }) => {
   const [filteredMovements, setFilteredMovements] = useState<
     MovementInfoType[]
@@ -63,6 +65,7 @@ const MovementList = ({
                 movementInfo={movementInfo}
                 setMovements={setMovements}
                 caseId={caseId}
+                caseName={caseName}
               />
             ))}
           </ul>
