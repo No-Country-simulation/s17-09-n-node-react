@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Avatar, Alert } from '@mui/material'
+import { Avatar, Alert, Snackbar } from '@mui/material'
 import { LiaEdit } from 'react-icons/lia'
 
 import Aos from 'aos'
@@ -25,6 +25,7 @@ const ProfilePage: React.FC = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [success, setSuccess] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false) // Estado para controlar el Snackbar
 
   useEffect(() => {
     Aos.init()
@@ -35,7 +36,6 @@ const ProfilePage: React.FC = () => {
 
   const handleProfilePicUpdate = (newUrl: string) => {
     setProfilePic(newUrl)
-    // Actualiza también el estado global del usuario
     if (user) {
       const updatedUser = {
         ...user,
@@ -46,10 +46,11 @@ const ProfilePage: React.FC = () => {
     }
   }
 
-  // Función para guardar los cambios y actualizar el contexto
   const handleSaveChanges = async () => {
+    if (newPassword !== '') {
+      handleChangePassword()
+    }
     try {
-      // Asegúrate de que las propiedades no sean undefined asignando un valor predeterminado
       handleProfilePicUpdate(profilePic)
       const updatedUser: IUser = {
         name: newName || user?.name || '',
@@ -63,7 +64,14 @@ const ProfilePage: React.FC = () => {
 
       setUser(updatedUser)
       setEditMode(false)
-      setSuccess(true)
+      if (!success) {
+        setSuccess(true)
+      }
+      setAlertOpen(true)
+
+      setTimeout(() => {
+        setAlertOpen(false)
+      }, 1500)
     } catch (error) {
       console.error('Error actualizando el perfil:', error)
     }
@@ -72,14 +80,13 @@ const ProfilePage: React.FC = () => {
   const handleChangePassword = async () => {
     if (currentPassword && newPassword) {
       try {
-        const response = await lawCaseApi.put(
-          '/user/change-password',
-          { currentPassword, newPassword },
-          { withCredentials: true },
-        )
+        const response = await lawCaseApi.put('/user/change-password', {
+          currentPassword,
+          newPassword,
+        })
 
-        if (response.status === 200) {
-          alert('Contraseña actualizada exitosamente')
+        if (response.status >= 200 && response.status < 300) {
+          setAlertOpen(true)
           setCurrentPassword('')
           setNewPassword('')
         } else {
@@ -87,6 +94,7 @@ const ProfilePage: React.FC = () => {
         }
       } catch (error) {
         console.error('Error actualizando la contraseña:', error)
+        alert('Error al cambiar la contraseña.')
       }
     }
   }
@@ -95,7 +103,7 @@ const ProfilePage: React.FC = () => {
     <main className='min-h-screen bg-[#424769] flex justify-center items-center w-full'>
       <div className='flex flex-col w-full lg:w-3/4 p-6 bg-[#7077A1] m-8 mt-20 shadow-lg rounded-md h-3/4'>
         <div className='flex w-full p-8 justify-between items-center'>
-          <h1 className='text-3xl text-[#2D3250] font-semibold'>Mi perfil</h1>
+          <h1 className='text-3xl text-white font-semibold'>Mi perfil</h1>
           <button
             onClick={() => navigate('/home')}
             className='text-white hover:text-[#7077A1]'
@@ -110,8 +118,6 @@ const ProfilePage: React.FC = () => {
 
               <div className='hover:scale-105'>
                 <Avatar
-                  //data-aos='fade-zoom-in'
-
                   src={user?.imageUrl}
                   sx={{ width: 200, height: 200 }}
                   className='transition-transform w-full duration-500 ease-in-out border-4 border-[#F6B17A] shadow-xl'
@@ -133,7 +139,7 @@ const ProfilePage: React.FC = () => {
 
           <section className='bg-[#424769] rounded-lg flex flex-col justify-center items-center gap-2 w-full lg:w-1/2'>
             {editMode ? (
-              <div className='flex flex-col w-[80%] gap-2 p-4   text-black'>
+              <div className='flex flex-col w-[80%] gap-2 p-4 text-black'>
                 <img
                   data-aos='zoom-out'
                   data-aos-duration='1000'
@@ -146,14 +152,14 @@ const ProfilePage: React.FC = () => {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder='Nuevo Nombre'
-                  className='p-1 rounded border  border-gray-300'
+                  className='p-1 rounded border border-gray-300'
                 />
                 <input
                   type='text'
                   value={newLastName}
                   onChange={(e) => setNewLastName(e.target.value)}
                   placeholder='Nuevo Apellido'
-                  className='p-1 rounded border  border-gray-300'
+                  className='p-1 rounded border border-gray-300'
                 />
                 <input
                   type='email'
@@ -174,9 +180,6 @@ const ProfilePage: React.FC = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-                <button onClick={handleChangePassword}>
-                  Actualizar Contraseña
-                </button>
 
                 <button
                   className='bg-[#F6B17A] border-[#2D3250] text-[#2D3250] border-2 rounded p-0 m-0 hover:bg-[#7077A1] hover:border-white hover:text-white'
@@ -199,21 +202,26 @@ const ProfilePage: React.FC = () => {
                 className='w-2/6 transition-transform duration-1500 ease-in-out'
               />
             )}
-            {success && (
-              <Alert
-                severity='success'
-                variant='filled'
-                onClose={() => {
-                  setSuccess(false)
-                }}
-                className='mx-4'
-              >
-                "Se editaron los datos de Mi Perfil"
-              </Alert>
-            )}
           </section>
         </div>
       </div>
+
+      {/* Snackbar para mostrar alertas */}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={1500} // Duración de la alerta
+        onClose={() => setAlertOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setAlertOpen(false)}
+          severity='success'
+          variant='filled'
+          sx={{ marginBottom: '16px' }} // Margen adicional
+        >
+          Se editaron los datos de Mi Perfil
+        </Alert>
+      </Snackbar>
 
       {/* Modal para editar la imagen de perfil */}
       <ProfileModal open={open} onClose={handleClose} profilePic={profilePic} />
