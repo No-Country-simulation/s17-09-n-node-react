@@ -18,6 +18,7 @@
     "back:generate": "cd server && npm run generate",
     "back:seed": "cd server && npm run seed",
     "back:drop": "cd server && npm run drop",
+    "back:build": "cd server && npm run build",
     "prepare": "husky"
   },
   "keywords": [],

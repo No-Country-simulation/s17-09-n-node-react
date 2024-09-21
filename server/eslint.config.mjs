@@ -31,6 +31,7 @@ export default [
         process: 'readonly',
       },
     },
+    ignores: ['node_modules/', 'dist/', 'build/'],
     rules: {
       '@typescript-eslint/no-extraneous-class': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',

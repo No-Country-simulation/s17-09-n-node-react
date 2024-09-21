@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { CaseService } from '../services/case.service'
-import { CreateCaseDTO } from '../dtos/case/create-dto.case'
-import { UpdateCaseDTO } from '../dtos/case/update-dto.case'
 import HttpError from '../config/errors'
 import { HTTP_STATUS, ROLE } from '../enums/enum'
+import { CreateCaseDTO, UpdateCaseDTO } from '../dtos/case'
 
 const caseService = new CaseService()
 

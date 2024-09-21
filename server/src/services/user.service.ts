@@ -33,9 +33,9 @@ export class UserService {
       envs.nodeEnv === 'prod' ? (envs.jwtRefreshSecret as string) : 'secret'
 
     const accessJwtExpiration =
-      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+      envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '1h'
     const refreshJwtExpiration =
-      envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '3h'
+      envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '1d'
 
     const accessToken = jwt.sign(payload, accessTokenSecret, { expiresIn: accessJwtExpiration })
     const refreshToken = jwt.sign(payload, refreshTokenSecret, { expiresIn: refreshJwtExpiration })
@@ -70,10 +70,12 @@ export class UserService {
     if (updatePasswordDto.currentPassword === updatePasswordDto.newPassword)
       throw new HttpError(400, HTTP_STATUS.BAD_REQUEST, 'The passwords are equal')
 
+    const newPassword = await bcrypt.hash(updatePasswordDto.newPassword, 10)
+
     await prisma.user.update({
       where: { id: id },
       data: {
-        password: updatePasswordDto.newPassword,
+        password: newPassword,
       },
     })
 

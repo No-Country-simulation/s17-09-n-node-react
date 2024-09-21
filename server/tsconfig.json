@@ -15,5 +15,5 @@
     "alwaysStrict": true
   },
   "include": ["**/*.ts", "jest.config.js"],
-  "exclude": ["node_modules", "distBE"]
+  "exclude": ["node_modules", "dist", "test"]
 }

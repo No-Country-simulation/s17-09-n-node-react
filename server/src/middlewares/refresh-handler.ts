@@ -10,9 +10,9 @@ export default async function refreshHandler(req: Request, res: Response, next: 
   const cookieName = envs.nodeEnv === 'prod' ? (envs.jwtCookieName as string) : 'jwt-cookie'
   const accessSecret = envs.nodeEnv === 'prod' ? (envs.jwtAccessSecret as string) : 'secret'
   const refreshSecret = envs.nodeEnv === 'prod' ? (envs.jwtRefreshSecret as string) : 'secret'
-  const accessJwtExpiration = envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '15m'
+  const accessJwtExpiration = envs.nodeEnv === 'prod' ? (envs.jwtAccessExpiration as string) : '1h'
   const refreshJwtExpiration =
-    envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '3h'
+    envs.nodeEnv === 'prod' ? (envs.jwtRefreshExpiration as string) : '1d'
   const prisma = new PrismaClient()
   try {
     const cookie = req.headers.cookie
@@ -77,7 +77,7 @@ export default async function refreshHandler(req: Request, res: Response, next: 
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: 3 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000,
       })
       res.status(201).json({ accessToken: accessToken })
     })

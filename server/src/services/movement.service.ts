@@ -3,6 +3,7 @@ import { CreateMovementDTO } from '../dtos/movement/create-dto.movement'
 import HttpError from '../config/errors'
 import { HTTP_STATUS } from '../enums/enum'
 import { UpdateMovementDTO } from '../dtos/movement/update-dto.movement'
+import { DateMovementDTO } from '../dtos/movement/date-dto.movement'
 
 const prisma = new PrismaClient()
 
@@ -60,5 +61,44 @@ export class MovementService {
 
   async deleteMovement(id: string) {
     return await prisma.movement.delete({ where: { id } })
+  }
+
+  getMovementsByUserIdAndDate = async (userId: string, dateMovementDto: DateMovementDTO) => {
+    const userFound = await prisma.user.findUnique({
+      where: { id: userId },
+    })
+
+    if (!userFound) {
+      throw new HttpError(404, HTTP_STATUS.NOT_FOUND, 'User not found!')
+    }
+
+    let { date } = dateMovementDto
+
+    if (date === undefined) {
+      date = new Date().toISOString()
+    }
+
+    const startOfDay = new Date(date)
+    startOfDay.setUTCHours(0, 0, 0, 0)
+
+    const endOfDay = new Date(date)
+    endOfDay.setUTCHours(23, 59, 59, 999)
+
+    const movements = await prisma.movement.findMany({
+      where: {
+        Case: {
+          userId: userId,
+        },
+        date: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+      include: {
+        Case: true,
+      },
+    })
+
+    return movements
   }
 }

@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { ContactService } from '../services/contact.service'
-import { CreateContactDTO } from '../dtos/contact/create-dto.contact'
-import { UpdateContactDTO } from '../dtos/contact/update-dto.contact'
 import HttpError from '../config/errors'
 import { HTTP_STATUS, ROLE } from '../enums/enum'
+import { CreateContactDTO, UpdateContactDTO } from '../dtos/contact'
 
 const contactService = new ContactService()
 
