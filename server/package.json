@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=dev ts-node-dev --respawn --clear ./src/main.ts",
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc -p ./tsconfig.json",
     "start": "cross-env NODE_ENV=prod node ./dist/src/main.js",
     "generate": "npx prisma generate",
     "seed": "cross-env NODE_ENV=dev ts-node-dev prisma/seeder.ts",

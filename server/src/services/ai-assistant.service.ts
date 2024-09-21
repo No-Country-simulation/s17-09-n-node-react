@@ -1,7 +1,10 @@
 import OpenAI from 'openai'
 import { envs } from '../config'
-import { orthographyCheckUseCase } from '../utils/use-cases/ortography.use-case'
-import { audioToTextUseCase } from '../utils/use-cases/audio-to-text.use-case'
+import {
+  audioToTextUseCase,
+  createThreadUseCase,
+  orthographyCheckUseCase,
+} from '../utils/use-cases'
 
 export class OpenAIService {
   private openai = new OpenAI({
@@ -21,5 +24,9 @@ export class OpenAIService {
     })
 
     return text
+  }
+
+  async createThread() {
+    return await createThreadUseCase(this.openai)
   }
 }
